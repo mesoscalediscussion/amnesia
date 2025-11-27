@@ -20,15 +20,15 @@
 #ifndef HPL_GAMEPAD_SDL2_H
 #define HPL_GAMEPAD_SDL2_H
 
-#if USE_SDL2
-
 #include <vector>
 #include <list>
 #include "system/SystemTypes.h"
 #include "input/Gamepad.h"
 //#include "input/InputTypes.h"
 
+#if USE_SDL2
 #include "SDL2/SDL.h"
+#endif
 
 namespace hpl {
 
@@ -112,7 +112,5 @@ namespace hpl {
 	};
 
 };
-
-#endif // USE_SDL2
 
 #endif // HPL_GAMEPAD_SDL2_H

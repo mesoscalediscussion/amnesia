@@ -59,7 +59,7 @@
       <AdditionalIncludeDirectories> .\include;  ..\dependencies\include; ..\dependencies\include\AL;  ..\dependencies\include\HaptX; ;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_SDL2;WINDOWS_IGNORE_PACKING_MISMATCH;WIN32;NDEBUG;_WINDOWS;_USRDLL;HPL_EXPORTS;MEMORY_MANAGER_ACTIVE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader />
       <ObjectFileName>D:\_temp\_temp\HPL2_0\Release/</ObjectFileName>
       <ProgramDataBaseFileName>D:\_temp\_temp\HPL2_0\Release/vc70.pdb</ProgramDataBaseFileName>
@@ -71,6 +71,7 @@
       <OutputFile>../lib/HPL2_Debug.lib</OutputFile>
       <AdditionalLibraryDirectories>..\dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
+    <!--
     <PreBuildEvent>
       <Command>$(ProjectDir)../redist/buildcounter buildcounterinput.txt</Command>
     </PreBuildEvent>
@@ -78,6 +79,7 @@
       <Message>Compiling BuildID file</Message>
       <Command>cl $(ProjectDir)sources\BuildID_HPL2_0_Win32.cpp   /O2 /I ".\include" /I "..\dependencies\include" /I "..\dependencies\include\AL" /I "..\dependencies\include\HaptX" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_USRDLL" /D "HPL_EXPORTS" /D "MEMORY_MANAGER_ACTIVE" /FD /EHsc /MD /GS /Fo$(OutDir) /Fd$(OutDir) /W3 /nologo /c /Wp64 /Zi /TP</Command>
     </PreLinkEvent>
+	-->
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

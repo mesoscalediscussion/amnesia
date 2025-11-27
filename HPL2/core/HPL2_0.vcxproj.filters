@@ -1436,9 +1436,6 @@
     <ClCompile Include="sources\impl\MutexWin32.cpp">
       <Filter>Impl\System</Filter>
     </ClCompile>
-    <ClCompile Include="sources\impl\PlatformWin32.cpp">
-      <Filter>Impl\System</Filter>
-    </ClCompile>
     <ClCompile Include="sources\impl\scripthelper.cpp">
       <Filter>Impl\System</Filter>
     </ClCompile>
@@ -1823,6 +1820,7 @@
     <ClCompile Include="sources\impl\scriptstdstring.cpp" />
     <ClCompile Include="sources\impl\scriptstdstring_utils.cpp" />
     <ClCompile Include="sources\gui\GuiPopUpUIKeyboard.cpp" />
+    <ClCompile Include="sources\impl\PlatformWin32.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="buildcounterinput.txt" />

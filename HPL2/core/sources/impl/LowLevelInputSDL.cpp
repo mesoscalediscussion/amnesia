@@ -32,15 +32,6 @@
 #if USE_SDL2
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_syswm.h"
-#else
-#include "SDL/SDL.h"
-#include "SDL/SDL_syswm.h"
-#endif
-
-#if defined WIN32 && !SDL_VERSION_ATLEAST(2,0,0)
-#include <Windows.h>
-#include <Dbt.h>
-#include "impl/GamepadXInput.h"
 #endif
 
 namespace hpl {
@@ -56,15 +47,7 @@ namespace hpl {
 	{
 		LockInput(true);
 		RelativeMouse(false);
-#if SDL_VERSION_ATLEAST(2, 0, 0)
 		SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER);
-#else
-		mlConnectedDevices = 0;
-		mlCheckDeviceChange = 0;
-		mbDirtyGamepads = true;
-
-		SDL_EventState(SDL_SYSWMEVENT, SDL_ENABLE);
-#endif
 	}
 
 	//-----------------------------------------------------------------------
@@ -100,27 +83,6 @@ namespace hpl {
 		mlstEvents.clear();
 		while(SDL_PollEvent(&sdlEvent)!=0)
 		{
-#if defined WIN32 && !SDL_VERSION_ATLEAST(2,0,0)
-			if(sdlEvent.type==SDL_SYSWMEVENT)
-			{
-				SDL_SysWMmsg* pMsg = sdlEvent.syswm.msg;
-				
-				// This is bad, cos it is actually Windows specific code, should not be here. TODO: move it, obviously
-				if(pMsg->msg==WM_DEVICECHANGE)
-				{
-					if(pMsg->wParam==DBT_DEVICEARRIVAL)
-					{
-						cEngine::SetDeviceWasPlugged();
-					}
-					else if(pMsg->wParam==DBT_DEVICEREMOVECOMPLETE)
-					{
-						cEngine::SetDeviceWasRemoved();
-					}
-				}
-			}
-			else
-#endif //WIN32
-#if SDL_VERSION_ATLEAST(2, 0, 0)
             // built-in SDL2 gamepad hotplug code
             // this whole contract should be rewritten to allow clean adding/removing
             // of controllers, instead of brute force rescanning
@@ -134,7 +96,6 @@ namespace hpl {
                 // instance # increases as devices are plugged and unplugged.
                 cEngine::SetDeviceWasRemoved();
             }
-#endif
 #if defined (__APPLE__)
             if (sdlEvent.type==SDL_KEYDOWN)
             {
@@ -173,33 +134,6 @@ namespace hpl {
 
 			mbDirtyGamepads = false;
 		}
-#elif !SDL_VERSION_ATLEAST(2,0,0)
-		////////////
-		// Check every x frames
-		if(mlCheckDeviceChange++ % 120 == 0)
-		{
-			/////////////
-			// Check if any new device has been pluggin in
-			DropGamepadSupport();
-			InitGamepadSupport();
-
-			/////////////
-			// Check if the total number of devices has changed since last update
-			if(mlConnectedDevices < GetPluggedGamepadNum())
-			{
-				cEngine::SetDeviceWasPlugged();
-			}
-			else if(mlConnectedDevices > GetPluggedGamepadNum())
-			{
-				cEngine::SetDeviceWasRemoved();
-			}
-			else
-			{
-				mbDirtyGamepads = true;
-			}
-
-			mlConnectedDevices = GetPluggedGamepadNum();
-		}
 #endif
 	}
 
@@ -207,16 +141,10 @@ namespace hpl {
 
 	void cLowLevelInputSDL::InitGamepadSupport()
 	{
-#if !SDL_VERSION_ATLEAST(2, 0, 0)
-		SDL_InitSubSystem(SDL_INIT_JOYSTICK);
-#endif
 	}
 
 	void cLowLevelInputSDL::DropGamepadSupport()
 	{
-#if !SDL_VERSION_ATLEAST(2, 0, 0)
-		SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
-#endif
 	}
 
 	int cLowLevelInputSDL::GetPluggedGamepadNum()

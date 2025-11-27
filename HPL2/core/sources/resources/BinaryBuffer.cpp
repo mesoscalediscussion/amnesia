@@ -30,8 +30,6 @@
 #if USE_SDL2
 #include "SDL2/SDL_stdinc.h"
 #include "SDL2/SDL_endian.h"
-#else
-#include "SDL/SDL_endian.h"
 #endif
 #include <errno.h>
 

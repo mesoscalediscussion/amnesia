@@ -32,8 +32,6 @@
 
 #if USE_SDL2
 #include "SDL2/SDL.h"
-#else
-#include "SDL/SDL.h"
 #endif
 
 // Include these AFTER SDL
@@ -322,14 +320,6 @@ namespace hpl {
 		bool mbFullscreen;
 		eGpuProgramFormat mGpuProgramFormat;
 
-		//////////////////////////////////////
-		//Windows stuff
-		#if defined(WIN32) && !SDL_VERSION_ATLEAST(2,0,0)
-			HGLRC mGLContext;
-			HDC   mDeviceContext;
-			HINSTANCE mhKeyTrapper;
-		#endif
-
 		bool mbInitHasBeenRun;
 
 		//////////////////////////////////////
@@ -371,12 +361,8 @@ namespace hpl {
 
 		//////////////////////////////////////
 		//SDL Variables
-#if SDL_VERSION_ATLEAST(2, 0, 0)
         SDL_Window *mpScreen;
         SDL_GLContext mGLContext;
-#else
-		SDL_Surface *mpScreen;
-#endif
         bool mbGrab;
 		
 		//////////////////////////////////////

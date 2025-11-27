@@ -25,8 +25,6 @@
 
 #if USE_SDL2
 #include "SDL2/SDL_stdinc.h"
-#else
-#include "SDL/SDL_stdinc.h"
 #endif
 
 #if defined WIN32

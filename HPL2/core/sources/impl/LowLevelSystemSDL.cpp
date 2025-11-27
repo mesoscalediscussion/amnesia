@@ -47,8 +47,6 @@
 
 #if USE_SDL2
 #include "SDL2/SDL.h"
-#else
-#include "SDL/SDL.h"
 #endif
 
 #include "impl/scriptstdstring.h"
@@ -230,9 +228,6 @@ namespace hpl {
 		{
 				gLogWriter.Write(sMess);
 	#if defined(__APPLE__) || defined(__linux__)
-#if !SDL_VERSION_ATLEAST(2, 0, 0)
-			SDL_WM_GrabInput(SDL_GRAB_OFF);
-#endif
 			SDL_Quit();
 	#endif
 			cPlatform::CreateMessageBox(eMsgBoxType_Error, _W("FATAL ERROR"), _W("%ls"), cString::To16Char(sMess).c_str());
