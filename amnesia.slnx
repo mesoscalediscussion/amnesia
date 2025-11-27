@@ -1,0 +1,10 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="HPL2/HPL2.vcxproj" Id="0780dec5-a930-4721-9364-17a49d2a4e60" />
+  <Project Path="LangConv/LangConv.vcxproj" Id="824433ce-9979-440f-9c99-6deee7253ee6" />
+  <Project Path="Lux/Lux.vcxproj" Id="c6e72c29-38a3-4897-aa05-e87b0323aa71">
+    <BuildDependency Project="HPL2/HPL2.vcxproj" />
+  </Project>
+</Solution>

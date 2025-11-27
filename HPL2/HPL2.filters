@@ -1810,7 +1810,4 @@
     <ClCompile Include="sources\gui\GuiPopUpUIKeyboard.cpp" />
     <ClCompile Include="sources\impl\PlatformWin32.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="buildcounterinput.txt" />
-  </ItemGroup>
 </Project>

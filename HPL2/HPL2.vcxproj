@@ -15,6 +15,8 @@
     <ProjectGuid>{0780DEC5-A930-4721-9364-17A49D2A4E60}</ProjectGuid>
     <RootNamespace>HPL2_0</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <ProjectName>HPL2</ProjectName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -41,14 +43,14 @@
     <_ProjectFileVersion>18.0.11123.170</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>D:\_temp\_temp\HPL2_0\Debug\</OutDir>
-    <IntDir>D:\_temp\_temp\HPL2_0\Debug\</IntDir>
+    <OutDir>lib</OutDir>
+    <IntDir>Intermediate\$(ConfigurationName)</IntDir>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>D:\_temp\_temp\HPL2_0\Release\</OutDir>
-    <IntDir>D:\_temp\_temp\HPL2_0\Release\</IntDir>
+    <OutDir>lib</OutDir>
+    <IntDir>Intermediate\$(ConfigurationName)</IntDir>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
     <PreLinkEventUseInBuild>false</PreLinkEventUseInBuild>
@@ -56,7 +58,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
-      <AdditionalIncludeDirectories> .\include;  ..\dependencies\include; ..\dependencies\include\AL;  ..\dependencies\include\HaptX; ;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;$(SolutionDir)dependencies\include;$(SolutionDir)dependencies\include\AL;$(SolutionDir)dependencies\include\HaptX;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_SDL2;WINDOWS_IGNORE_PACKING_MISMATCH;WIN32;NDEBUG;_WINDOWS;_USRDLL;HPL_EXPORTS;MEMORY_MANAGER_ACTIVE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -68,8 +70,8 @@
     </ClCompile>
     <Lib>
       <AdditionalDependencies>SDL2.lib;DevIL.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>../lib/HPL2_Debug.lib</OutputFile>
-      <AdditionalLibraryDirectories>..\dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <OutputFile>lib/HPL2_Debug.lib</OutputFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <!--
     <PreBuildEvent>
@@ -84,7 +86,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
-      <AdditionalIncludeDirectories> .\include;  ..\dependencies\include; ..\dependencies\include\AL;  ..\dependencies\include\HaptX; ;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;$(SolutionDir)dependencies\include;$(SolutionDir)dependencies\include\AL;$(SolutionDir)dependencies\include\HaptX;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_SDL2;WINDOWS_IGNORE_PACKING_MISMATCH;WIN32;NDEBUG;_WINDOWS;_USRDLL;HPL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -96,8 +98,8 @@
     </ClCompile>
     <Lib>
       <AdditionalDependencies>SDL2.lib;DevIL.lib;glew32.lib;zlibwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>../lib/HPL2.lib</OutputFile>
-      <AdditionalLibraryDirectories>..\dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <OutputFile>lib/HPL2.lib</OutputFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreLinkEvent>
       <Message>Compiling BuildID file</Message>
