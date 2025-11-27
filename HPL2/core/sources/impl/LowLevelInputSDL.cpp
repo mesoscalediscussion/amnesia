@@ -116,24 +116,7 @@ namespace hpl {
 	//-----------------------------------------------------------------------
 
 	void cLowLevelInputSDL::EndInputUpdate()
-	{ 
-#if USE_XINPUT
-		int lChange = cGamepadXInput::GetDeviceChange();
-
-		if(lChange != 0)
-		{
-			if(lChange < 0)
-			{
-				cEngine::SetDeviceWasRemoved();
-			}
-			else if(lChange > 0)
-			{
-				cEngine::SetDeviceWasPlugged();
-			}
-
-			mbDirtyGamepads = false;
-		}
-#endif
+	{
 	}
 
 	//-----------------------------------------------------------------------
@@ -148,11 +131,7 @@ namespace hpl {
 
 	int cLowLevelInputSDL::GetPluggedGamepadNum()
 	{
-#if USE_XINPUT
-		return cGamepadXInput::GetNumConnected();
-#else
 		return SDL_NumJoysticks();
-#endif
 	}
 
 	//-----------------------------------------------------------------------
@@ -173,22 +152,7 @@ namespace hpl {
 
 	iGamepad* cLowLevelInputSDL::CreateGamepad(int alIndex)
 	{
-#if USE_XINPUT
-		if(cGamepadXInput::IsConnected(alIndex))
-		{
-			///////////////
-			// This is a xbox gamepad, use XInput
-			return hplNew( cGamepadXInput, (alIndex));
-		}
-		else
-		{
-			return NULL;
-		}
-#elif USE_SDL2
 		return hplNew( cGamepadSDL2, (this, alIndex) );
-#else
-		return hplNew( cGamepadSDL, (this, alIndex) );
-#endif
 	}
 	
 	//-----------------------------------------------------------------------
