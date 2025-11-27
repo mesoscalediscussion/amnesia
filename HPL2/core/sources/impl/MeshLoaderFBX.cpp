@@ -19,6 +19,8 @@
 
 #include "impl/MeshLoaderFBX.h"
 
+#if 0
+
 #include "system/LowLevelSystem.h"
 #include "system/String.h"
 #include "system/Platform.h"
@@ -1534,3 +1536,4 @@ namespace hpl {
 		return lStatus;
 	}
 }
+#endif

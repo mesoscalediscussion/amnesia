@@ -23,6 +23,7 @@
 #include "system/SystemTypes.h"
 
 #include <cstdarg>
+#include <functional>
 
 namespace hpl {
 

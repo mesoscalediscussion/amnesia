@@ -93,3 +93,4 @@ ServiceFabricBackup/
 # dependencies & intermediate files
 dependencies/
 Intermediate/
+redist/
