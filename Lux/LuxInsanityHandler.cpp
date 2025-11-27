@@ -738,12 +738,12 @@ void cLuxInsanityHandler::Update(float afTimeStep)
 			mvEvents[mlCurrentEvent]->OnExit();
 			mlCurrentEvent = -1;
 
-			float fInfection = gpBase->mpPlayer->GetInfection();
+			float fSanity = gpBase->mpPlayer->GetSanity();
 
 			//Between between events depends on sanity level.
-			if(fInfection >= mfMinInfection_ShortWait)
+			if (fSanity <= mfMaxSanity_ShortWait)
 				mfNewEventCount = mfTimeBetween_ShortWait;
-			else if(fInfection <= mfMinInfection_MedWait)
+			else if (fSanity <= mfMaxSanity_MedWait)
 				mfNewEventCount = mfTimeBetween_MedWait;
 			else
 				mfNewEventCount = mfTimeBetween_LongWait;
@@ -836,6 +836,40 @@ void cLuxInsanityHandler::StartEvent(int alIdx)
 	
 	mlCurrentEvent = alIdx;
 	mvEvents[mlCurrentEvent]->Start();
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxInsanityHandler::StartEvent(const tString& asName)
+{
+	int lEventIndex = -1;
+
+	for (size_t i = 0; i < mvEvents.size(); ++i)
+	{
+		if (mvEvents[i]->GetName() == asName)
+		{
+			lEventIndex = i;
+			break;
+		}
+	}
+
+	if (lEventIndex < 0) return;
+
+	if (mlCurrentEvent >= 0)
+		mvEvents[mlCurrentEvent]->OnExit();
+
+	mlCurrentEvent = lEventIndex;
+	mvEvents[mlCurrentEvent]->Start();
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxInsanityHandler::StopCurrentEvent()
+{
+	if (mlCurrentEvent >= 0)
+		mvEvents[mlCurrentEvent]->OnExit();
+
+	mlCurrentEvent = -1;
 }
 
 //-----------------------------------------------------------------------

@@ -331,6 +331,7 @@
     <ClCompile Include="LuxAchievementHandler.cpp">
       <Filter>original</Filter>
     </ClCompile>
+    <ClCompile Include="LuxInsanityHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h">
@@ -666,6 +667,7 @@
     <ClInclude Include="LuxAchievementHandler.h">
       <Filter>original</Filter>
     </ClInclude>
+    <ClInclude Include="LuxInsanityHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="pigs">

@@ -98,6 +98,7 @@ void cLuxMessageHandler::Reset()
 void cLuxMessageHandler::LoadUserConfig()
 {
 	mbShowSubtitles = gpBase->mpUserConfig->GetBool("Game", "ShowSubtitles", true);
+	mbShowEffectSubtitles = gpBase->mpUserConfig->GetBool("Game", "ShowEffectSubtitles", false);
 }
 
 //-----------------------------------------------------------------------
@@ -105,6 +106,7 @@ void cLuxMessageHandler::LoadUserConfig()
 void cLuxMessageHandler::SaveUserConfig()
 {
 	gpBase->mpUserConfig->SetBool("Game", "ShowSubtitles", mbShowSubtitles);
+	gpBase->mpUserConfig->SetBool("Game", "ShowEffectSubtitles", mbShowEffectSubtitles);
 }
 
 //-----------------------------------------------------------------------

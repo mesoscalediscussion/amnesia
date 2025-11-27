@@ -40,7 +40,7 @@
 #include "LuxHintHandler.h"
 #include "LuxProgressLogHandler.h"
 #include "LuxLoadScreenHandler.h"
-//#include "LuxInsanityHandler.h"
+#include "LuxInsanityHandler.h"
 #include "LuxCredits.h"
 #include "LuxDemoEnd.h"
 #include "LuxProp_PhoneBox.h"
@@ -501,9 +501,9 @@ void cLuxScriptHandler::InitScriptFunctions()
 	AddFunc("void HideScreenImageImmediately()", (void *)HideScreenImageImmediately);
 	AddFunc("void HideScreenImageWithFade(float afFadeOut)", (void *)HideScreenImageWithFade);
 
-//	AddFunc("void SetInsanitySetEnabled(string &in asSet, bool abX)", (void *)SetInsanitySetEnabled);
-//	AddFunc("void StartRandomInsanityEvent()", (void *)StartRandomInsanityEvent);
-//	AddFunc("void InsanityEventIsActive()", (void *)InsanityEventIsActive);
+	AddFunc("void SetInsanitySetEnabled(string &in asSet, bool abX)", (void *)SetInsanitySetEnabled);
+	AddFunc("void StartRandomInsanityEvent()", (void *)StartRandomInsanityEvent);
+	AddFunc("void InsanityEventIsActive()", (void *)InsanityEventIsActive);
 
 	AddFunc("void StartPlayerSpawnPS(string &in asSPSFile)", (void *)StartPlayerSpawnPS);
 	AddFunc("void StopPlayerSpawnPS()", (void *)StartPlayerSpawnPS);
@@ -523,13 +523,24 @@ void cLuxScriptHandler::InitScriptFunctions()
 	AddFunc("void SetPlayerHealth(float afHealth)",(void *)SetPlayerHealth);
 	AddFunc("void AddPlayerHealth(float afHealth)",(void *)AddPlayerHealth);
 	AddFunc("float GetPlayerHealth()",(void *)GetPlayerHealth);
+	AddFunc("void SetPlayerSanity(float afSanity)", (void*)SetPlayerSanity);
+	AddFunc("void AddPlayerSanity(float afSanity)", (void*)AddPlayerSanity);
+	AddFunc("float GetPlayerSanity()", (void*)GetPlayerSanity);
+	AddFunc("void SetPlayerLampOil(float afOil)", (void*)SetPlayerLampOil);
+	AddFunc("void AddPlayerLampOil(float afOil)", (void*)AddPlayerLampOil);
+	AddFunc("float GetPlayerLampOil()", (void*)GetPlayerLampOil);
 	
 	AddFunc("float GetPlayerSpeed()",(void *)GetPlayerSpeed);
 	AddFunc("float GetPlayerYSpeed()",(void *)GetPlayerYSpeed);
 	AddFunc("void MovePlayerForward(float afAmount)",(void *)MovePlayerForward);
 	AddFunc("void SetPlayerPermaDeathSound(string &in asSound)",(void *)SetPlayerPermaDeathSound);
 
-	AddFunc("void GiveInfectionDamage(float afAmount, bool abUseEffect)",(void *)GiveInfectionDamage);
+	AddFunc("void SetSanityDrainDisabled(bool abX)", (void*)SetSanityDrainDisabled);
+	AddFunc("void GiveSanityBoost()", (void*)GiveSanityBoost);
+	AddFunc("void GiveSanityBoostSmall()", (void*)GiveSanityBoostSmall);
+	AddFunc("void GiveSanityDamage(float afAmount, bool abUseEffect)", (void*)GiveSanityDamage);
+
+	AddFunc("void GiveInfectionDamage(float afAmount, bool abUseEffect)", (void*)GiveInfectionDamage);
 
 	AddFunc("void GivePlayerDamage(float afAmount, string &in asType, bool abSpinHead, bool abLethal)",(void *)GivePlayerDamage);
 	AddFunc("void FadePlayerFOVMulTo(float afX, float afSpeed)",(void *)FadePlayerFOVMulTo);
@@ -586,9 +597,9 @@ void cLuxScriptHandler::InitScriptFunctions()
 	AddFunc("void BlockHint(string &in asName)", (void *)BlockHint);
 	AddFunc("void UnBlockHint(string &in asName)", (void *)UnBlockHint);
 
-	//AddFunc("void ExitInventory()",(void *)ExitInventory);
-	//AddFunc("void SetInventoryDisabled(bool abX)",(void *)SetInventoryDisabled);
-	//AddFunc("void SetInventoryMessage(string &in asTextCategory, string &in asTextEntry, float afTime)",(void *)SetInventoryMessage);
+	AddFunc("void ExitInventory()",(void *)ExitInventory);
+	AddFunc("void SetInventoryDisabled(bool abX)",(void *)SetInventoryDisabled);
+	AddFunc("void SetInventoryMessage(string &in asTextCategory, string &in asTextEntry, float afTime)",(void *)SetInventoryMessage);
 	
 	AddFunc("void GiveItem(string &in asName, string &in asType, string &in asSubTypeName, string &in asImageName, float afAmount)",(void *)GiveItem);
 	AddFunc("void GiveItemFromFile(string &in asName, string &in asFileName)",(void *)GiveItemFromFile);
@@ -1576,22 +1587,32 @@ bool __stdcall cLuxScriptHandler::GetFlashbackIsActive()
 
 //-----------------------------------------------------------------------
 
-//void __stdcall cLuxScriptHandler::SetInsanitySetEnabled(string& asSet, bool abX)
-//{
-//	if(abX)	gpBase->mpInsanityHandler->EnableSet(asSet);
-//	else	gpBase->mpInsanityHandler->DisableSet(asSet);
-//
-//}
-//
-//void __stdcall cLuxScriptHandler::StartRandomInsanityEvent()
-//{
-//	gpBase->mpInsanityHandler->StartEvent();
-//}
-//
-//bool __stdcall cLuxScriptHandler::InsanityEventIsActive()
-//{
-//	return gpBase->mpInsanityHandler->GetCurrentEvent() >= 0;
-//}
+void __stdcall cLuxScriptHandler::SetInsanitySetEnabled(string& asSet, bool abX)
+{
+	if(abX) gpBase->mpInsanityHandler->EnableSet(asSet);
+	else	gpBase->mpInsanityHandler->DisableSet(asSet);
+
+}
+
+void __stdcall cLuxScriptHandler::StartRandomInsanityEvent()
+{
+	gpBase->mpInsanityHandler->StartEvent();
+}
+
+void __stdcall cLuxScriptHandler::StartInsanityEvent(string& asEventName)
+{
+	gpBase->mpInsanityHandler->StartEvent(asEventName);
+}
+
+void __stdcall cLuxScriptHandler::StopCurrentInsanityEvent()
+{
+	gpBase->mpInsanityHandler->StopCurrentEvent();
+}
+
+bool __stdcall cLuxScriptHandler::InsanityEventIsActive()
+{
+	return gpBase->mpInsanityHandler->GetCurrentEvent() >= 0;
+}
 
 //-----------------------------------------------------------------------
 
@@ -1706,6 +1727,36 @@ float __stdcall cLuxScriptHandler::GetPlayerHealth()
 	return gpBase->mpPlayer->GetHealth();
 }
 
+void __stdcall cLuxScriptHandler::SetPlayerSanity(float afSanity)
+{
+	gpBase->mpPlayer->SetSanity(afSanity);
+}
+
+void __stdcall cLuxScriptHandler::AddPlayerSanity(float afSanity)
+{
+	gpBase->mpPlayer->AddSanity(afSanity);
+}
+
+float __stdcall cLuxScriptHandler::GetPlayerSanity()
+{
+	return gpBase->mpPlayer->GetSanity();
+}
+
+void __stdcall cLuxScriptHandler::SetPlayerLampOil(float afOil)
+{
+	gpBase->mpPlayer->SetLampOil(afOil);
+}
+
+void __stdcall cLuxScriptHandler::AddPlayerLampOil(float afOil)
+{
+	gpBase->mpPlayer->AddLampOil(afOil);
+}
+
+float __stdcall cLuxScriptHandler::GetPlayerLampOil()
+{
+	return gpBase->mpPlayer->GetLampOil();
+}
+
 //-----------------------------------------------------------------------
 
 float __stdcall cLuxScriptHandler::GetPlayerSpeed()
@@ -1730,6 +1781,55 @@ void __stdcall cLuxScriptHandler::MovePlayerForward(float afAmount)
 void __stdcall cLuxScriptHandler::SetPlayerPermaDeathSound(string& asSound)
 {
 	gpBase->mpPlayer->SetCurrentPermaDeathSound(asSound);
+}
+
+//-----------------------------------------------------------------------
+
+void __stdcall cLuxScriptHandler::SetSanityDrainDisabled(bool abX)
+{
+	gpBase->mpPlayer->SetSanityDrainDisabled(abX);
+}
+
+//-----------------------------------------------------------------------
+
+void __stdcall cLuxScriptHandler::GiveSanityBoost()
+{
+	if (gpBase->mpPlayer->GetSanity() < 25.0f)
+		gpBase->mpPlayer->AddSanity(100.0f - gpBase->mpPlayer->GetSanity());
+	else if (gpBase->mpPlayer->GetSanity() < 50.0f)
+		gpBase->mpPlayer->AddSanity(90.0f - gpBase->mpPlayer->GetSanity());
+	else if (gpBase->mpPlayer->GetSanity() < 75.0f)
+		gpBase->mpPlayer->AddSanity(80.0f - gpBase->mpPlayer->GetSanity());
+	else
+		gpBase->mpPlayer->AddSanity(5.0f);
+
+}
+
+//-----------------------------------------------------------------------
+
+void __stdcall cLuxScriptHandler::GiveSanityBoostSmall()
+{
+	cLuxPlayer* pPlayer = gpBase->mpPlayer;
+
+	if (pPlayer->GetSanity() < 25.0f)
+		pPlayer->AddSanity(20.0f);
+	else if (pPlayer->GetSanity() < 50.0f)
+		pPlayer->AddSanity(15.0f);
+	else if (pPlayer->GetSanity() < 75.0f)
+		pPlayer->AddSanity(10.0f);
+	else
+		pPlayer->AddSanity(5.0f);
+}
+
+
+//-----------------------------------------------------------------------
+
+void __stdcall cLuxScriptHandler::GiveSanityDamage(float afAmount, bool abUseEffect)
+{
+	if (abUseEffect)
+		gpBase->mpPlayer->GiveSanityDamage(afAmount);
+	else
+		gpBase->mpPlayer->LowerSanity(afAmount, false);
 }
 
 //-----------------------------------------------------------------------

@@ -390,6 +390,41 @@ private:
 	float mfFadeOutTime;
 };
 */
+
+//----------------------------------------------
+
+class cLuxEffect_SanityGainFlash : public iLuxEffect
+{
+public:
+	cLuxEffect_SanityGainFlash();
+	~cLuxEffect_SanityGainFlash();
+
+	void Start();
+
+	void Update(float afTimeStep);
+	void OnDraw(float afFrameTime);
+	void Reset();
+
+	void DrawFlash(cGuiSet* apSet, float afTimeStep);
+
+private:
+	cGuiGfxElement* mpWhiteGfx;
+
+	float mfAlpha;
+
+	int mlStep;
+	float mfCount;
+
+	float mfFadeInSpeed;
+	float mfWhiteSpeed;
+	float mfFadeOutSpeed;
+
+	cColor mColor;
+	tString msSound;
+	float mfFadeInTime;
+	float mfFadeOutTime;
+};
+
 //----------------------------------------------
 
 class cLuxEffect_Flash : public iLuxEffect
@@ -520,6 +555,7 @@ public:
 	cLuxEffect_Fade *GetFade(){ return mpFade;}
 	cLuxEffect_Flash *GetFlash(){ return mpFlash;}
 	//cLuxEffect_InfectionHealFlash *GetInfectionHealFlash(){ return mpInfectionHealFlash;}
+	cLuxEffect_SanityGainFlash* GetSanityGainFlash() { return mpSanityGainFlash; }
 	cLuxEffect_PlayVoice *GetPlayVoice(){ return mpPlayVoice;}
 	cLuxEffect_ImageTrail *GetImageTrail(){ return mpImageTrail;}
 	cLuxEffect_ShakeScreen *GetScreenShake(){ return mpScreenShake;}
@@ -534,6 +570,7 @@ private:
 	cLuxEffect_Fade *mpFade;
 	cLuxEffect_Flash *mpFlash;
 	//cLuxEffect_InfectionHealFlash *mpInfectionHealFlash;
+	cLuxEffect_SanityGainFlash* mpSanityGainFlash;
 	cLuxEffect_PlayVoice *mpPlayVoice;
 	cLuxEffect_ImageTrail *mpImageTrail;
 	cLuxEffect_ShakeScreen *mpScreenShake;

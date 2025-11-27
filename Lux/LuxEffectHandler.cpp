@@ -1363,6 +1363,103 @@ void cLuxEffect_InfectionHealFlash::DrawFlash(cGuiSet *apSet ,float afTimeStep)
 	apSet->DrawGfx(mpWhiteGfx,gpBase->mvHudVirtualStartPos+cVector3f(0,0,3.2f),gpBase->mvHudVirtualSize,mColor*mfAlpha);
 }
 */
+
+//-----------------------------------------------------------------------
+
+//////////////////////////////////////////////////////////////////////////
+// SANITY GAIN FLASH
+//////////////////////////////////////////////////////////////////////////
+
+//-----------------------------------------------------------------------
+
+cLuxEffect_SanityGainFlash::cLuxEffect_SanityGainFlash()
+{
+	mpWhiteGfx = gpBase->mpEngine->GetGui()->CreateGfxFilledRect(cColor(1, 1), eGuiMaterial_Additive);
+
+	mColor = gpBase->mpGameCfg->GetColor("Player_General", "SanityGain_Color", 0);
+	msSound = gpBase->mpGameCfg->GetString("Player_General", "SanityGain_Sound", "");
+	mfFadeInTime = gpBase->mpGameCfg->GetFloat("Player_General", "SanityGain_FadeInTime", 0);
+	mfFadeOutTime = gpBase->mpGameCfg->GetFloat("Player_General", "SanityGain_FadeOutTime", 0);
+
+	Reset();
+}
+cLuxEffect_SanityGainFlash::~cLuxEffect_SanityGainFlash()
+{
+
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxEffect_SanityGainFlash::Reset()
+{
+	mfAlpha = 0;
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxEffect_SanityGainFlash::Start()
+{
+	if (msSound != "")
+		gpBase->mpHelpFuncs->PlayGuiSoundData(msSound, eSoundEntryType_Gui);
+
+	mbActive = true;
+
+	mlStep = 0;
+
+	mfAlpha = 0;
+
+	mfFadeInSpeed = 1 / mfFadeInTime;
+	mfWhiteSpeed = 1 / 0.05f;
+	mfFadeOutSpeed = 1 / mfFadeOutTime;
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxEffect_SanityGainFlash::Update(float afTimeStep)
+{
+	if (mlStep == 0)
+	{
+		mfAlpha += mfFadeInSpeed * afTimeStep;
+		if (mfAlpha >= 1.0f)
+		{
+			mfAlpha = 1.0f;
+			mlStep = 1;
+			mfCount = 1;
+		}
+	}
+	else if (mlStep == 1)
+	{
+		mfCount -= mfWhiteSpeed * afTimeStep;
+		if (mfCount <= 0)
+		{
+			mlStep = 2;
+		}
+	}
+	else if (mlStep == 2)
+	{
+		mfAlpha -= mfFadeOutSpeed * afTimeStep;
+		if (mfAlpha <= 0.0f)
+		{
+			mbActive = false;
+		}
+	}
+
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxEffect_SanityGainFlash::OnDraw(float afFrameTime)
+{
+	DrawFlash(gpBase->mpGameHudSet, afFrameTime);
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxEffect_SanityGainFlash::DrawFlash(cGuiSet* apSet, float afTimeStep)
+{
+	apSet->DrawGfx(mpWhiteGfx, gpBase->mvHudVirtualStartPos + cVector3f(0, 0, 3.2f), gpBase->mvHudVirtualSize, mColor * mfAlpha);
+}
+
 //-----------------------------------------------------------------------
 
 //////////////////////////////////////////////////////////////////////////

@@ -375,6 +375,89 @@ private:
 
 //----------------------------------------------
 
+class cLuxPlayerSanity : public iLuxPlayerHelper
+{
+	friend class cLuxPlayer_SaveData;
+public:
+	cLuxPlayerSanity(cLuxPlayer* apPlayer);
+	~cLuxPlayerSanity();
+
+	void Reset();
+
+	void StartHit();
+	void SetSanityLost();
+
+	void Update(float afTimeStep);
+
+	void OnDraw(float afFrameTime);
+
+	float GetAtLowSanityCount() { return mfAtLowSanityCount; }
+
+private:
+	float GetCurrentSizeMul();
+
+	void UpdateInsaneEffects(float afTimeStep);
+	void UpdateCheckEnemySeen(float afTimeStep);
+	void UpdateHit(float afTimeStep);
+
+	void UpdateInsanityVisuals(float afTimeStep);
+	void UpdateEnemySeenEffect(float afTimeStep);
+	void UpdateLosingSanity(float afTimeStep);
+	void UpdateLowSanity(float afTimeStep);
+
+	float mfHitAlpha;
+	bool mbHitActive;
+	float mfSanityLostCount;
+
+	float mfAtLowSanityCount;
+
+	bool mbHitIsUpdated;
+	bool mbSanityLostIsUpdated;
+
+	float mfPantCount;
+
+	float mfCheckEnemySeenCount;
+
+	bool mbSanityEffectUpdated;
+
+	float mfT;
+	float mfInsaneWaveAlpha;
+
+	float mfSanityDrainCount;
+	float mfSanityDrainVolume;
+	float mfSanityHeartbeatCount;
+
+	float mfSeenEnemyCount;
+	bool mbEnemyIsSeen;
+
+	float mfShowHintTimer;
+
+	//////////////
+	// Data
+	float mfHitZoomInSpeed;
+	float mfHitZoomOutSpeed;
+	float mfHitZoomInFOVMul;
+	float mfHitZoomInAspectMul;
+
+	float mfSanityRegainSpeed;
+	float mfSanityRegainLimit;
+	float mfSanityVeryLowLimit;
+	float mfSanityEffectsStart;
+
+	float mfSanityWaveAlphaMul;
+	float mfSanityWaveSpeedMul;
+
+	float mfSanityLowLimit;
+	float mfSanityLowLimitMaxTime;
+	float mfSanityLowNewSanityAmount;
+
+	float mfCheckNearEnemyInterval;
+	float mfNearEnemyDecrease;
+	float mfNearCritterDecrease;
+};
+
+//----------------------------------------------
+
 class cLuxPlayerInfection : public iLuxPlayerHelper
 {
 friend class cLuxPlayer_SaveData;

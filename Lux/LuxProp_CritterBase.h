@@ -116,6 +116,7 @@ public:
 	void OnDamage(float afAmount, int alStrength);
 
 	bool CausesInfectionIncrease(){ return mbCausesInfectionIncrease;}
+	bool CausesSanityDecrease() { return mbCausesInfectionIncrease; } // todo:sanity
 
 	//////////////////////
 	//Properties

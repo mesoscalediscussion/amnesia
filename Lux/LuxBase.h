@@ -49,7 +49,7 @@ class cLuxGlobalDataHandler;
 class cLuxHintHandler;
 class cLuxConfigHandler;
 class cLuxPostEffectHandler;
-//class cLuxInsanityHandler;
+class cLuxInsanityHandler;
 class cLuxInfectionHandler;
 class cLuxProgressLogHandler;
 class cLuxLoadScreenHandler;
@@ -239,7 +239,7 @@ public:
 	cLuxGlobalDataHandler *mpGlobalDataHandler;
 	cLuxHintHandler *mpHintHandler;
 	cLuxPostEffectHandler *mpPostEffectHandler;
-	//cLuxInsanityHandler *mpInsanityHandler;
+	cLuxInsanityHandler *mpInsanityHandler;
 	cLuxInfectionHandler *mpInfectionHandler;
 	cLuxProgressLogHandler *mpProgressLogHandler;
 	cLuxLoadScreenHandler *mpLoadScreenHandler;
@@ -274,6 +274,11 @@ public:
 
 	cLuxMap *mpCurrentMapLoading;
 
+	/////////////////////////
+	// HARDMODE
+	bool mbHardMode;
+	bool mbAllowHardmode;
+	
 	/////////////////////////
 	// Kinda private variables
 	tWString msInitConfigFile;

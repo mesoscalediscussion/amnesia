@@ -64,6 +64,9 @@ public:
 
 	bool ShowSubtitles(){ return mbShowSubtitles;}
 	void SetShowSubtitles(bool abX){ mbShowSubtitles=abX;}
+
+	bool ShowEffectSubtitles() { return mbShowEffectSubtitles; }
+	void SetShowEffectSubtitles(bool abX) { mbShowEffectSubtitles = abX; }
 private:
 	void DrawQuestAdded();
 	void DrawMessage();
@@ -83,6 +86,7 @@ private:
 	//////////////////
 	// Variables
 	bool mbShowSubtitles;
+	bool mbShowEffectSubtitles;
 
 	bool mbPauseMessageActive;
 	float mfPauseMessageAlpha;

@@ -72,7 +72,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)HPL2\include;$(SolutionDir)dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;MEMORY_MANAGER_ACTIVE;USE_GAMEPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_SDL2;WIN32;_DEBUG;_WINDOWS;MEMORY_MANAGER_ACTIVE;USE_GAMEPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -82,7 +82,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>HPL2_Debug.lib;fltk.lib;wsock32.lib;comctl32.lib;xinput.lib;zlibwapi.lib;dbghelp.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>..\..\redist\aamfpDebug.exe</OutputFile>
+      <OutputFile>$(SolutionDir)redist\aamfpDebug.exe</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib; $(SolutionDir)dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreEmbeddedIDL>false</IgnoreEmbeddedIDL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -97,7 +97,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)HPL2\include;$(SolutionDir)dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;USE_GAMEPAD;USE_SDL2%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_SDL2;WIN32;NDEBUG;_WINDOWS;USE_GAMEPAD;USE_SDL2%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -107,7 +107,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>HPL2.lib;fltk.lib;wsock32.lib;comctl32.lib;zlibwapi.lib;Wininet.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>..\..\redist\aamfp.exe</OutputFile>
+      <OutputFile>$(SolutionDir)redist\aamfp.exe</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib; $(SolutionDir)dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreEmbeddedIDL>false</IgnoreEmbeddedIDL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -124,7 +124,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)HPL2\include;$(SolutionDir)dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS; LUX_DEMO_VERSION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_SDL2;WIN32;NDEBUG;_WINDOWS; LUX_DEMO_VERSION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -133,7 +133,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>Hpl2_2010.lib;fltk.lib;wsock32.lib;comctl32.lib;xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>..\..\redist\AmnesiaDemo.exe</OutputFile>
+      <OutputFile>$(SolutionDir)redist\aamfpDemo.exe</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib; $(SolutionDir)dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreEmbeddedIDL>false</IgnoreEmbeddedIDL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -154,6 +154,7 @@
     <ClCompile Include="LuxEnemy_ManPig.cpp" />
     <ClCompile Include="LuxHelpFuncs.cpp" />
     <ClCompile Include="LuxInfectionHandler.cpp" />
+    <ClCompile Include="LuxInsanityHandler.cpp" />
     <ClCompile Include="LuxInventory.cpp" />
     <ClCompile Include="LuxJournal.cpp" />
     <ClCompile Include="LuxProp_PhoneBox.cpp" />
@@ -267,6 +268,7 @@
     <ClInclude Include="LuxHelpFuncs.h" />
     <ClInclude Include="LuxIdleBehavior_ManPig.h" />
     <ClInclude Include="LuxInfectionHandler.h" />
+    <ClInclude Include="LuxInsanityHandler.h" />
     <ClInclude Include="LuxInventory.h" />
     <ClInclude Include="LuxJournal.h" />
     <ClInclude Include="LuxProp_PhoneBox.h" />

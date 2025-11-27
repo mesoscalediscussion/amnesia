@@ -253,6 +253,8 @@ public:
 
 	void StartEvent();
 	void StartEvent(int alIdx);
+	void StartEvent(const tString& asName);
+	void StopCurrentEvent();
 
 	int GetEventNum(){ return (int)mvEvents.size();}
 	iLuxInstanityEvent *GetEvent(int alIdx){ return mvEvents[alIdx]; };
@@ -277,9 +279,12 @@ private:
 
 	//////////////////
 	// Data
-	float mfMinInfection_LongWait;
-	float mfMinInfection_MedWait;
-	float mfMinInfection_ShortWait;
+	//float mfMinInfection_LongWait;
+	//float mfMinInfection_MedWait;
+	//float mfMinInfection_ShortWait;
+	float mfMaxSanity_LongWait;
+	float mfMaxSanity_MedWait;
+	float mfMaxSanity_ShortWait;
 
 	float mfTimeBetween_LongWait;
 	float mfTimeBetween_MedWait;

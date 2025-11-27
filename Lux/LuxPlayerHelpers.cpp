@@ -1990,6 +1990,496 @@ void cLuxPlayerInfection::UpdateHighInfection( float afTimeStep )
 //-----------------------------------------------------------------------
 
 
+
+//////////////////////////////////////////////////////////////////////////
+// PLAYER SANITY
+//////////////////////////////////////////////////////////////////////////
+
+//-----------------------------------------------------------------------
+
+cLuxPlayerSanity::cLuxPlayerSanity(cLuxPlayer* apPlayer) : iLuxPlayerHelper(apPlayer, "LuxPlayerSanity")
+{
+	mfHitZoomInSpeed = gpBase->mpGameCfg->GetFloat("Player_Sanity", "HitZoomInSpeed", 0);
+	mfHitZoomOutSpeed = gpBase->mpGameCfg->GetFloat("Player_Sanity", "HitZoomOutSpeed", 0);
+	mfHitZoomInFOVMul = gpBase->mpGameCfg->GetFloat("Player_Sanity", "HitZoomInFOVMul", 0);
+	mfHitZoomInAspectMul = gpBase->mpGameCfg->GetFloat("Player_Sanity", "HitZoomInAspectMul", 0);
+
+	mfSanityRegainSpeed = gpBase->mpGameCfg->GetFloat("Player_Sanity", "SanityRegainSpeed", 0);
+	mfSanityRegainLimit = gpBase->mpGameCfg->GetFloat("Player_Sanity", "SanityRegainLimit", 0);
+
+	mfSanityVeryLowLimit = gpBase->mpGameCfg->GetFloat("Player_Sanity", "SanityVeryLowLimit", 0);
+	mfSanityEffectsStart = gpBase->mpGameCfg->GetFloat("Player_Sanity", "SanityEffectsStart", 0);
+
+	mfSanityWaveAlphaMul = gpBase->mpGameCfg->GetFloat("Player_Sanity", "SanityWaveAlphaMul", 0);
+	mfSanityWaveSpeedMul = gpBase->mpGameCfg->GetFloat("Player_Sanity", "SanityWaveSpeedMul", 0);
+
+	mfSanityLowLimit = gpBase->mpGameCfg->GetFloat("Player_Sanity", "SanityLowLimit", 0);
+	mfSanityLowLimitMaxTime = gpBase->mpGameCfg->GetFloat("Player_Sanity", "SanityLowLimitMaxTime", 0);
+	mfSanityLowNewSanityAmount = gpBase->mpGameCfg->GetFloat("Player_Sanity", "SanityLowNewSanityAmount", 0);
+
+	mfCheckNearEnemyInterval = gpBase->mpGameCfg->GetFloat("Player_Sanity", "CheckNearEnemyInterval", 0);
+	mfNearEnemyDecrease = gpBase->mpGameCfg->GetFloat("Player_Sanity", "NearEnemyDecrease", 0);
+	mfNearCritterDecrease = gpBase->mpGameCfg->GetFloat("Player_Sanity", "NearCritterDecrease", 0);
+
+	Reset();
+}
+
+//-----------------------------------------------------------------------
+
+cLuxPlayerSanity::~cLuxPlayerSanity()
+{
+
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxPlayerSanity::Reset()
+{
+	mfHitAlpha = 0;
+	mbHitActive = false;
+	mfSanityLostCount = 0;
+	mfPantCount = 1;
+	mfCheckEnemySeenCount = 0;
+
+	mfT = 0;
+	mfInsaneWaveAlpha = 0;
+
+	mfSanityDrainCount = 0;
+	mfSanityDrainVolume = 0;
+	mfSanityHeartbeatCount = 0;
+
+	mfSeenEnemyCount = 0;
+	mbEnemyIsSeen = false;
+
+	mbSanityEffectUpdated = false;
+
+	mfAtLowSanityCount = 0;
+
+	mfShowHintTimer = 0;
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxPlayerSanity::StartHit()
+{
+	mbHitActive = true;
+
+	gpBase->mpHelpFuncs->PlayGuiSoundData("sanity_damage", eSoundEntryType_Gui);
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxPlayerSanity::SetSanityLost()
+{
+	mfSanityLostCount = 1.0f;
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxPlayerSanity::Update(float afTimeStep)
+{
+	mfT += afTimeStep;
+
+	mbHitIsUpdated = false;
+	mbSanityLostIsUpdated = false;
+
+	//////////////////////
+	// Check if player is at low sanity level and update a timer
+	if (mpPlayer->GetSanity() < mfSanityLowLimit)
+	{
+		mfAtLowSanityCount += afTimeStep;
+		if (mfAtLowSanityCount > mfSanityLowLimitMaxTime)
+		{
+			mfAtLowSanityCount = 0;
+			mpPlayer->SetSanity(mfSanityLowNewSanityAmount);
+		}
+	}
+	else if (mfAtLowSanityCount > 0)
+	{
+		mfAtLowSanityCount -= afTimeStep;
+		if (mfAtLowSanityCount < 0) mfAtLowSanityCount = 0;
+	}
+
+	//////////////////////
+	// Update complex stuff
+	UpdateCheckEnemySeen(afTimeStep);
+	UpdateEnemySeenEffect(afTimeStep);
+	UpdateHit(afTimeStep);
+	UpdateInsaneEffects(afTimeStep);
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxPlayerSanity::OnDraw(float afFrameTime)
+{
+
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxPlayerSanity::UpdateInsanityVisuals(float afTimeStep)
+{
+	if (mpPlayer->GetSanity() > mfSanityEffectsStart && mfSanityDrainVolume <= 0 && mfInsaneWaveAlpha <= 0)
+	{
+		gpBase->mpPostEffectHandler->GetInsanity()->SetActive(false);
+		return;
+	}
+
+	gpBase->mpPostEffectHandler->GetInsanity()->SetActive(true);
+
+	float fSanity = mpPlayer->GetSanity();
+	float fGoalAlpha = 1 - fSanity / mfSanityEffectsStart;
+	if (fGoalAlpha < 0) fGoalAlpha = 0;
+
+	////////////////////////////////
+	//Update wave alpha
+	if (fGoalAlpha < mfInsaneWaveAlpha)
+	{
+		mfInsaneWaveAlpha -= afTimeStep;
+		if (mfInsaneWaveAlpha < fGoalAlpha) mfInsaneWaveAlpha = fGoalAlpha;
+	}
+	else
+	{
+		mfInsaneWaveAlpha += afTimeStep;
+		if (mfInsaneWaveAlpha > fGoalAlpha) mfInsaneWaveAlpha = fGoalAlpha;
+	}
+
+	////////////////////////////////
+	//Set up effects
+	//Log("Zoom: %f Wave: %f\n", mfSanityDrainVolume, mfInsaneWaveAlpha);
+
+	float fZoomMul = (sin(mfT * 2) + 1) * 0.5f * 0.4f + 0.6f;
+
+	gpBase->mpPostEffectHandler->GetInsanity()->SetWaveAlpha(mfInsaneWaveAlpha * mfSanityWaveAlphaMul);//mfInsaneWaveAlpha);
+	gpBase->mpPostEffectHandler->GetInsanity()->SetWaveSpeed(mfInsaneWaveAlpha * mfSanityWaveSpeedMul);//*mfInsaneWaveAlpha);
+	gpBase->mpPostEffectHandler->GetInsanity()->SetZoomAlpha(mfSanityDrainVolume * fZoomMul);
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxPlayerSanity::UpdateInsaneEffects(float afTimeStep)
+{
+	if (mbHitIsUpdated) return;
+
+	if (mbSanityEffectUpdated)
+	{
+		gpBase->mpEffectHandler->GetImageTrail()->FadeTo(0, 1);
+		mpPlayer->FadeAspectMulTo(1, 1);
+		mpPlayer->FadeFOVMulTo(1, 1);
+
+		mbSanityEffectUpdated = false;
+	}
+
+	////////////////////////////////
+	// Insanity visual effect
+	UpdateInsanityVisuals(afTimeStep);
+
+	if (mpPlayer->IsDead()) return;
+	////////////////////////////////
+	// Player is loosing sanity!
+	UpdateLosingSanity(afTimeStep);
+
+	////////////////////////////////
+	// Show that sanity is low
+	UpdateLowSanity(afTimeStep);
+
+	////////////////////////////////
+	// Regain some sanity
+	float fSanity = mpPlayer->GetSanity();
+	if (fSanity < mfSanityRegainLimit)
+	{
+		fSanity += afTimeStep * mfSanityRegainSpeed;
+		mpPlayer->SetSanity(fSanity);
+	}
+
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxPlayerSanity::UpdateCheckEnemySeen(float afTimeStep)
+{
+	/////////////////////////////////////
+	// Check if it is time for a check!
+	if (mfCheckEnemySeenCount > 0)
+	{
+		mfCheckEnemySeenCount -= afTimeStep;
+		return;
+	}
+	mfCheckEnemySeenCount = mfCheckNearEnemyInterval;
+
+	/////////////////////////////////////
+	// Init vars
+	bool bSeenEnemy = false;
+	cLuxMap* pMap = gpBase->mpMapHandler->GetCurrentMap();
+	float fMaxRangeSqrt = 35 * 35;
+
+	cCamera* pCam = mpPlayer->GetCamera();
+	cVector3f vPlayerHeadPos = pCam->GetPosition();
+
+
+	cVector3f vRight = pCam->GetRight();
+	cVector3f vUp = pCam->GetUp();
+
+	/////////////////////////////////////
+	// Iterate critters
+	float fMinCritterDistSqrt = 3.0f * 3.0f;
+	bool bNearCritter = false;
+	cLuxEntityIterator entIt = pMap->GetEntityIterator();
+	while (entIt.HasNext())
+	{
+		iLuxEntity* pEntity = entIt.Next();
+		if (pEntity->IsActive() == false)continue;
+		if (pEntity->GetEntityType() != eLuxEntityType_Prop) continue;
+
+		iLuxProp* pProp = static_cast<iLuxProp*>(pEntity);
+		if (pProp->GetPropType() != eLuxPropType_Critter) continue;
+
+		iLuxProp_CritterBase* pCritter = static_cast<iLuxProp_CritterBase*>(pProp);
+
+		if (pCritter->CausesSanityDecrease() == false) continue;
+
+		float fDistSqrt = cMath::Vector3DistSqr(pProp->GetBody(0)->GetLocalPosition(), vPlayerHeadPos);
+		if (fDistSqrt > fMinCritterDistSqrt) continue;
+
+		bNearCritter = true;
+		break;
+	}
+
+	if (bNearCritter)
+	{
+		mpPlayer->LowerSanity(mfNearCritterDecrease, true);
+	}
+
+	/////////////////////////////////////
+	// Iterate enemies
+	cLuxEnemyIterator it = pMap->GetEnemyIterator();
+	while (it.HasNext())
+	{
+		iLuxEnemy* pEnemy = it.Next();
+		pEnemy->SetIsSeenByPlayer(false);
+
+		if (pEnemy->IsActive() == false) continue;
+		if (pEnemy->CausesSanityDecrease() == false) continue;
+
+		iCharacterBody* pCharBody = pEnemy->GetCharacterBody();
+
+		//////////////////////////////
+		//Check so enemy is in range
+		float fDistSqrt = cMath::Vector3DistSqr(pCharBody->GetPosition(), vPlayerHeadPos);
+		if (fDistSqrt > fMaxRangeSqrt) continue;
+
+		//////////////////////////////
+		//Check so enemy is in FOV
+		if (pCam->GetFrustum()->CollideBoundingVolume(pCharBody->GetCurrentBody()->GetBoundingVolume()) == eCollision_Outside)
+		{
+			continue;
+		}
+
+		//////////////////////////////
+		//Cast rays
+		cVector3f vHalfSize = pCharBody->GetSize() * 0.5f;
+		cVector3f vPosAdd[5] = {
+			cVector3f(0),
+			vRight * vHalfSize.x,
+			vRight * vHalfSize.x * -1,
+			vUp * vHalfSize.y * 0.8f,
+			vUp * vHalfSize.y * -0.8f,
+		};
+
+		int lCount = 0;
+		for (int i = 0; i < 5; ++i)
+		{
+			if (gpBase->mpMapHelper->CheckLineOfSight(vPlayerHeadPos, pCharBody->GetPosition() + vPosAdd[i], false))
+			{
+				lCount++;
+				if (lCount >= 2)
+				{
+					bSeenEnemy = true;
+					pEnemy->SetIsSeenByPlayer(true);
+					break;
+				}
+			}
+		}
+
+		//if(bSeenEnemy) break; No break, since we check visibility for all enemies.
+	}
+
+	/////////////////////////////////////
+	// If seen, lower sanity and increase seen count
+	if (bSeenEnemy)
+	{
+		mpPlayer->LowerSanity(mfNearEnemyDecrease, true);
+
+		//do this in update instead!
+		//gpBase->mpEffectHandler->GetRadialBlur()->SetBlurStartDist(0.3f);
+		//gpBase->mpEffectHandler->GetRadialBlur()->FadeTo(0.12f, 0.12f / 3.0f);
+
+		mbEnemyIsSeen = true;
+	}
+	else
+	{
+		if (mbEnemyIsSeen)
+		{
+			mbEnemyIsSeen = false;
+			gpBase->mpEffectHandler->GetRadialBlur()->FadeTo(0, 0.12f / 2.0f);
+		}
+	}
+
+}
+
+//-----------------------------------------------------------------------
+
+
+void cLuxPlayerSanity::UpdateHit(float afTimeStep)
+{
+	if (mpPlayer->IsDead()) return;
+	if (mfHitAlpha <= 0 && mbHitActive == false) return;
+
+	mbHitIsUpdated = true;
+
+	if (mbHitActive)
+	{
+		mfHitAlpha += afTimeStep * mfHitZoomInSpeed;
+		if (mfHitAlpha >= 1)
+		{
+			mfHitAlpha = 1;
+			mbHitActive = false;
+		}
+	}
+	else
+	{
+		mfHitAlpha -= afTimeStep * mfHitZoomOutSpeed;
+		if (mfHitAlpha < 0) mfHitAlpha = 0;
+	}
+
+	gpBase->mpEffectHandler->GetImageTrail()->FadeTo(mfHitAlpha * 0.9f, 100);
+	mpPlayer->FadeAspectMulTo(1 - mfHitAlpha * mfHitZoomInAspectMul, 100);
+	mpPlayer->FadeFOVMulTo(1 - mfHitAlpha * mfHitZoomInFOVMul, 100);
+
+	mbSanityEffectUpdated = true;
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxPlayerSanity::UpdateEnemySeenEffect(float afTimeStep)
+{
+	if (mbEnemyIsSeen)
+	{
+		if (mfSeenEnemyCount < 1)
+		{
+			mfSeenEnemyCount += afTimeStep * 0.3f;
+			if (mfSeenEnemyCount > 1)
+			{
+				mfSeenEnemyCount = 1;
+				gpBase->mpHintHandler->Add("EnemySeen", kTranslate("Hints", "EnemySeen"), 0);
+			}
+		}
+
+		float fPulse = 0.5f + (sin(mfT * 2.5f) * 0.5f + 0.5f) * 0.5f;
+
+		gpBase->mpEffectHandler->GetRadialBlur()->SetBlurStartDist(0.2f);
+		gpBase->mpEffectHandler->GetRadialBlur()->FadeTo(0.12f * mfSeenEnemyCount * fPulse, 10.0f);
+	}
+	else
+	{
+		if (mfSeenEnemyCount > 0)
+		{
+			mfSeenEnemyCount -= afTimeStep * 0.15f;
+			if (mfSeenEnemyCount < 0)mfSeenEnemyCount = 0;
+		}
+	}
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxPlayerSanity::UpdateLosingSanity(float afTimeStep)
+{
+	if (mfSanityLostCount <= 0)
+	{
+		mfSanityDrainCount = 0;
+		mfSanityHeartbeatCount = 0;
+		mfSanityDrainVolume -= afTimeStep * 0.5f;
+		if (mfSanityDrainVolume < 0) mfSanityDrainVolume = 0;
+
+		return;
+	}
+
+	float fSanity = mpPlayer->GetSanity();
+	float fNormalizedSanity = fSanity / 100.0f;
+
+	mbSanityLostIsUpdated = true;
+	mfSanityLostCount -= afTimeStep;
+
+	mfSanityDrainVolume += afTimeStep * 0.1f;
+	if (mfSanityDrainVolume > 1) mfSanityDrainVolume = 1;
+
+	float mfSpeedMul = 1 + (1 - fNormalizedSanity) * 2.0f;
+
+	mfSanityHeartbeatCount += afTimeStep * mfSpeedMul * 0.1f;
+	if (mfSanityHeartbeatCount >= 1)
+	{
+		mfSanityHeartbeatCount = 0;
+
+		float fVol = (1.0f - fNormalizedSanity * 0.5f) * mfSanityDrainVolume;
+
+		if (mpPlayer->IsDead() == false)
+			gpBase->mpHelpFuncs->PlayGuiSoundData("sanity_heartbeat", eSoundEntryType_Gui, fVol);
+	}
+
+	mfSanityDrainCount += afTimeStep * mfSpeedMul * 0.33f;
+	if (mfSanityDrainCount >= 1)
+	{
+		mfSanityDrainCount = 0;
+		tString sSoundFile = "";
+		if (fSanity > 75)
+			sSoundFile = "sanity_drain_low";
+		else if (fSanity > 50)
+			sSoundFile = "sanity_drain_med";
+		else
+			sSoundFile = "sanity_drain_high";
+
+		if (mpPlayer->IsDead() == false)
+			gpBase->mpHelpFuncs->PlayGuiSoundData(sSoundFile, eSoundEntryType_Gui, mfSanityDrainVolume);
+	}
+}
+
+//-----------------------------------------------------------------------
+
+void cLuxPlayerSanity::UpdateLowSanity(float afTimeStep)
+{
+	if (mpPlayer->GetSanity() > mfSanityVeryLowLimit) return;
+
+	if (mfShowHintTimer <= 0)
+	{
+		mfShowHintTimer = 3.0f;
+		gpBase->mpHintHandler->Add("SanityLow", kTranslate("Hints", "SanityLow"), 0);
+	}
+	else
+	{
+		mfShowHintTimer -= afTimeStep;
+	}
+
+
+	if (mbSanityLostIsUpdated == false)
+	{
+		gpBase->mpEffectHandler->GetImageTrail()->FadeTo(1.6f, 3);
+		mbSanityEffectUpdated = true;
+	}
+
+	if (mfPantCount < 0)
+	{
+		mfPantCount = cMath::RandRectf(0.5f, 5.0f);
+
+		//Play pant sound
+		if (mpPlayer->IsDead() == false)
+			gpBase->mpHelpFuncs->PlayGuiSoundData("sanity_pant", eSoundEntryType_Gui);
+	}
+	else
+	{
+		mfPantCount -= afTimeStep;
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////
 // PLAYER LANTERN
 //////////////////////////////////////////////////////////////////////////

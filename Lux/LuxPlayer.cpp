@@ -647,6 +647,43 @@ void cLuxPlayer::GiveDamage(float afAmount, int alStrength, eLuxDamageType aType
 	}
 }
 
+
+//-----------------------------------------------------------------------
+
+void cLuxPlayer::GiveSanityDamage(float afAmount)
+{
+	gpBase->mpHintHandler->Add("SanityHit", kTranslate("Hints", "SanityHit"), 0);
+
+	LowerSanity(afAmount, true);
+
+	mpSanity->StartHit();
+}
+
+
+void cLuxPlayer::LowerSanity(float afAmount, bool abUseEffect)
+{
+	if (mfHealth <= 0) return;
+
+	mfSanity -= afAmount;
+	if (mfSanity < 0)
+	{
+		mfSanity = 0;
+
+		//mpInsanityCollapse->Start();
+		mpInfectionCollapse->Start();
+
+		//////////////////
+		// HARDMODE
+		//if (gpBase->mbHardMode)
+		//{
+		//	SetHealth(0.f);
+		//}
+	}
+
+	if (abUseEffect)
+		mpSanity->SetSanityLost();
+}
+
 //-----------------------------------------------------------------------
 
 void cLuxPlayer::GiveInfectionDamage(float afAmount)
@@ -870,6 +907,27 @@ void cLuxPlayer::SetHealth(float afX)
 	}
 }
 
+void cLuxPlayer::SetSanity(float afX)
+{
+	mfSanity = afX;
+
+	//////////////////
+	// HARDMODE
+	if (gpBase->mbHardMode)
+	{
+		if (mfSanity <= 0)
+		{
+			SetHealth(0.f);
+		}
+	}
+
+}
+
+void cLuxPlayer::SetLampOil(float afX)
+{
+	mfLampOil = afX;
+}
+
 void cLuxPlayer::SetInfection(float afX, bool abShowEffect)
 {
 	mfInfection = afX;
@@ -933,6 +991,40 @@ void cLuxPlayer::AddHealth(float afX)
 	{
 		mpDeath->Start();
 	}
+}
+
+void cLuxPlayer::AddSanity(float afX, bool abShowEffect)
+{
+	if (mfSanity >= 100 && afX > 0) return;
+
+	mfSanity += afX;
+	if (mfSanity > 100) mfSanity = 100;
+	if (mfSanity < 0)
+	{
+		mfSanity = 0;
+		mpInfectionCollapse->Start(); // todo:sanity
+
+		//////////////////
+		// HARDMODE
+		if (gpBase->mbHardMode)
+		{
+			SetHealth(0.f);
+		}
+	}
+
+	if (afX > 0 && abShowEffect)
+	{
+		gpBase->mpEffectHandler->GetSanityGainFlash()->Start();
+	}
+}
+
+void cLuxPlayer::AddLampOil(float afX)
+{
+	if (mfLampOil >= 100 && afX > 0) return;
+
+	mfLampOil += afX;
+	if (mfLampOil > 100) mfLampOil = 100;
+	if (mfLampOil < 0) mfLampOil = 0;
 }
 
 void cLuxPlayer::AddInfection(float afX, bool abShowEffect)

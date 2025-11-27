@@ -30,12 +30,13 @@ class iLuxMoveState;
 class iLuxPlayerState;
 
 class cLuxPlayerLightLevel;
-//class cLuxPlayerInDarkness;
+class cLuxPlayerInDarkness;
 class cLuxPlayerIsMoving;
 class cLuxPlayerHudEffect;
 class cLuxPlayerLean;
 class cLuxPlayerDeath;
 class cLuxPlayerLantern;
+class cLuxPlayerSanity;
 class cLuxPlayerInfection;
 class cLuxPlayerLookAt;
 class cLuxPlayerFlashback;
@@ -43,6 +44,7 @@ class cLuxPlayerHurt;
 class cLuxPlayerSpawnPS;
 class cLuxPlayerCamDirEffects;
 class cLuxPlayerInfectionCollapse;
+class cLuxPlayerInsanityCollapse;
 class cLuxPlayerStamina;
 class cLuxPlayerVoiceFlashback;
 class cLuxNode_PlayerStart;
@@ -96,6 +98,9 @@ public:
 	////////////////////
 	// Actions
 	void GiveDamage(float afAmount, int alStrength, eLuxDamageType aType, bool abSpinHead, bool abLethal);
+
+	void GiveSanityDamage(float afAmount);
+	void LowerSanity(float afAmount, bool abUseEffect);
 	
 	void GiveInfectionDamage(float afAmount);
 	void IncreaseInfection(float afAmount, bool abUseEffect);
@@ -150,14 +155,20 @@ public:
 	const tString& GetCurrentPermaDeathSound(){ return msCurrentPermaDeathSound;}
 
 	void SetHealth(float afX);
+	void SetSanity(float afX);
+	void SetLampOil(float afX);
 	void SetInfection(float afX, bool abShowEffect=true);
 	void SetInfectionLevel( int aiInfectionLevel );
 	
 	void AddHealth(float afX);
+	void AddSanity(float afX, bool abShowEffect = true);
+	void AddLampOil(float afX);
 	void AddInfection(float afX, bool abShowEffect=true);
 	void VomitDamage();
-	
-	float GetHealth(){ return mfHealth; }
+
+	float GetHealth() { return mfHealth; }
+	float GetSanity() { return mfSanity; }
+	float GetLampOil() { return mfLampOil; }
 	float GetInfection(){ return mfInfection; }
 	bool IsAtMaxInfectionLevel();
 
@@ -215,6 +226,9 @@ public:
 
 	void SetCrouchDisabled(bool abX){ mbCrouchDisabled = abX; }
 	bool GetCrouchDisabled() { return mbCrouchDisabled; }
+
+	void SetSanityDrainDisabled(bool abX) { mbSanityDrainDisabled = abX; }
+	bool GetSanityDrainDisabled() { return mbSanityDrainDisabled; }
 
 	float GetInteractionMoveSpeedMul(){ return mfInteractionMoveSpeedMul;}
 	void SetInteractionMoveSpeedMul(float afX){ mfInteractionMoveSpeedMul = afX;}
@@ -289,10 +303,11 @@ public:
 	////////////////////
 	// Helpers
 	cLuxPlayerLightLevel *GetHelperLightLevel(){ return mpHelperLightLevel;}
-	//cLuxPlayerInDarkness *GetHelperInDarkness(){ return mpHelperInDarkness;}
+	cLuxPlayerInDarkness *GetHelperInDarkness(){ return mpHelperInDarkness;}
 	cLuxPlayerIsMoving *GetHelperIsMoving(){ return mpHelperIsMoving;}
 	cLuxPlayerHudEffect *GetHelperHudEffect(){ return mpHudEffect;}
 	cLuxPlayerLantern *GetHelperLantern(){ return mpLantern;}
+	cLuxPlayerSanity *GetHelperSanity() { return mpSanity; }
 	cLuxPlayerInfection *GetHelperInfection(){ return mpInfection; }
 	cLuxPlayerLookAt *GetHelperLookAt(){ return mpLookAt; }
 	cLuxPlayerDeath *GetHelperDeath(){ return mpDeath; }
@@ -349,6 +364,8 @@ private:
 	int miNumberOfInfectionLevels;
 
 	float mfHealth;
+	float mfSanity;
+	float mfLampOil;
 	float mfInfection;
 	float mfTerror;
 	int mlCoins;
@@ -371,6 +388,8 @@ private:
 
 	bool mbJumpDisabled;
 	bool mbCrouchDisabled;
+	
+	bool mbSanityDrainDisabled;
 
 	float mfEventMoveSpeedMul;
 	float mfEventRunSpeedMul;
@@ -481,12 +500,13 @@ private:
 	std::vector<cLuxHeadPosAdd> mvHeadPosAdds;
 
 	cLuxPlayerLightLevel *mpHelperLightLevel;
-	//cLuxPlayerInDarkness *mpHelperInDarkness;
+	cLuxPlayerInDarkness *mpHelperInDarkness;
     cLuxPlayerIsMoving *mpHelperIsMoving;
 	cLuxPlayerLantern *mpLantern;
 	cLuxPlayerHudEffect *mpHudEffect;
 	cLuxPlayerLean *mpLean;
 	cLuxPlayerDeath *mpDeath;
+	cLuxPlayerSanity *mpSanity;
 	cLuxPlayerInfection *mpInfection;
 	cLuxPlayerLookAt *mpLookAt;
 	cLuxPlayerFlashback *mpFlashback;

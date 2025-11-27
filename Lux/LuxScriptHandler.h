@@ -243,9 +243,11 @@ private:
 	
 
 	// Insanity
-	//static void __stdcall SetInsanitySetEnabled(string& asSet, bool abX);
-	//static void __stdcall StartRandomInsanityEvent();
-	//static bool __stdcall InsanityEventIsActive();
+	static void __stdcall SetInsanitySetEnabled(string& asSet, bool abX);
+	static void __stdcall StartRandomInsanityEvent();
+	static void __stdcall StartInsanityEvent(string& asEventName);
+	static void __stdcall StopCurrentInsanityEvent();
+	static bool __stdcall InsanityEventIsActive();
 	
 
 	// Player
@@ -254,7 +256,7 @@ private:
 	static void __stdcall SetPlayerCrouching(bool abCrouch);
 	static void __stdcall AddPlayerBodyForce(float afX, float afY, float afZ, bool abUseLocalCoords);
 	static void __stdcall ShowPlayerCrossHairIcons(bool abX);
-	
+
     static void __stdcall SetInfectionFauxMode(bool abFauxMode);
 	static void __stdcall SetPlayerInfection(float afInfection);
 	static void __stdcall AddPlayerInfection(float afInfection);
@@ -262,6 +264,12 @@ private:
 	static void __stdcall SetPlayerHealth(float afHealth);
 	static void __stdcall AddPlayerHealth(float afHealth);
 	static float __stdcall GetPlayerHealth();
+	static void __stdcall SetPlayerSanity(float afSanity);
+	static void __stdcall AddPlayerSanity(float afSanity);
+	static float __stdcall GetPlayerSanity();
+	static void __stdcall SetPlayerLampOil(float afOil);
+	static void __stdcall AddPlayerLampOil(float afOil);
+	static float __stdcall GetPlayerLampOil();
 
 	static float __stdcall GetPlayerSpeed();
 	static float __stdcall GetPlayerYSpeed();
@@ -269,6 +277,11 @@ private:
 	static void __stdcall MovePlayerForward(float afAmount);
 
 	static void __stdcall SetPlayerPermaDeathSound(string& asSound);
+
+	static void __stdcall SetSanityDrainDisabled(bool abX);
+	static void __stdcall GiveSanityBoost();
+	static void __stdcall GiveSanityBoostSmall();
+	static void __stdcall GiveSanityDamage(float afAmount, bool abUseEffect);
 
 	static void __stdcall GiveInfectionDamage(float afAmount, bool abUseEffect);
 	/**
@@ -295,7 +308,7 @@ private:
 
 	static bool __stdcall GetJournalDisabled();
 	static void __stdcall SetJournalDisabled(bool abX);
-
+	
 	static void __stdcall SetLanternFailureActive(bool abX);
     
 	static void __stdcall SetLanternFailureChances(float afFlickerFailureChance, float afDeadFailureChance);

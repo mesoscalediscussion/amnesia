@@ -513,6 +513,7 @@ public:
 	bool GetIsSeenByPlayer(){ return mbIsSeenByPlayer;}
 
 	bool CausesInfectionIncrease(){ return mbCausesInfectionIncrease;}
+	bool CausesSanityDecrease() { return mbCausesInfectionIncrease; } // todo:sanity
 
 	void SetHallucination(bool abX){ mbHallucination = abX;}
 	void SetHallucinationEndDist(float afX){ mfHallucinationEndDist = afX;}

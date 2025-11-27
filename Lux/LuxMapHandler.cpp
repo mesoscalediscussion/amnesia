@@ -199,8 +199,8 @@ cLuxMapHandler::cLuxMapHandler() : iLuxUpdateable("LuxMapHandler")
 	cPostEffectParams_ColorGrading colorGradingParams;
 	colorGradingParams.msTextureFile1 = "colorgrading_base.png";
 	colorGradingParams.msTextureFile2 = "";
-    colorGradingParams.mfCrossFadeAlpha = 0.0f;
-    colorGradingParams.mbIsReinitialisation = true;
+	colorGradingParams.mfCrossFadeAlpha = 0.0f;
+	colorGradingParams.mbIsReinitialisation = true;
 	mpPostEffect_ColorGrading = pGraphics->CreatePostEffect(&colorGradingParams);
 	pPostEffectComp->AddPostEffect(mpPostEffect_ColorGrading, 3);
 	mpPostEffect_ColorGrading->SetActive(true);
@@ -575,7 +575,7 @@ void cLuxMapHandler::SaveMainConfig()
 	gpBase->mpMainConfig->SetBool("Graphics", "PostEffectImageTrail", mpPostEffect_ImageTrail->IsDisabled()==false);
 	gpBase->mpMainConfig->SetBool("Graphics", "PostEffectSepia", mpPostEffect_Sepia->IsDisabled()==false);
 	gpBase->mpMainConfig->SetBool("Graphics", "PostEffectRadialBlur", mpPostEffect_RadialBlur->IsDisabled()==false);
-	gpBase->mpMainConfig->SetBool("Graphics", "PostEffectColorGrading", mpPostEffect_ColorGrading->IsDisabled()==false);
+	gpBase->mpMainConfig->SetBool("Graphics", "PostEffectColorGrading", mpPostEffect_ColorGrading->IsDisabled() == false);
 }
 
 //-----------------------------------------------------------------------
