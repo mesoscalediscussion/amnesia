@@ -621,12 +621,6 @@
     <ClInclude Include="include\impl\PhysicsWorldNewton.h">
       <Filter>Impl\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="include\impl\FmodSoundChannel.h">
-      <Filter>Impl\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="include\impl\FmodSoundData.h">
-      <Filter>Impl\Sound</Filter>
-    </ClInclude>
     <ClInclude Include="include\impl\LowLevelSoundOpenAL.h">
       <Filter>Impl\Sound</Filter>
     </ClInclude>
@@ -1486,12 +1480,6 @@
     </ClCompile>
     <ClCompile Include="sources\impl\PhysicsWorldNewton.cpp">
       <Filter>Impl\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\impl\FmodSoundChannel.cpp">
-      <Filter>Impl\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="sources\impl\FmodSoundData.cpp">
-      <Filter>Impl\Sound</Filter>
     </ClCompile>
     <ClCompile Include="sources\impl\LowLevelSoundOpenAL.cpp">
       <Filter>Impl\Sound</Filter>

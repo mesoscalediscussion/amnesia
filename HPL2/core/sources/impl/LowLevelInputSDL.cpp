@@ -21,7 +21,6 @@
 
 #include "impl/MouseSDL.h"
 #include "impl/KeyboardSDL.h"
-#include "impl/GamepadSDL.h"
 #include "impl/GamepadSDL2.h"
 
 #include "system/LowLevelSystem.h"
