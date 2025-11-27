@@ -37,8 +37,6 @@
 #include "impl/LowLevelGraphicsSDL.h"
 #include "impl/SDLFontData.h"
 #include "impl/SDLTexture.h"
-//#include "impl/CGShader.h"
-//#include "impl/CGProgram.h"
 #include "impl/GLSLShader.h"
 #include "impl/GLSLProgram.h"
 #include "impl/VertexBufferOGL_Array.h"
@@ -114,14 +112,6 @@ namespace hpl {
 
 		mbInitHasBeenRun = false;
 
-		//Init extra stuff
-#ifdef WITH_CG
-		if(mGpuProgramFormat == eGpuProgramFormat_CG)
-		{
-			InitCG();
-		}
-#endif
-
 		//TTF_Init();
 	}
 
@@ -137,10 +127,6 @@ namespace hpl {
 		hplFree(mpIndexArray);
 		for(int i=0;i<kMaxTextureUnits;i++)	hplFree(mpTexCoordArray[i]);
 
-		//Exit extra stuff
-#ifdef WITH_CG
-		ExitCG();
-#endif
 		//TTF_Quit();
         SDL_DestroyWindow(mpScreen);
 	}
@@ -667,7 +653,6 @@ namespace hpl {
 		;
 
 		return hplNew( cGLSLProgram, (asName) );
-		//return hplNew( cCGProgram, () ); 
 	}
 
 	iGpuShader* cLowLevelGraphicsSDL::CreateGpuShader(const tString& asName, eGpuShaderType aType)
@@ -675,7 +660,6 @@ namespace hpl {
 		;
 
 		return hplNew( cGLSLShader, (asName,aType, this) );
-		//return hplNew( cCGShader, (asName,mCG_Context, aType) );
 	}
 
 	//-----------------------------------------------------------------------
@@ -2231,19 +2215,6 @@ namespace hpl {
 
 
 	}
-#ifdef WITH_CG
-	void cLowLevelGraphicsSDL::InitCG()
-	{
-		mCG_Context = cgCreateContext();
-	}
-
-	//-----------------------------------------------------------------------
-
-	void cLowLevelGraphicsSDL::ExitCG()
-	{
-		cgDestroyContext(mCG_Context);
-	}
-#endif
 
 	//-----------------------------------------------------------------------
 
