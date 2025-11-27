@@ -1,17 +1,8 @@
-Amnesia: A Machine For Pigs Source Code
-=======================
+# amnesia
 
-Currently the engine uses fbx sdk 2012 which isn't avalable anymore which means the engine wont compile. If you want to give a shot anyway you can find the sdk here:
-https://www.autodesk.com/fbx
+this is a fork of [*Amnesia: A Machine for Pigs*](https://store.steampowered.com/app/239200/Amnesia_A_Machine_for_Pigs/) which aims to clean up and modernize the codebase, improve support for [*Amnesia: The Dark Descent*](https://store.steampowered.com/app/57300/Amnesia_The_Dark_Descent/) and its custom stories, address bugs and compatibility issues, and more.
 
+it's still a work-in-progress! but please feel free to look around..
 
-Other than that, here is almost everything you need to build  Amnesia: A Machine For Pigs. Included are project files for Visual Studio 2010 and CMake for Linux & macOS.
-
-Contributing Code
------------------
-We encourage everyone to contribute code to this project, so just sign up for a github account, create a fork and hack away at the codebase.
-
-License Information
--------------------
-All code is under the GPL Version 3 license. Read the LICENSE file for terms of use of the license.
-
+## license
+all code is under the GNU GPL v3 license; read the [LICENSE](LICENSE) file for its terms of use.
