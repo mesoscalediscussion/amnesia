@@ -24,7 +24,6 @@
 //#pragma comment(lib, "Cg.lib")
 //#pragma comment(lib, "CgGL.lib")
 #pragma comment(lib, "SDL_ttf.lib")
-#pragma comment(lib, "TaskKeyHook.lib")
 #endif
 
 #include <assert.h>
@@ -52,10 +51,6 @@
 
 #if USE_SDL2
 #include "SDL2/SDL_syswm.h"
-#endif
-
-#ifdef WIN32
-#include "impl/TaskKeyHook.h"
 #endif
 
 #ifndef WIN32
@@ -88,10 +83,6 @@ namespace hpl {
 
 		mbDoubleSidedStencilIsSet = false;
 
-#ifdef WIN32
-		//mhKeyTrapper = NULL;
-#endif
-
 		mpFrameBuffer = NULL;
 
 		for(int i=0;i<kMaxTextureUnits;i++)
@@ -119,10 +110,6 @@ namespace hpl {
 
 	cLowLevelGraphicsSDL::~cLowLevelGraphicsSDL()
 	{
-		//#ifdef WIN32
-		//	if(mhKeyTrapper) FreeLibrary(mhKeyTrapper);
-		//#endif
-
 		hplFree(mpVertexArray);
 		hplFree(mpIndexArray);
 		for(int i=0;i<kMaxTextureUnits;i++)	hplFree(mpTexCoordArray[i]);
@@ -232,15 +219,6 @@ namespace hpl {
         if (mbGrab) {
             SetWindowGrab(true);
         }
-
-		//Trap Alt tab if in fullscreen
-#ifdef WIN32
-		if(abFullscreen)
-		{
-			//mhKeyTrapper = LoadLibrary( "keyhook.dll" );
-			//::DisableTaskKeys(true,false);
-		}
-#endif //WIN32
 
 		Log(" Init Glad...");
 		if(gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress))
