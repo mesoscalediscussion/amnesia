@@ -23,7 +23,7 @@
 //#pragma comment(lib, "GLaux.lib")
 //#pragma comment(lib, "Cg.lib")
 //#pragma comment(lib, "CgGL.lib")
-#pragma comment(lib, "SDL_ttf.lib")
+//#pragma comment(lib, "SDL_ttf.lib")
 #endif
 
 #include <assert.h>
