@@ -41,13 +41,13 @@
     <_ProjectFileVersion>18.0.11123.170</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(ConfigurationName)</OutDir>
-    <IntDir>$(ConfigurationName)\Intermediate</IntDir>
+    <OutDir>$(ConfigurationName)\</OutDir>
+    <IntDir>Intermediate\$(ConfigurationName)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(ConfigurationName)</OutDir>
-    <IntDir>$(ConfigurationName)\Intermediate</IntDir>
+    <OutDir>$(ConfigurationName)\</OutDir>
+    <IntDir>Intermediate\$(ConfigurationName)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -63,7 +63,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)HPL2\include;$(SolutionDir)dependencies\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <OutputFile>$(OutDir)LangConv.exe</OutputFile>
+      <OutputFile>LangConv.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)LangConv.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>

@@ -99,6 +99,7 @@ namespace hpl {
 
 	//------------------------------------
 
+#undef MEMORY_MANAGER_ACTIVE // begone with ye
 #ifdef MEMORY_MANAGER_ACTIVE
     
 	#define hplNew(classType, constructor) \

@@ -18,6 +18,7 @@
     <ProjectGuid>{C6E72C29-38A3-4897-AA05-E87B0323AA71}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>AmnesiaAMFP</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'" Label="Configuration">
@@ -50,14 +51,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)redist</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)redist\Intermediate</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)redist</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)redist\Intermediate</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)redist_amfp\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Intermediate\$(ConfigurationName)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)redist_amfp\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Intermediate\$(ConfigurationName)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">$(SolutionDir)redist</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">$(SolutionDir)redist\Intermediate</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">$(SolutionDir)redist_amfp\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">Intermediate\$(ConfigurationName)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">false</LinkIncremental>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">$(IncludePath)</IncludePath>
@@ -82,11 +83,11 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>HPL2_Debug.lib;fltk.lib;wsock32.lib;comctl32.lib;xinput.lib;zlibwapi.lib;dbghelp.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>..\..\redist\aamfpDebug.exe</OutputFile>
+      <OutputFile>$(SolutionDir)redist_amfp\aamfpDebug.exe</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib; $(SolutionDir)dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreEmbeddedIDL>false</IgnoreEmbeddedIDL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\..\redist/aamfpDebug.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(SolutionDir)redist_amfp\aamfpDebug.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -107,11 +108,11 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>HPL2.lib;fltk.lib;wsock32.lib;comctl32.lib;zlibwapi.lib;Wininet.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>..\..\redist\aamfp.exe</OutputFile>
+      <OutputFile>$(SolutionDir)redist_amfp\aamfp.exe</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib; $(SolutionDir)dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreEmbeddedIDL>false</IgnoreEmbeddedIDL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\..\redist/aamfp.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(SolutionDir)redist_amfp\aamfp.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -133,11 +134,11 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>Hpl2_2010.lib;fltk.lib;wsock32.lib;comctl32.lib;xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>..\..\redist\AmnesiaDemo.exe</OutputFile>
+      <OutputFile>$(SolutionDir)redist_amfp\aamfpDemo.exe</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib; $(SolutionDir)dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreEmbeddedIDL>false</IgnoreEmbeddedIDL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\..\redist/AmnesiaDebug.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(SolutionDir)redist_amfp\aamfpDemo.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

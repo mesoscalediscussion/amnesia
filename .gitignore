@@ -94,4 +94,6 @@ ServiceFabricBackup/
 dependencies/
 Intermediate/
 redist/
+redist*/
 *.lib
+_temp
