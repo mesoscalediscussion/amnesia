@@ -21,6 +21,8 @@
 
 #if USE_SDL2
 #include "SDL2/SDL.h"
+#elif USE_SDL3
+#include <SDL3/SDL.h>
 #endif
 
 namespace hpl {
@@ -52,7 +54,8 @@ namespace hpl {
 	//////////////////////////////////////////////////////////////////////////
 
 	//-----------------------------------------------------------------------
-	
+
+#if USE_SDL2
 	bool cMutexSDL::Lock()
 	{
 		return SDL_LockMutex(mpMutexHandle)!=-1;
@@ -62,6 +65,19 @@ namespace hpl {
 	{
 		return SDL_UnlockMutex(mpMutexHandle)!=-1;
 	}
+#elif USE_SDL3
+	bool cMutexSDL::Lock()
+	{
+		SDL_LockMutex(mpMutexHandle);
+		return true;
+	}
+
+	bool cMutexSDL::Unlock()
+	{
+		SDL_UnlockMutex(mpMutexHandle);
+		return true;
+	}
+#endif
 
 	//-----------------------------------------------------------------------
 

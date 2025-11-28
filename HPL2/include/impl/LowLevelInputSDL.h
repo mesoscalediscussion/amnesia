@@ -25,6 +25,8 @@
 
 #if USE_SDL2
 #include "SDL2/SDL_events.h"
+#elif USE_SDL3
+#include <SDL3/SDL_events.h>
 #endif
 
 namespace hpl {

@@ -21,6 +21,8 @@
 
 #if USE_SDL2
 #include "SDL2/SDL.h"
+#elif USE_SDL3
+#include <SDL3/SDL.h>
 #endif
 
 #include "graphics/LowLevelGraphics.h"
@@ -72,8 +74,13 @@ namespace hpl {
 			for(int i=0; i<10; ++i)
 			{
 				SDL_PumpEvents();
-				int lX,lY;
+#if USE_SDL2
+				int lX, lY;
 				SDL_GetRelativeMouseState(&lX, &lY);
+#elif USE_SDL3
+				float lX, lY;
+				SDL_GetRelativeMouseState(&lX, &lY);
+#endif
 			}
 			mbFirstTime = false;
 		}
@@ -88,6 +95,7 @@ namespace hpl {
 		{
 			SDL_Event *pEvent = &(*it);
 
+#if USE_SDL2
 			if(	pEvent->type != SDL_MOUSEMOTION && 
 				pEvent->type != SDL_MOUSEBUTTONDOWN &&
                 pEvent->type != SDL_MOUSEWHEEL &&
@@ -95,8 +103,17 @@ namespace hpl {
 			{
 				continue;
 			}
+#elif USE_SDL3
+			if (pEvent->type != SDL_EVENT_MOUSE_MOTION &&
+				pEvent->type != SDL_EVENT_MOUSE_BUTTON_DOWN &&
+				pEvent->type != SDL_EVENT_MOUSE_WHEEL &&
+				pEvent->type != SDL_EVENT_MOUSE_BUTTON_UP)
+			{
+				continue;
+			}
+#endif
 
-			if(pEvent->type == SDL_MOUSEMOTION)
+			if(pEvent->type == SDL_EVENT_MOUSE_MOTION)
 			{
 				mvMouseAbsPos = cVector2l(pEvent->motion.x,pEvent->motion.y);
 				
@@ -107,7 +124,7 @@ namespace hpl {
 				if(buttonState & SDL_BUTTON(2)) mvMButtonArray[eMouseButton_Middle] = true;
 				if(buttonState & SDL_BUTTON(3)) mvMButtonArray[eMouseButton_Right] = true;*/
 			}
-            else if(pEvent->type == SDL_MOUSEWHEEL)
+            else if(pEvent->type == SDL_EVENT_MOUSE_WHEEL)
             {
                 if (pEvent->wheel.y > 0) {
                     mvMButtonArray[eMouseButton_WheelUp] = true;
@@ -120,7 +137,7 @@ namespace hpl {
             }
 			else
 			{
-				bool bButtonIsDown = pEvent->type==SDL_MOUSEBUTTONDOWN;
+				bool bButtonIsDown = pEvent->type== SDL_EVENT_MOUSE_BUTTON_DOWN;
 
 				//if(pEvent->button.button == SDL_BUTTON_WHEELUP)Log(" Wheel %d!\n",bButtonIsDown);
 
@@ -140,8 +157,13 @@ namespace hpl {
 		if(mbWheelUpMoved)		mvMButtonArray[eMouseButton_WheelUp] = true;
 		else					mvMButtonArray[eMouseButton_WheelUp] = false;
 		
+#if USE_SDL2
 		int lX,lY; 
 		SDL_GetRelativeMouseState(&lX, &lY);
+#elif USE_SDL3
+		float lX, lY;
+		SDL_GetRelativeMouseState(&lX, &lY);
+#endif
 		mvMouseRelPos = cVector2l(lX,lY);
 				
 	}

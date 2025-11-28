@@ -17,8 +17,6 @@
  * along with Amnesia: A Machine For Pigs.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#if USE_SDL2
-
 #include "impl/GamepadSDL2.h"
 
 #include "impl/LowLevelInputSDL.h"
@@ -112,6 +110,7 @@ namespace hpl {
 		{
 			SDL_Event *pEvent = &(*it);
 
+#if USE_SDL2
             switch (pEvent->type) {
                 case SDL_CONTROLLERAXISMOTION:
                     if (mlInstance == pEvent->caxis.which) {
@@ -156,6 +155,62 @@ namespace hpl {
                     }
                     break;
             }
+#elif USE_SDL3
+			switch (pEvent->type) {
+			case SDL_EVENT_GAMEPAD_AXIS_MOTION:
+				if (mlInstance == pEvent->gaxis.which) {
+					eGamepadAxis axis = SDLToAxis(pEvent->gaxis.axis);
+					float fAxisValue = SDLToAxisValue(pEvent->gaxis.value);
+
+					if (cMath::Abs(fAxisValue) < mfDeadZoneRadius)
+						fAxisValue = 0.0f;
+
+					if (fAxisValue != mvAxisArray[axis])
+					{
+						inputUpdate = cGamepadInputData(mlIndex, eGamepadInputType_Axis, axis, fAxisValue);
+
+						mlstAxisChanges.push_back(inputUpdate);
+						mlstInputUpdates.push_back(inputUpdate);
+					}
+					mvAxisArray[axis] = fAxisValue;
+				}
+				break;
+			case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
+				if (mlInstance == pEvent->gbutton.which) {
+					eGamepadButton button = SDLToButton(pEvent->gbutton.button);
+					inputUpdate = cGamepadInputData(mlIndex, eGamepadInputType_Button, button, 0.0f);
+
+					bool bPressed;
+					if (pEvent->gbutton.down)
+					{
+						inputUpdate.mfInputValue = 1.0f;
+						mlstButtonsPressed.push_back(inputUpdate);
+						bPressed = true;
+					}
+
+					mlstInputUpdates.push_back(inputUpdate);
+					mvButtonArray[button] = bPressed;
+				}
+				break;
+			case SDL_EVENT_GAMEPAD_BUTTON_UP:
+				if (mlInstance == pEvent->gbutton.which) {
+					eGamepadButton button = SDLToButton(pEvent->gbutton.button);
+					inputUpdate = cGamepadInputData(mlIndex, eGamepadInputType_Button, button, 0.0f);
+
+					bool bPressed;
+					if (!pEvent->gbutton.down)
+					{
+						inputUpdate.mfInputValue = 0.0f;
+						mlstButtonsReleased.push_back(inputUpdate);
+						bPressed = false;
+					}
+
+					mlstInputUpdates.push_back(inputUpdate);
+					mvButtonArray[button] = bPressed;
+				}
+				break;
+			}
+#endif
 		}
 
 #ifdef WIN32
@@ -393,32 +448,32 @@ namespace hpl {
 	
 	//-----------------------------------------------------------------------
 	
-	eGamepadButton cGamepadSDL2::SDLToButton(Uint8 alButton)
+	eGamepadButton cGamepadSDL2::SDLToButton(uint8_t alButton)
 	{
 		return static_cast<eGamepadButton>(alButton);
 	}
 
-	eGamepadAxis	cGamepadSDL2::SDLToAxis(Uint8 alAxis)
+	eGamepadAxis	cGamepadSDL2::SDLToAxis(uint8_t alAxis)
 	{
 		return static_cast<eGamepadAxis>(alAxis);
 	}
 
-	float cGamepadSDL2::SDLToAxisValue(Sint16 alAxisValue)
+	float cGamepadSDL2::SDLToAxisValue(int16_t alAxisValue)
 	{
 		return cMath::Clamp((float)alAxisValue*mfInvAxisMax, -1.0f, 1.0f);
 	}
 	
-	eGamepadHat cGamepadSDL2::SDLToHat(Uint8 alHat)
+	eGamepadHat cGamepadSDL2::SDLToHat(uint8_t alHat)
 	{
 		return static_cast<eGamepadHat>(alHat);
 	}
 
-	eGamepadHatState cGamepadSDL2::SDLToHatState(Uint8 alHatState)
+	eGamepadHatState cGamepadSDL2::SDLToHatState(uint8_t alHatState)
 	{
 		return static_cast<eGamepadHatState>(alHatState);
 	}
 
-	eGamepadBall cGamepadSDL2::SDLToBall(Uint8 alBall)
+	eGamepadBall cGamepadSDL2::SDLToBall(uint8_t alBall)
 	{
 		return static_cast<eGamepadBall>(alBall);
 	}
@@ -426,4 +481,3 @@ namespace hpl {
 	//-----------------------------------------------------------------------
 
 }
-#endif // !USE_SDL2

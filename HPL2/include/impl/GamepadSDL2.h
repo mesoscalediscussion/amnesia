@@ -28,6 +28,8 @@
 
 #if USE_SDL2
 #include "SDL2/SDL.h"
+#elif USE_SDL3
+#include "SDL3/SDL.h"
 #endif
 
 namespace hpl {
@@ -73,12 +75,12 @@ namespace hpl {
 		cVector2l GetBallRelPos(eGamepadBall aBall);
 
 	private:
-		eGamepadButton		SDLToButton(Uint8 alButton);
-		eGamepadAxis		SDLToAxis(Uint8 alAxis);
-		float				SDLToAxisValue(Sint16 alAxisValue);
-		eGamepadHat			SDLToHat(Uint8 alHat);
-		eGamepadHatState	SDLToHatState(Uint8 alHat);
-		eGamepadBall		SDLToBall(Uint8 alBall);
+		eGamepadButton		SDLToButton(uint8_t alButton);
+		eGamepadAxis		SDLToAxis(uint8_t alAxis);
+		float				SDLToAxisValue(int16_t alAxisValue);
+		eGamepadHat			SDLToHat(uint8_t alHat);
+		eGamepadHatState	SDLToHatState(uint8_t alHat);
+		eGamepadBall		SDLToBall(uint8_t alBall);
         //void ClearKeyList();
 		//eKey AsciiToKey(int alChar);
 
@@ -103,8 +105,13 @@ namespace hpl {
 
 		std::list<cGamepadInputData> mlstAxisChanges;
 
+#if USE_SDL2
 		SDL_GameController	*mpHandle;
         SDL_JoystickID      mlInstance;
+#elif USE_SDL3
+		SDL_Gamepad*		mpHandle;
+		SDL_JoystickID      mlInstance;
+#endif
 		cLowLevelInputSDL	*mpLowLevelInputSDL;
 
 		static float mfInvAxisMax;

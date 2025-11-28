@@ -45,6 +45,8 @@
 #if USE_SDL2
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_syswm.h"
+#elif USE_SDL3
+#include <SDL3/SDL.h>
 #endif
 #ifdef WIN32
 #include "Windows.h"
@@ -62,6 +64,7 @@ namespace hpl {
 	cSDLEngineSetup::cSDLEngineSetup(tFlag alHplSetupFlags)
 	{
 		SDL_SetHint(SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES, "0");
+#if USE_SDL2
 		if(alHplSetupFlags & (eHplSetup_Screen | eHplSetup_Video))
 		{
 			if(SDL_Init( SDL_INIT_VIDEO | SDL_INIT_TIMER ) < 0) {
@@ -74,6 +77,16 @@ namespace hpl {
 		{
 			SDL_Init( SDL_INIT_TIMER );
 		}
+#elif USE_SDL3
+		if (alHplSetupFlags & (eHplSetup_Screen | eHplSetup_Video))
+		{
+			if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+				FatalError("Error Initializing Display: %s", SDL_GetError());
+				exit(1);
+			}
+			SDL_DisableScreenSaver();
+		}
+#endif
 		
 		//////////////////////////
 		// System

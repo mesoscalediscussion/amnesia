@@ -38,7 +38,11 @@
 #include <direct.h>
 
 //#include "SDL/SDL.h"
+#if USE_SDL2
 #include "SDL2/SDL.h"
+#elif USE_SDL3
+#include <SDL3/SDL.h>
+#endif
 
 #include "impl/TimerSDL.h"
 #include "impl/ThreadSDL.h"

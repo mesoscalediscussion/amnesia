@@ -178,16 +178,25 @@ namespace hpl {
         unsigned int mlFlags = SDL_WINDOW_OPENGL;
         if (alWidth == 0 && alHeight == 0) {
             mvScreenSize = cVector2l(800,600);
+#if USE_SDL2
             mlFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+#elif USE_SDL3
+			mlFlags |= SDL_WINDOW_FULLSCREEN;
+#endif
         } else if (abFullscreen) {
             mlFlags |= SDL_WINDOW_FULLSCREEN;
         }
 
 
         Log(" Setting video mode: %d x %d - %d bpp\n",alWidth, alHeight, alBpp);
+#if USE_SDL2
         mpScreen = SDL_CreateWindow(asWindowCaption.c_str(),
                                     SDL_WINDOWPOS_CENTERED_DISPLAY(mlDisplay), SDL_WINDOWPOS_CENTERED_DISPLAY(mlDisplay),
                                     mvScreenSize.x, mvScreenSize.y, mlFlags);
+#elif USE_SDL3
+		mpScreen = SDL_CreateWindow(asWindowCaption.c_str(),
+			mvScreenSize.x, mvScreenSize.y, mlFlags);
+#endif
 		if(mpScreen==NULL)
         {
             // try disabling FSAA
@@ -195,9 +204,14 @@ namespace hpl {
 			mvScreenSize = cVector2l(640,480);
             SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
             SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
+#if USE_SDL2
             mpScreen = SDL_CreateWindow(asWindowCaption.c_str(),
                                         SDL_WINDOWPOS_CENTERED_DISPLAY(mlDisplay), SDL_WINDOWPOS_CENTERED_DISPLAY(mlDisplay),
                                         mvScreenSize.x, mvScreenSize.y, mlFlags);
+#elif USE_SDL3
+			mpScreen = SDL_CreateWindow(asWindowCaption.c_str(),
+				mvScreenSize.x, mvScreenSize.y, mlFlags);
+#endif
             if(mpScreen==NULL)
             {
                 FatalError("Unable to initialize display! %s\n", SDL_GetError());
@@ -238,7 +252,9 @@ namespace hpl {
 
 		//Gamma
 		mfGammaCorrection = 1.0f;
+#if USE_SDL2
         SDL_SetWindowBrightness(mpScreen, mfGammaCorrection);
+#endif
 
 		//GL
 		Log(" Setting up OpenGL\n");
@@ -512,26 +528,43 @@ namespace hpl {
 	void cLowLevelGraphicsSDL::ShowCursor(bool abX)
 	{
 		;
-
+#if USE_SDL2
 		if(abX)
 			SDL_ShowCursor(SDL_ENABLE);
 		else
 			SDL_ShowCursor(SDL_DISABLE);
+#elif USE_SDL3
+		if (abX)
+			SDL_ShowCursor();
+		else
+			SDL_HideCursor();
+#endif
 	}
     
 	//-----------------------------------------------------------------------
 
     void cLowLevelGraphicsSDL::SetWindowGrab(bool abX)
     {
+#if USE_SDL2
         mbGrab = abX;
         if (mpScreen) {
             SDL_SetWindowGrab(mpScreen, abX ? SDL_TRUE : SDL_FALSE);
         }
+#elif USE_SDL3
+		mbGrab = abX;
+		if (mpScreen) {
+			SDL_SetWindowMouseGrab(mpScreen, abX);
+		}
+#endif
     }
 
 	void cLowLevelGraphicsSDL::SetRelativeMouse(bool abX)
 	{
+#if USE_SDL2
 		SDL_SetRelativeMouseMode(abX ? SDL_TRUE : SDL_FALSE);
+#elif USE_SDL3
+		SDL_SetWindowRelativeMouseMode(mpScreen, abX);
+#endif
 	}
 
     void cLowLevelGraphicsSDL::SetWindowCaption(const tString &asName)
@@ -551,7 +584,11 @@ namespace hpl {
 
     bool cLowLevelGraphicsSDL::GetWindowIsVisible()
     {
+#if USE_SDL2
         return (SDL_GetWindowFlags(mpScreen) & SDL_WINDOW_SHOWN) != 0;
+#elif USE_SDL3
+		return (SDL_GetWindowFlags(mpScreen) & SDL_WINDOW_HIDDEN) == 0;
+#endif
     }
 
 	//-----------------------------------------------------------------------
@@ -583,7 +620,9 @@ namespace hpl {
 		;
 
 		mfGammaCorrection = afX;
+#if USE_SDL2
         SDL_SetWindowBrightness(mpScreen, mfGammaCorrection);
+#endif
 	}
 
 	float cLowLevelGraphicsSDL::GetGammaCorrection()

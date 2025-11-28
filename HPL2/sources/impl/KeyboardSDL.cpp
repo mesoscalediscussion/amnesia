@@ -21,6 +21,8 @@
 
 #if USE_SDL2
 #include "SDL2/SDL.h"
+#elif USE_SDL3
+#include <SDL3/SDL.h>
 #endif
 
 #include "impl/LowLevelInputSDL.h"
@@ -43,14 +45,6 @@ namespace hpl {
 		mpLowLevelInputSDL = apLowLevelInputSDL;
 
 		mvKeyArray.resize(eKey_LastEnum);
-#if !USE_SDL2 && defined __APPLE__
-		// world keys 0 to 95
-		mvWorldKeyMap.resize(96);
-		// Initialize to None
-		for (int k=0; k<=95; ++k) {
-			mvWorldKeyMap[k] = eKey_None;
-		}
-#endif
 		ClearKeyList();
 	}
 	
@@ -69,6 +63,7 @@ namespace hpl {
 		{
 			SDL_Event *pEvent = &(*it);
 
+#if USE_SDL2
 			if(pEvent->type == SDL_KEYDOWN || pEvent->type == SDL_KEYUP)
 			{
                 eKey key = SDLToKey(pEvent->key.keysym.sym);
@@ -92,6 +87,31 @@ namespace hpl {
                     AddKeyToList(SDL_GetModState(), eKey_None, (int)tstr[i], mlstKeysPressed);
                 }
             }
+#elif USE_SDL3
+			if (pEvent->type == SDL_EVENT_KEY_DOWN || pEvent->type == SDL_EVENT_KEY_UP)
+			{
+				eKey key = SDLToKey(pEvent->key.key);
+
+				mvKeyArray[key] = pEvent->key.down;
+				int sdl_mod = pEvent->key.mod;
+
+				if (pEvent->key.down)
+				{
+					AddKeyToList(sdl_mod, key, 0, mlstKeysPressed);
+				}
+				else
+				{
+					AddKeyToList(sdl_mod, key, 0, mlstKeysReleased);
+				}
+			}
+			else if (pEvent->type == SDL_EVENT_TEXT_INPUT)
+			{
+				tWString tstr = cString::UTF8ToWChar(pEvent->text.text);
+				for (size_t i = 0, l = tstr.size(); i < l; ++i) {
+					AddKeyToList(SDL_GetModState(), eKey_None, (int)tstr[i], mlstKeysPressed);
+				}
+			}
+#endif
         }
 	}
 
@@ -164,11 +184,19 @@ namespace hpl {
 			case 	SDLK_ESCAPE: return eKey_Escape;
 			case 	SDLK_SPACE: return eKey_Space;
 			case 	SDLK_EXCLAIM: return eKey_Exclaim;
+#if USE_SDL2
 			case 	SDLK_QUOTEDBL: return eKey_QuoteDouble;
+#elif USE_SDL3
+			case	SDLK_DBLAPOSTROPHE: return eKey_QuoteDouble;
+#endif
 			case 	SDLK_HASH: return eKey_Hash;
 			case 	SDLK_DOLLAR: return eKey_Dollar;
 			case 	SDLK_AMPERSAND: return eKey_Ampersand;
+#if USE_SDL2
 			case 	SDLK_QUOTE: return eKey_Quote;
+#elif USE_SDL3
+			case	SDLK_APOSTROPHE: return eKey_Quote;
+#endif
 			case 	SDLK_LEFTPAREN: return eKey_LeftParen;
 			case 	SDLK_RIGHTPAREN: return eKey_RightParen;
 			case 	SDLK_ASTERISK: return eKey_Asterisk;
@@ -199,6 +227,7 @@ namespace hpl {
 			case 	SDLK_RIGHTBRACKET: return eKey_RightBracket;
 			case 	SDLK_CARET: return eKey_Caret;
 			case 	SDLK_UNDERSCORE: return eKey_Underscore;
+#if USE_SDL2
 			case 	SDLK_BACKQUOTE: return eKey_BackSlash;
 			case 	SDLK_a: return eKey_A;
 			case 	SDLK_b: return eKey_B;
@@ -226,6 +255,35 @@ namespace hpl {
 			case 	SDLK_x: return eKey_X;
 			case 	SDLK_y: return eKey_Y;
 			case 	SDLK_z: return eKey_Z;
+#else
+			case 	SDLK_GRAVE: return eKey_BackSlash;
+			case 	SDLK_A: return eKey_A;
+			case 	SDLK_B: return eKey_B;
+			case 	SDLK_C: return eKey_C;
+			case 	SDLK_D: return eKey_D;
+			case 	SDLK_E: return eKey_E;
+			case 	SDLK_F: return eKey_F;
+			case 	SDLK_G: return eKey_G;
+			case 	SDLK_H: return eKey_H;
+			case 	SDLK_I: return eKey_I;
+			case 	SDLK_J: return eKey_J;
+			case 	SDLK_K: return eKey_K;
+			case 	SDLK_L: return eKey_L;
+			case 	SDLK_M: return eKey_M;
+			case 	SDLK_N: return eKey_N;
+			case 	SDLK_O: return eKey_O;
+			case 	SDLK_P: return eKey_P;
+			case 	SDLK_Q: return eKey_Q;
+			case 	SDLK_R: return eKey_R;
+			case 	SDLK_S: return eKey_S;
+			case 	SDLK_T: return eKey_T;
+			case 	SDLK_U: return eKey_U;
+			case 	SDLK_V: return eKey_V;
+			case 	SDLK_W: return eKey_W;
+			case 	SDLK_X: return eKey_X;
+			case 	SDLK_Y: return eKey_Y;
+			case 	SDLK_Z: return eKey_Z;
+#endif
 			case 	SDLK_DELETE: return eKey_Delete;
 			case 	SDLK_KP_0: return eKey_KP_0;
 			case 	SDLK_KP_1: return eKey_KP_1;
@@ -303,10 +361,15 @@ namespace hpl {
 	{
 		int mod =0;
 
+#if USE_SDL2
 		if(alSDLMod & KMOD_CTRL)		mod |= eKeyModifier_Ctrl;
 		if(alSDLMod & KMOD_SHIFT)		mod |= eKeyModifier_Shift;
 		if(alSDLMod & KMOD_ALT)			mod |= eKeyModifier_Alt;
-		
+#elif USE_SDL3
+		if (alSDLMod & SDL_KMOD_CTRL)		mod |= eKeyModifier_Ctrl;
+		if (alSDLMod & SDL_KMOD_SHIFT)		mod |= eKeyModifier_Shift;
+		if (alSDLMod & SDL_KMOD_ALT)		mod |= eKeyModifier_Alt;
+#endif
 		alstKeys.push_back(cKeyPress(aKey,alUnicode,mod));
 		
 		//if(mlstKeysPressed.size()>MAX_KEY_PRESSES) mlstKeysPressed.pop_front();
