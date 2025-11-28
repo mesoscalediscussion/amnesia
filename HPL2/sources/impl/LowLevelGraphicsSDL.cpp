@@ -243,7 +243,7 @@ namespace hpl {
 #endif //WIN32
 
 		Log(" Init Glad...");
-		if(!gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress))
+		if(gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress))
 		{
 			Log("OK\n");
 		}
