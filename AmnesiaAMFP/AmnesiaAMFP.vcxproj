@@ -87,7 +87,7 @@
     <Link>
       <AdditionalDependencies>HPL2_Debug.lib;fltk.lib;wsock32.lib;comctl32.lib;xinput.lib;zlibwapi.lib;dbghelp.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)redist_amfp\aamfpDebug.exe</OutputFile>
-      <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib; $(SolutionDir)dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib;$(SolutionDir)dependencies\lib\win32;$(SolutionDir)angelscript\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreEmbeddedIDL>false</IgnoreEmbeddedIDL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(SolutionDir)redist_amfp\aamfpDebug.pdb</ProgramDatabaseFile>
@@ -112,7 +112,7 @@
     <Link>
       <AdditionalDependencies>HPL2.lib;fltk.lib;wsock32.lib;comctl32.lib;zlibwapi.lib;Wininet.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)redist_amfp\aamfp.exe</OutputFile>
-      <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib; $(SolutionDir)dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib;$(SolutionDir)dependencies\lib\win32;$(SolutionDir)angelscript\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreEmbeddedIDL>false</IgnoreEmbeddedIDL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(SolutionDir)redist_amfp\aamfp.pdb</ProgramDatabaseFile>
@@ -138,7 +138,7 @@
     <Link>
       <AdditionalDependencies>Hpl2_2010.lib;fltk.lib;wsock32.lib;comctl32.lib;xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)redist_amfp\aamfpDemo.exe</OutputFile>
-      <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib; $(SolutionDir)dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib;$(SolutionDir)dependencies\lib\win32;$(SolutionDir)angelscript\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreEmbeddedIDL>false</IgnoreEmbeddedIDL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(SolutionDir)redist_amfp\aamfpDemo.pdb</ProgramDatabaseFile>

@@ -84,7 +84,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>legacy_stdio_definitions.lib;HPL2_Debug.lib;fltk.lib;wsock32.lib;comctl32.lib;xinput.lib;zlibwapi.lib;dbghelp.lib;Wininet.lib;user32.lib;gdi32.lib;gdiplus.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib; $(SolutionDir)dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib;$(SolutionDir)dependencies\lib\win32;$(SolutionDir)angelscript\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreEmbeddedIDL>false</IgnoreEmbeddedIDL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(SolutionDir)redist\amnesiaDebug.pdb</ProgramDatabaseFile>
@@ -110,7 +110,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>legacy_stdio_definitions.lib;HPL2.lib;fltk.lib;wsock32.lib;comctl32.lib;xinput.lib;zlibwapi.lib;dbghelp.lib;Wininet.lib;user32.lib;gdi32.lib;gdiplus.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib; $(SolutionDir)dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib;$(SolutionDir)dependencies\lib\win32;$(SolutionDir)angelscript\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreEmbeddedIDL>false</IgnoreEmbeddedIDL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(SolutionDir)redist\amnesia.pdb</ProgramDatabaseFile>
@@ -136,7 +136,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>legacy_stdio_definitions.lib;HPL2.lib;fltk.lib;wsock32.lib;comctl32.lib;xinput.lib;zlibwapi.lib;dbghelp.lib;Wininet.lib;user32.lib;gdi32.lib;gdiplus.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib; $(SolutionDir)dependencies\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)HPL2\lib;$(SolutionDir)dependencies\lib\win32;$(SolutionDir)angelscript\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreEmbeddedIDL>false</IgnoreEmbeddedIDL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(SolutionDir)redist\amnesiaDemo.pdb</ProgramDatabaseFile>
