@@ -97,3 +97,4 @@ redist/
 redist*/
 *.lib
 _temp
+vcpkg_installed

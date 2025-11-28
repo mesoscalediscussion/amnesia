@@ -67,6 +67,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">
     <TargetName>AmnesiaDemo</TargetName>
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
