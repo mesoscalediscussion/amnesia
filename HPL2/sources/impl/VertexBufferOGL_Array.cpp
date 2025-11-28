@@ -25,7 +25,7 @@
 #include "impl/LowLevelGraphicsSDL.h"
 #include "graphics/Renderer.h"
 
-#include <GL/glew.h>
+#include <glad/gl.h>
 
 namespace hpl {
 

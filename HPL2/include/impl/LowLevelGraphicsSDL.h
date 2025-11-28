@@ -20,10 +20,7 @@
 #ifndef HPL_LOWLEVELGRAPHICS_SDL_H
 #define HPL_LOWLEVELGRAPHICS_SDL_H
 
-#include <GL/glew.h>
-#ifdef WIN32
-#include <GL/wglew.h>
-#endif
+#include <glad/gl.h>
 
 #if USE_SDL2
 #include "SDL2/SDL.h"

@@ -20,7 +20,7 @@
 #include "impl/OcclusionQueryOGL.h"
 #include "impl/LowLevelGraphicsSDL.h"
 
-#include <GL/glew.h>
+#include <glad/gl.h>
 
 
 namespace hpl {

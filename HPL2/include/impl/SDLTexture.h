@@ -23,12 +23,16 @@
 #include "graphics/Texture.h"
 #include "impl/LowLevelGraphicsSDL.h"
 
-#include <GL/glew.h>
+#include <glad/gl.h>
 #if defined(__APPLE__)&&defined(__MACH__)
 #include <OpenGL/glu.h>
 #else
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <GL/glu.h>
 #endif
+
 
 namespace hpl {
 
