@@ -158,8 +158,8 @@ cLuxPlayer::cLuxPlayer() : iLuxUpdateable("LuxPlayer"), iLuxCollideCallbackConta
 	mpHelperLightLevel = hplNew( cLuxPlayerLightLevel, (this) );
 	mvHelpers.push_back(mpHelperLightLevel);
 
-	//mpHelperInDarkness = hplNew( cLuxPlayerInDarkness, (this) );
-	//mvHelpers.push_back(mpHelperInDarkness);
+	mpHelperInDarkness = hplNew( cLuxPlayerInDarkness, (this) );
+	mvHelpers.push_back(mpHelperInDarkness);
 
     mpHelperIsMoving = hplNew( cLuxPlayerIsMoving, (this) );
 	mvHelpers.push_back(mpHelperIsMoving);
@@ -178,6 +178,9 @@ cLuxPlayer::cLuxPlayer() : iLuxUpdateable("LuxPlayer"), iLuxCollideCallbackConta
 
 	mpInfection = hplNew( cLuxPlayerInfection, (this) );
 	mvHelpers.push_back(mpInfection);
+
+	mpSanity = hplNew(cLuxPlayerSanity, (this));
+	mvHelpers.push_back(mpSanity);
 
 	mpLookAt = hplNew( cLuxPlayerLookAt, (this) );
 	mvHelpers.push_back(mpLookAt);

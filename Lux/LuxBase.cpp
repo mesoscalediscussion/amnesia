@@ -1269,7 +1269,7 @@ bool cLuxBase::InitGame()
 	mpMapHandler = CreateModule( cLuxMapHandler, "Default");
 	mpMapHelper = CreateModule( cLuxMapHelper, "Default");
 	mpPlayer = CreateModule( cLuxPlayer, "Default");
-	mpInsanityHandler = CreateModule( cLuxInsanityHandler, "Default"); 
+	mpInsanityHandler = CreateModule( cLuxInsanityHandler, "Default");
 	mpInfectionHandler = CreateModule( cLuxInfectionHandler, "Default"); 
 	mpDebugHandler = CreateModule( cLuxDebugHandler, "Default");
 	mpEffectRenderer = CreateModule( cLuxEffectRenderer, "Default");

@@ -3529,7 +3529,7 @@ void cLuxPlayerLightLevel::Update(float afTimeStep)
 		////////////////////////////////
 		//Get lights to skip
 		std::vector<iLight*> vSkipLights;
-		//vSkipLights.push_back(mpPlayer->GetHelperInDarkness()->GetAmbientLight());
+		vSkipLights.push_back(mpPlayer->GetHelperInDarkness()->GetAmbientLight());
 		
 		////////////////////////////////
 		//Get light level at all positions and then calculate median.
@@ -3638,7 +3638,7 @@ void cLuxPlayerIsMoving::Reset()
     mfImmediatePlayerSpeed = 0.0f;
 }
 
-/*
+
 //////////////////////////////////////////////////////////////////////////
 // PLAYER IN DARKNESS
 //////////////////////////////////////////////////////////////////////////
@@ -3808,5 +3808,5 @@ bool cLuxPlayerInDarkness::InDarkness()
 	float fLightLevel = mpPlayer->GetHelperLightLevel()->GetExtendedLightLevel();
 	return fLightLevel <= mfMinDarknessLightLevel;
 }
-*/
+
 //-----------------------------------------------------------------------

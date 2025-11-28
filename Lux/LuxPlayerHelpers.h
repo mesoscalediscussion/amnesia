@@ -841,7 +841,7 @@ class cLuxPlayerStrobeHelper : public iLuxPlayerHelper
 };
 
 //----------------------------------------------
-/*
+
 class cLuxPlayerInDarkness : public iLuxPlayerHelper
 {
 public:	
@@ -889,7 +889,7 @@ private:
 	cLightPoint *mpAmbientLight;
 	bool mbAmbientLightIsOn;
 };
-*/
+
 //----------------------------------------------
 
 

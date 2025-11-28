@@ -314,8 +314,12 @@ cLuxPostEffectHandler::cLuxPostEffectHandler() : iLuxUpdateable("LuxPostEffectHa
 
 	///////////////////////
 	// Create post effects
+	mpInsanity = hplNew(cLuxPostEffect_Insanity, (pGraphics, pResources));
+	AddEffect(mpInsanity, 25);
+	mpInsanity->SetActive(true);
+
 	mpInfection = hplNew(cLuxPostEffect_Infection, (pGraphics, pResources) );
-	AddEffect(mpInfection, 25);
+	AddEffect(mpInfection, 26);
 	mpInfection->SetActive(false);
 }
 

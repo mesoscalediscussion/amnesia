@@ -32,7 +32,7 @@
 #include "LuxJournal.h"
 #include "LuxConfigHandler.h"
 #include "LuxSavedGame.h"
-//#include "LuxInsanityHandler.h"
+#include "LuxInsanityHandler.h"
 #include "LuxHelpFuncs.h"
 #include "LuxAreaNodes.h"
 #include "LuxConfigHandler.h"
@@ -581,9 +581,9 @@ void cLuxDebugHandler::OnDraw(float afFrameTime)
 			fY+=15.0f;
 		}
 
-		//gpBase->mpGameDebugSet->DrawFont(gpBase->mpDefaultFont, cVector3f(5,fY,10),14,cColor(1,1),
-		//	_W("Sanity Between event time: %f AtLowSanityCount: %f\n"), gpBase->mpInsanityHandler->GetNewEventCount() , pPlayer->GetHelperSanity()->GetAtLowSanityCount());
-		//fY+=15.0f;
+		gpBase->mpGameDebugSet->DrawFont(gpBase->mpDefaultFont, cVector3f(5,fY,10),14,cColor(1,1),
+			_W("Sanity Between event time: %f AtLowSanityCount: %f\n"), gpBase->mpInsanityHandler->GetNewEventCount() , pPlayer->GetHelperSanity()->GetAtLowSanityCount());
+		fY+=15.0f;
 
         fY = pPlayer->GetStateData(pPlayer->GetCurrentState())->DrawDebug(gpBase->mpGameDebugSet,gpBase->mpDefaultFont, fY);		
 	}
@@ -1286,7 +1286,8 @@ void cLuxDebugHandler::CreateGuiWindow()
 		pCheckBox->AddCallback(eGuiMessage_CheckChange,this, kGuiCallback(ChangeDebugText));
 		vGroupPos.y += 22;
 		
-		/*pButton = mpGuiSet->CreateWidgetButton(vGroupPos,vSize,_W("Reload Insanity Effects"),pGroup);
+		/*
+		pButton = mpGuiSet->CreateWidgetButton(vGroupPos,vSize,_W("Reload Insanity Effects"),pGroup);
 		pButton->AddCallback(eGuiMessage_ButtonPressed,this, kGuiCallback(PressReloadInsanityEffect));
 		vGroupPos.y += 22;
 
@@ -1301,7 +1302,8 @@ void cLuxDebugHandler::CreateGuiWindow()
 			mpCBInsanityEvents->AddItem(pEvent->GetName());            
 		}
 		if(gpBase->mpInsanityHandler->GetEventNum()>0) mpCBInsanityEvents->SetSelectedItem(0);
-		vGroupPos.y += 22;*/
+		vGroupPos.y += 22;
+		*/
 
 
 		//Group end
