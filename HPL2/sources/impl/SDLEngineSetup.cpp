@@ -63,7 +63,7 @@ namespace hpl {
 
 	cSDLEngineSetup::cSDLEngineSetup(tFlag alHplSetupFlags)
 	{
-		SDL_SetHint(SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES, "0");
+		//SDL_SetHint(SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES, "0");
 #if USE_SDL2
 		if(alHplSetupFlags & (eHplSetup_Screen | eHplSetup_Video))
 		{
@@ -80,7 +80,7 @@ namespace hpl {
 #elif USE_SDL3
 		if (alHplSetupFlags & (eHplSetup_Screen | eHplSetup_Video))
 		{
-			if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+			if (!SDL_Init(SDL_INIT_VIDEO)) {
 				FatalError("Error Initializing Display: %s", SDL_GetError());
 				exit(1);
 			}

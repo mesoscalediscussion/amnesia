@@ -41,6 +41,7 @@ namespace hpl {
 	{
 		mpLowLevelInputSDL = apLowLevelInputSDL;
 
+#if USE_SDL2
 		mpHandle = SDL_GameControllerOpen(mlIndex);
 
 		if(mpHandle)
@@ -58,7 +59,25 @@ namespace hpl {
             // @todo open up the assiciated haptic device and provide rumble!
 		}
 		//ClearKeyList();
-		
+#elif USE_SDL3
+		mpHandle = SDL_OpenGamepad(mlIndex);
+
+		if (mpHandle)
+		{
+			SDL_Joystick* joy = SDL_GetGamepadJoystick(mpHandle);
+
+			mlInstance = SDL_GetJoystickID(joy);
+
+			msGamepadName = tString(SDL_GetGamepadName(mpHandle));
+
+			mvButtonArray.assign(SDL_GAMEPAD_BUTTON_COUNT, false);
+
+			mvAxisArray.assign(SDL_GAMEPAD_AXIS_COUNT, 0.0f);
+
+			// @todo open up the assiciated haptic device and provide rumble!
+		}
+#endif
+
 #ifdef WIN32
 		mvRemappedAxisArray.resize(mvAxisArray.size());
 		mvRemappedButtonArray.resize(mvButtonArray.size());

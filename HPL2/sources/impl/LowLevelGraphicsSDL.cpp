@@ -18,8 +18,8 @@
  */
 
 #ifdef WIN32
-#pragma comment(lib, "OpenGL32.lib")
-#pragma comment(lib, "GLu32.lib")
+//#pragma comment(lib, "OpenGL32.lib")
+//#pragma comment(lib, "GLu32.lib")
 //#pragma comment(lib, "GLaux.lib")
 //#pragma comment(lib, "Cg.lib")
 //#pragma comment(lib, "CgGL.lib")
@@ -56,6 +56,8 @@
 #ifndef WIN32
 #define CALLBACK __attribute__ ((__stdcall__))
 #endif
+
+//#define SDL_GL_SETATTRIBUTE(attr, value) if (!SDL_GL_SetAttribute(attr, value)) { Log("SDL_GL_SetAttribute error: %s\n", SDL_GetError()); }
 
 namespace hpl {
 
@@ -125,8 +127,8 @@ namespace hpl {
 	//////////////////////////////////////////////////////////////////////////
 
 	//-----------------------------------------------------------------------
-
-	void CALLBACK OGLDebugOutputCallback(GLenum alSource, GLenum alType, GLuint alID, GLenum alSeverity, GLsizei alLength, const GLchar* apMessage, GLvoid* apUserParam)
+	
+	void CALLBACK OGLDebugOutputCallback(GLenum alSource, GLenum alType, GLuint alID, GLenum alSeverity, GLsizei alLength, const GLchar* apMessage, const void* apUserParam)
 	{
 		Log("Source: %d Type: %d Id: %d Severity: %d '%s'\n", alSource, alType, alID, alSeverity, apMessage);
 	}
@@ -148,7 +150,9 @@ namespace hpl {
 		mGpuProgramFormat = aGpuProgramFormat;
 		if(mGpuProgramFormat == eGpuProgramFormat_LastEnum) mGpuProgramFormat = eGpuProgramFormat_GLSL;
 
+		/*
 		//Set some GL Attributes
+#if USE_SDL2
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);
 
 		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -158,8 +162,37 @@ namespace hpl {
 
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+#elif USE_SDL3
+		if (!SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1)) {
+			Error("Couldn't set SDL_GL_DOUBLEBUFFER: %s\n", SDL_GetError());
+		}
+
+		if (!SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8)) {
+			Error("Couldn't set SDL_GL_RED_SIZE: %s\n", SDL_GetError());
+		}
+		if (!SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8)) {
+			Error("Couldn't set SDL_GL_GREEN_SIZE: %s\n", SDL_GetError());
+		}
+		if (!SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8)) {
+			Error("Couldn't set SDL_GL_BLUE_SIZE: %s\n", SDL_GetError());
+		}
+		if (!SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8)) {
+			Error("Couldn't set SDL_GL_ALPHA_SIZE: %s\n", SDL_GetError());
+		}
+
+		if (!SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24)) {
+			Error("Couldn't set SDL_GL_DEPTH_SIZE: %s\n", SDL_GetError());
+		}
+		if (!SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8)) {
+			Error("Couldn't set SDL_GL_STENCIL_SIZE: %s\n", SDL_GetError());
+		}
+#endif
+
+		//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+		//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
 		// Multisampling
+#if USE_SDL2
 		if(mlMultisampling > 0)
 		{
 			if(SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1)==-1)
@@ -174,8 +207,24 @@ namespace hpl {
 				}
 			}
 		}
+#elif USE_SDL3
+		if (mlMultisampling > 0)
+		{
+			if (!SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1))
+			{
+				Error("Multisample buffers not supported!\n");
+			}
+			else
+			{
+				if (!SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, mlMultisampling))
+				{
+					Error("Couldn't set multisampling samples to %d\n", mlMultisampling);
+				}
+			}
+		}
+#endif
 
-        unsigned int mlFlags = SDL_WINDOW_OPENGL;
+        SDL_WindowFlags mlFlags = SDL_WINDOW_OPENGL;
         if (alWidth == 0 && alHeight == 0) {
             mvScreenSize = cVector2l(800,600);
 #if USE_SDL2
@@ -194,8 +243,7 @@ namespace hpl {
                                     SDL_WINDOWPOS_CENTERED_DISPLAY(mlDisplay), SDL_WINDOWPOS_CENTERED_DISPLAY(mlDisplay),
                                     mvScreenSize.x, mvScreenSize.y, mlFlags);
 #elif USE_SDL3
-		mpScreen = SDL_CreateWindow(asWindowCaption.c_str(),
-			mvScreenSize.x, mvScreenSize.y, mlFlags);
+		mpScreen = SDL_CreateWindow(asWindowCaption.c_str(), mvScreenSize.x, mvScreenSize.y, mlFlags);
 #endif
 		if(mpScreen==NULL)
         {
@@ -209,8 +257,7 @@ namespace hpl {
                                         SDL_WINDOWPOS_CENTERED_DISPLAY(mlDisplay), SDL_WINDOWPOS_CENTERED_DISPLAY(mlDisplay),
                                         mvScreenSize.x, mvScreenSize.y, mlFlags);
 #elif USE_SDL3
-			mpScreen = SDL_CreateWindow(asWindowCaption.c_str(),
-				mvScreenSize.x, mvScreenSize.y, mlFlags);
+			mpScreen = SDL_CreateWindow(asWindowCaption.c_str(), mvScreenSize.x, mvScreenSize.y, mlFlags);
 #endif
             if(mpScreen==NULL)
             {
@@ -228,7 +275,20 @@ namespace hpl {
             SDL_GetWindowSize(mpScreen, &w, &h);
             mvScreenSize = cVector2l(w, h);
         }
+		*/
+		
+		mpScreen = SDL_CreateWindow(asWindowCaption.c_str(), mvScreenSize.x, mvScreenSize.y, SDL_WINDOW_OPENGL);
+		if (!mpScreen) {
+			FatalError("Unable to create SDL window! %s\n", SDL_GetError());
+		}
+		int w, h;
+		SDL_GetWindowSizeInPixels(mpScreen, &w, &h);
+		mvScreenSize = cVector2l(w, h);
+		
         mGLContext = SDL_GL_CreateContext(mpScreen);
+		if (mGLContext == NULL) {
+			FatalError("Failed to create OpenGL context..\n  SDL error: %s\n", SDL_GetError());
+		}
 
         if (mbGrab) {
             SetWindowGrab(true);
@@ -265,7 +325,7 @@ namespace hpl {
 		mbInitHasBeenRun = true;
 
 
-		/*if(GLAD_GL_ARB_debug_output)
+		if(GLAD_GL_ARB_debug_output)
 		{
 			glDebugMessageCallbackARB(&OGLDebugOutputCallback, NULL);
 			glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
@@ -273,7 +333,7 @@ namespace hpl {
 		else
 		{	
 			Warning("OGL debug output not supported!\n");
-		}*/
+		}
 
 
 		return true;
