@@ -21,11 +21,6 @@
 //Use this to check for memory leaks!
 
 #ifdef WIN32
-#ifdef _DEBUG
-    #pragma comment(lib, "angelscriptd.lib")
-#else
-    #pragma comment(lib, "angelscript.lib")
-#endif
 #define UNICODE
 #include <windows.h>
 #include <shlobj.h>

@@ -17,15 +17,6 @@
  * along with Amnesia: A Machine For Pigs.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifdef WIN32
-//#pragma comment(lib, "OpenGL32.lib")
-//#pragma comment(lib, "GLu32.lib")
-//#pragma comment(lib, "GLaux.lib")
-//#pragma comment(lib, "Cg.lib")
-//#pragma comment(lib, "CgGL.lib")
-//#pragma comment(lib, "SDL_ttf.lib")
-#endif
-
 #include <assert.h>
 #include <stdlib.h>
 
