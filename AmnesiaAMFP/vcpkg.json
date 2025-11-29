@@ -2,6 +2,9 @@
   "dependencies": [
     "devil",
     "fltk",
-    "sdl3"
+    "sdl3",
+    "libogg",
+    "libtheora",
+    "libvorbis"
   ]
 }
