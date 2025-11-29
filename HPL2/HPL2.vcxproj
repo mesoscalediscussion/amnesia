@@ -73,7 +73,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Lib>
-      <AdditionalDependencies>angelscriptd.lib;newton.lib;alut.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>angelscriptd.lib;newton.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>lib/HPL2_Debug.lib</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\lib\win32;$(SolutionDir)angelscript\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
@@ -101,7 +101,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Lib>
-      <AdditionalDependencies>angelscript.lib;newton.lib;alut.lib;OpenAL32.lib%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>angelscript.lib;newton.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>lib/HPL2.lib</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\lib\win32;$(SolutionDir)angelscript\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>

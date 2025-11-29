@@ -5,6 +5,8 @@
     "sdl3",
     "libogg",
     "libtheora",
-    "libvorbis"
+    "libvorbis",
+    "openal-soft",
+    "freealut"
   ]
 }
