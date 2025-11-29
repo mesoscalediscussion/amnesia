@@ -17,7 +17,7 @@
  * along with Amnesia: A Machine For Pigs.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "impl/GamepadSDL2.h"
+#include "impl/GamepadSDL3.h"
 
 #include "impl/LowLevelInputSDL.h"
 
@@ -41,25 +41,6 @@ namespace hpl {
 	{
 		mpLowLevelInputSDL = apLowLevelInputSDL;
 
-#if USE_SDL2
-		mpHandle = SDL_GameControllerOpen(mlIndex);
-
-		if(mpHandle)
-		{
-            SDL_Joystick *joy = SDL_GameControllerGetJoystick(mpHandle);
-			
-            mlInstance = SDL_JoystickInstanceID(joy);
-
-			msGamepadName = tString(SDL_GameControllerName(mpHandle));
-
-			mvButtonArray.assign(SDL_CONTROLLER_BUTTON_MAX, false);
-
-			mvAxisArray.assign(SDL_CONTROLLER_AXIS_MAX, 0.0f);
-            
-            // @todo open up the assiciated haptic device and provide rumble!
-		}
-		//ClearKeyList();
-#elif USE_SDL3
 		mpHandle = SDL_OpenGamepad(mlIndex);
 
 		if (mpHandle)
@@ -76,7 +57,6 @@ namespace hpl {
 
 			// @todo open up the assiciated haptic device and provide rumble!
 		}
-#endif
 
 #ifdef WIN32
 		mvRemappedAxisArray.resize(mvAxisArray.size());
@@ -129,52 +109,6 @@ namespace hpl {
 		{
 			SDL_Event *pEvent = &(*it);
 
-#if USE_SDL2
-            switch (pEvent->type) {
-                case SDL_CONTROLLERAXISMOTION:
-                    if (mlInstance == pEvent->caxis.which) {
-                        eGamepadAxis axis = SDLToAxis(pEvent->caxis.axis);
-                        float fAxisValue = SDLToAxisValue(pEvent->caxis.value);
-                        
-                        if(cMath::Abs(fAxisValue) < mfDeadZoneRadius)
-                            fAxisValue = 0.0f;
-                        
-                        if(fAxisValue!=mvAxisArray[axis])
-                        {
-                            inputUpdate = cGamepadInputData(mlIndex, eGamepadInputType_Axis, axis, fAxisValue);
-                            
-                            mlstAxisChanges.push_back(inputUpdate);
-                            mlstInputUpdates.push_back(inputUpdate);
-                        }
-                        mvAxisArray[axis] = fAxisValue;                        
-                    }
-                    break;
-                case SDL_CONTROLLERBUTTONDOWN:
-                case SDL_CONTROLLERBUTTONUP:
-                    if (mlInstance == pEvent->cbutton.which) {
-                        eGamepadButton button = SDLToButton(pEvent->cbutton.button);
-                        inputUpdate = cGamepadInputData(mlIndex, eGamepadInputType_Button, button, 0.0f);
-
-                        bool bPressed;
-                        if(pEvent->cbutton.state==SDL_RELEASED)
-                        {
-                            inputUpdate.mfInputValue = 0.0f;
-                            mlstButtonsReleased.push_back(inputUpdate);
-                            bPressed = false;
-                        }
-                        else
-                        {
-                            inputUpdate.mfInputValue = 1.0f;
-                            mlstButtonsPressed.push_back(inputUpdate);
-                            bPressed = true;
-                        }
-                        
-                        mlstInputUpdates.push_back(inputUpdate);
-                        mvButtonArray[button] = bPressed;                        
-                    }
-                    break;
-            }
-#elif USE_SDL3
 			switch (pEvent->type) {
 			case SDL_EVENT_GAMEPAD_AXIS_MOTION:
 				if (mlInstance == pEvent->gaxis.which) {
@@ -229,7 +163,6 @@ namespace hpl {
 				}
 				break;
 			}
-#endif
 		}
 
 #ifdef WIN32

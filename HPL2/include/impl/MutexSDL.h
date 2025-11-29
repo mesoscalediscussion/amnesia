@@ -23,9 +23,6 @@
 #include "system/Mutex.h"
 
 struct SDL_Mutex;
-#if USE_SDL2
-#define SDL_mutex SDL_Mutex
-#endif
 
 namespace hpl {
 

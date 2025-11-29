@@ -20,11 +20,7 @@
 #ifndef HPL_LOWLEVELGRAPHICS_SDL_H
 #define HPL_LOWLEVELGRAPHICS_SDL_H
 
-#if USE_SDL2
-#include "SDL2/SDL.h"
-#elif USE_SDL3
 #include <SDL3/SDL.h>
-#endif
 
 #include <glad/gl.h>
 

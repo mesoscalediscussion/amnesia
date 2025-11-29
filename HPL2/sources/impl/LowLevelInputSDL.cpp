@@ -21,19 +21,14 @@
 
 #include "impl/MouseSDL.h"
 #include "impl/KeyboardSDL.h"
-#include "impl/GamepadSDL2.h"
+#include "impl/GamepadSDL3.h"
 
 #include "system/LowLevelSystem.h"
 #include "graphics/LowLevelGraphics.h"
 
 #include "engine/Engine.h"
 
-#if USE_SDL2
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_syswm.h"
-#elif USE_SDL3
 #include <SDL3/SDL.h>
-#endif
 
 namespace hpl {
 
@@ -48,11 +43,7 @@ namespace hpl {
 	{
 		LockInput(true);
 		RelativeMouse(false);
-#if USE_SDL2
-		SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER);
-#elif USE_SDL3
 		SDL_InitSubSystem(SDL_INIT_GAMEPAD);
-#endif
 	}
 
 	//-----------------------------------------------------------------------
@@ -88,36 +79,6 @@ namespace hpl {
 		mlstEvents.clear();
 		while(SDL_PollEvent(&sdlEvent)!=0)
 		{
-#if USE_SDL2
-            // built-in SDL2 gamepad hotplug code
-            // this whole contract should be rewritten to allow clean adding/removing
-            // of controllers, instead of brute force rescanning
-            if (sdlEvent.type==SDL_CONTROLLERDEVICEADDED)
-            {
-                // sdlEvent.cdevice.which is the device #
-                cEngine::SetDeviceWasPlugged();
-            } else if (sdlEvent.type==SDL_CONTROLLERDEVICEREMOVED)
-            {
-                // sdlEvent.cdevice.which is the instance # (not device #).
-                // instance # increases as devices are plugged and unplugged.
-                cEngine::SetDeviceWasRemoved();
-            }
-#if defined (__APPLE__)
-            if (sdlEvent.type==SDL_KEYDOWN)
-            {
-                if (sdlEvent.key.keysym.sym == SDLK_q && sdlEvent.key.keysym.mod & KMOD_GUI) {
-                    mbQuitMessagePosted = true;
-                } else {
-                    mlstEvents.push_back(sdlEvent);
-                }
-            } else
-#endif
-            if (sdlEvent.type==SDL_QUIT)
-            {
-                mbQuitMessagePosted = true;
-            } else
-				mlstEvents.push_back(sdlEvent);
-#elif USE_SDL3
 			// built-in SDL3 gamepad hotplug code
 			// this whole contract should be rewritten to allow clean adding/removing
 			// of controllers, instead of brute force rescanning
@@ -150,7 +111,6 @@ namespace hpl {
 				}
 				else
 					mlstEvents.push_back(sdlEvent);
-#endif
 		}
 	}
 	
@@ -172,13 +132,9 @@ namespace hpl {
 
 	int cLowLevelInputSDL::GetPluggedGamepadNum()
 	{
-#if USE_SDL2
-		return SDL_NumJoysticks();
-#elif USE_SDL3
 		int num_gamepads;
 		SDL_GetGamepads(&num_gamepads);
 		return num_gamepads;
-#endif
 	}
 
 	//-----------------------------------------------------------------------

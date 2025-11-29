@@ -17,8 +17,8 @@
  * along with Amnesia: A Machine For Pigs.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef HPL_GAMEPAD_SDL2_H
-#define HPL_GAMEPAD_SDL2_H
+#ifndef HPL_GAMEPAD_SDL3_H
+#define HPL_GAMEPAD_SDL3_H
 
 #include <vector>
 #include <list>
@@ -26,11 +26,7 @@
 #include "input/Gamepad.h"
 //#include "input/InputTypes.h"
 
-#if USE_SDL2
-#include "SDL2/SDL.h"
-#elif USE_SDL3
 #include "SDL3/SDL.h"
-#endif
 
 namespace hpl {
 
@@ -105,13 +101,8 @@ namespace hpl {
 
 		std::list<cGamepadInputData> mlstAxisChanges;
 
-#if USE_SDL2
-		SDL_GameController	*mpHandle;
-        SDL_JoystickID      mlInstance;
-#elif USE_SDL3
 		SDL_Gamepad*		mpHandle;
 		SDL_JoystickID      mlInstance;
-#endif
 		cLowLevelInputSDL	*mpLowLevelInputSDL;
 
 		static float mfInvAxisMax;
@@ -120,4 +111,4 @@ namespace hpl {
 
 };
 
-#endif // HPL_GAMEPAD_SDL2_H
+#endif // HPL_GAMEPAD_SDL3_H

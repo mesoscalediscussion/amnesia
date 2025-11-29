@@ -19,11 +19,7 @@
 
 #include "impl/ThreadSDL.h"
 
-#if USE_SDL2
-#include "SDL2/SDL.h"
-#elif USE_SDL3
 #include <SDL3/SDL.h>
-#endif
 #include <typeinfo>
 
 namespace hpl {
@@ -57,11 +53,7 @@ namespace hpl {
 	void cThreadSDL::Start()
 	{
 		mbThreadActive = true;
-#if USE_SDL2
-        mpThreadHandle = SDL_CreateThread(iThread::MainThreadFunc, typeid(this).name(), this);
-#elif USE_SDL3
 		mpThreadHandle = SDL_CreateThread(iThread::MainThreadFunc, typeid(this).name(), this);
-#endif
 	}
 
 	//-----------------------------------------------------------------------
@@ -85,11 +77,7 @@ namespace hpl {
 	void cThreadSDL::SetPriority(eThreadPrio aPrio)
 	{
         int prio = TranslateEnginePrio(aPrio);
-#if USE_SDL2
-        SDL_SetThreadPriority((SDL_ThreadPriority)prio);
-#elif USE_SDL3
 		SDL_SetCurrentThreadPriority((SDL_ThreadPriority)prio);
-#endif
 		iThread::SetPriority(aPrio);
 	}
 

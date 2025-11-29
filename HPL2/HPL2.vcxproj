@@ -248,7 +248,7 @@
     <ClInclude Include="include\impl\CharacterBodyNewton.h" />
     <ClInclude Include="include\impl\CollideShapeNewton.h" />
     <ClInclude Include="include\impl\FrameBufferGL.h" />
-    <ClInclude Include="include\impl\GamepadSDL2.h" />
+    <ClInclude Include="include\impl\GamepadSDL3.h" />
     <ClInclude Include="include\impl\GLSLProgram.h" />
     <ClInclude Include="include\impl\GLSLShader.h" />
     <ClInclude Include="include\impl\KeyboardSDL.h" />
@@ -546,7 +546,7 @@
     <ClCompile Include="sources\impl\CharacterBodyNewton.cpp" />
     <ClCompile Include="sources\impl\CollideShapeNewton.cpp" />
     <ClCompile Include="sources\impl\FrameBufferGL.cpp" />
-    <ClCompile Include="sources\impl\GamepadSDL2.cpp" />
+    <ClCompile Include="sources\impl\GamepadSDL3.cpp" />
     <ClCompile Include="sources\impl\GLSLProgram.cpp" />
     <ClCompile Include="sources\impl\GLSLShader.cpp" />
     <ClCompile Include="sources\impl\KeyboardSDL.cpp" />

@@ -19,11 +19,7 @@
 
 #include "impl/MouseSDL.h"
 
-#if USE_SDL2
-#include "SDL2/SDL.h"
-#elif USE_SDL3
 #include <SDL3/SDL.h>
-#endif
 
 #include "graphics/LowLevelGraphics.h"
 #include "impl/LowLevelInputSDL.h"
@@ -74,13 +70,8 @@ namespace hpl {
 			for(int i=0; i<10; ++i)
 			{
 				SDL_PumpEvents();
-#if USE_SDL2
-				int lX, lY;
-				SDL_GetRelativeMouseState(&lX, &lY);
-#elif USE_SDL3
 				float lX, lY;
 				SDL_GetRelativeMouseState(&lX, &lY);
-#endif
 			}
 			mbFirstTime = false;
 		}
@@ -95,15 +86,6 @@ namespace hpl {
 		{
 			SDL_Event *pEvent = &(*it);
 
-#if USE_SDL2
-			if(	pEvent->type != SDL_MOUSEMOTION && 
-				pEvent->type != SDL_MOUSEBUTTONDOWN &&
-                pEvent->type != SDL_MOUSEWHEEL &&
-				pEvent->type != SDL_MOUSEBUTTONUP)
-			{
-				continue;
-			}
-#elif USE_SDL3
 			if (pEvent->type != SDL_EVENT_MOUSE_MOTION &&
 				pEvent->type != SDL_EVENT_MOUSE_BUTTON_DOWN &&
 				pEvent->type != SDL_EVENT_MOUSE_WHEEL &&
@@ -111,7 +93,6 @@ namespace hpl {
 			{
 				continue;
 			}
-#endif
 
 			if(pEvent->type == SDL_EVENT_MOUSE_MOTION)
 			{
@@ -157,13 +138,8 @@ namespace hpl {
 		if(mbWheelUpMoved)		mvMButtonArray[eMouseButton_WheelUp] = true;
 		else					mvMButtonArray[eMouseButton_WheelUp] = false;
 		
-#if USE_SDL2
-		int lX,lY; 
-		SDL_GetRelativeMouseState(&lX, &lY);
-#elif USE_SDL3
 		float lX, lY;
 		SDL_GetRelativeMouseState(&lX, &lY);
-#endif
 		mvMouseRelPos = cVector2l(lX,lY);
 				
 	}
