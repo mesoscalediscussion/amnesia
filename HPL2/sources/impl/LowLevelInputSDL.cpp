@@ -155,7 +155,7 @@ namespace hpl {
 
 	iGamepad* cLowLevelInputSDL::CreateGamepad(int alIndex)
 	{
-		return hplNew( cGamepadSDL2, (this, alIndex) );
+		return hplNew( cGamepadSDL3, (this, alIndex) );
 	}
 	
 	//-----------------------------------------------------------------------

@@ -32,10 +32,10 @@ namespace hpl {
 
 	class cLowLevelInputSDL;
 	
-	class cGamepadSDL2 : public iGamepad
+	class cGamepadSDL3 : public iGamepad
 	{
 	public:
-		cGamepadSDL2(cLowLevelInputSDL *apLowLevelInputSDL, int alIndex);
+		cGamepadSDL3(cLowLevelInputSDL *apLowLevelInputSDL, int alIndex);
 
 		tString GetGamepadName() { return msGamepadName; }
 
