@@ -58,10 +58,14 @@ cLuxDebugHandler::cLuxDebugHandler() : iLuxUpdateable("LuxDebugHandler")
 	//Setup GUI stuff
 	mpGui = gpBase->mpEngine->GetGui();
 
-	if(gpBase->mpConfigHandler->mbLoadDebugMenu)
+#ifdef NDEBUG
+	if (gpBase->mpConfigHandler->mbLoadDebugMenu)
 		mpGuiSkin = mpGui->CreateSkin("gui_default.skin");
 	else
 		mpGuiSkin = NULL;
+#else
+	mpGuiSkin = mpGui->CreateSkin("gui_default.skin");
+#endif
 
 	mpGuiSet = mpGui->CreateSet("DebugHandler",mpGuiSkin);
 
@@ -345,7 +349,9 @@ void cLuxDebugHandler::OnMapLeave(cLuxMap *apMap)
 
 void cLuxDebugHandler::SetDebugWindowActive(bool abActive)
 {
-	if(gpBase->mpConfigHandler->mbLoadDebugMenu==false) return;
+#ifdef NDEBUG
+	if (gpBase->mpConfigHandler->mbLoadDebugMenu == false) return;
+#endif
 
 	//////////////////
 	// Active
@@ -927,7 +933,9 @@ void cLuxDebugHandler::UpdateMessages(float afTimeStep)
 
 void cLuxDebugHandler::CreateScriptOutputWindow()
 {
-	if(gpBase->mpConfigHandler->mbLoadDebugMenu==false) return;
+#ifdef NDEBUG
+	if (gpBase->mpConfigHandler->mbLoadDebugMenu == false) return;
+#endif
 
 	//////////////////////////
 	//Set up variables
@@ -966,7 +974,9 @@ void cLuxDebugHandler::CreateScriptOutputWindow()
 
 void cLuxDebugHandler::CreateScriptOutputWindowText(const tWString& asOutput)
 {
-	if(gpBase->mpConfigHandler->mbLoadDebugMenu==false) return;
+#ifdef NDEBUG
+	if (gpBase->mpConfigHandler->mbLoadDebugMenu == false) return;
+#endif
 
 	//////////////////////////
 	// Destroy all widgets
@@ -1013,7 +1023,9 @@ void cLuxDebugHandler::CreateScriptOutputWindowText(const tWString& asOutput)
 
 void cLuxDebugHandler::CreateGuiWindow()
 {
-	if(gpBase->mpConfigHandler->mbLoadDebugMenu==false) return;
+#ifdef NDEBUG
+	if (gpBase->mpConfigHandler->mbLoadDebugMenu == false) return;
+#endif
 
 	//////////////////////////
 	//Set up variables
