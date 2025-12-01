@@ -91,7 +91,6 @@ ServiceFabricBackup/
 .localhistory/
 
 # dependencies & intermediate files
-dependencies/
 Intermediate/
 redist/
 redist*/

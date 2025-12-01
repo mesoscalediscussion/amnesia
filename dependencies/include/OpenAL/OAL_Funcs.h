@@ -1,0 +1,44 @@
+/**
+	@file OAL_Funcs.h
+	@author Luis Rodero
+	@date 2006-10-02
+	@version 0.1
+	Main header for the OpenAL Wrapper
+*/
+
+#ifndef _OAL_FUNCS_H
+#define _OAL_FUNCS_H
+
+#include "OAL_Types.h"
+
+//#include "OAL_WAVSample.h"
+//#include "OAL_OggSample.h"
+//#include "OAL_OggStream.h"
+
+
+////////////////////////////////////////////
+// Init / Shutdown funcs
+////////////////////////////////////////////
+
+#include "OAL_Init.h"
+
+////////////////////////////////////////////
+// Playback and Source Management Funcs 
+////////////////////////////////////////////
+
+#include "OAL_Playback.h"
+
+////////////////////////////////////////////
+// Sound Data Loaders
+////////////////////////////////////////////
+
+#include "OAL_Loaders.h"
+
+////////////////////////////////////////////
+// EFX Specific Funcs
+////////////////////////////////////////////
+
+#include "OAL_EFX.h"
+
+
+#endif // _OALFUNCS_H

@@ -6,6 +6,5 @@
   <Project Path="AmnesiaTDD/AmnesiaTDD.vcxproj" Id="f1452eb5-6ea2-47cc-8a6b-d87e3e34377b" />
   <Project Path="angelscript/angelscript.vcxproj" Id="39e6af97-6ba3-4a72-8c61-bcebf214ebfd" />
   <Project Path="HPL2/HPL2.vcxproj" Id="0780dec5-a930-4721-9364-17a49d2a4e60" />
-  <Project Path="LangConv/LangConv.vcxproj" Id="824433ce-9979-440f-9c99-6deee7253ee6" />
   <Project Path="newton/newton.vcxproj" Id="5b94d5f4-1853-459d-b302-41b1a8ab8ebb" />
 </Solution>
