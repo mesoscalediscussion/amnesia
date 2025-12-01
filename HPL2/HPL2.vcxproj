@@ -61,8 +61,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
-      <AdditionalIncludeDirectories>.\include;$(SolutionDir)dependencies\include;$(SolutionDir)dependencies\include\AL;$(SolutionDir)dependencies\include\HaptX;$(SolutionDir)angelscript\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>USE_SDL3;WINDOWS_IGNORE_PACKING_MISMATCH;WIN32;NDEBUG;_WINDOWS;_USRDLL;HPL_EXPORTS;MEMORY_MANAGER_ACTIVE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\include;$(SolutionDir)dependencies\include;$(SolutionDir)dependencies\include\AL;$(SolutionDir)dependencies\include\HaptX;$(SolutionDir)angelscript\include;$(SolutionDir)newton\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_NEWTON_STATIC_LIB;_WIN32;USE_SDL3;WINDOWS_IGNORE_PACKING_MISMATCH;WIN32;NDEBUG;_WINDOWS;_USRDLL;HPL_EXPORTS;MEMORY_MANAGER_ACTIVE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader />
@@ -73,9 +73,9 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Lib>
-      <AdditionalDependencies>angelscriptd.lib;newton.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>angelscriptd.lib;newtond.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>lib/HPL2_Debug.lib</OutputFile>
-      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\lib\win32;$(SolutionDir)angelscript\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\lib\win32;$(SolutionDir)angelscript\lib;$(SolutionDir)newton\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <!--
     <PreBuildEvent>
@@ -90,8 +90,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
-      <AdditionalIncludeDirectories>.\include;$(SolutionDir)dependencies\include;$(SolutionDir)dependencies\include\AL;$(SolutionDir)dependencies\include\HaptX;$(SolutionDir)angelscript\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>USE_SDL3;WINDOWS_IGNORE_PACKING_MISMATCH;WIN32;NDEBUG;_WINDOWS;_USRDLL;HPL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\include;$(SolutionDir)dependencies\include;$(SolutionDir)dependencies\include\AL;$(SolutionDir)dependencies\include\HaptX;$(SolutionDir)angelscript\include;$(SolutionDir)newton\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_NEWTON_STATIC_LIB;_WIN32;USE_SDL3;WINDOWS_IGNORE_PACKING_MISMATCH;WIN32;NDEBUG;_WINDOWS;_USRDLL;HPL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader />
@@ -103,7 +103,7 @@
     <Lib>
       <AdditionalDependencies>angelscript.lib;newton.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>lib/HPL2.lib</OutputFile>
-      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\lib\win32;$(SolutionDir)angelscript\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\lib\win32;$(SolutionDir)angelscript\lib;$(SolutionDir)newton\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreLinkEvent>
       <Message>Compiling BuildID file</Message>

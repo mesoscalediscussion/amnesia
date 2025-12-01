@@ -48,7 +48,7 @@ namespace hpl {
 	#define MAP_CACHE_FORMAT_MAGIC_NUMBER		0xF441451F
 #endif
 
-	#define MAP_CACHE_FORMAT_VERSION			11
+	#define MAP_CACHE_FORMAT_VERSION			44 // upgraded from 11 to invalidate old map caches since the Newton version has been upgraded (2.00 -> 2.36)
 	
 	//----------------------------------------
 	
