@@ -30,7 +30,8 @@ namespace hpl {
 
 	enum eHplAPI
 	{
-		eHplAPI_OpenGL
+		eHplAPI_OpenGL,
+		eHplAPI_SDLGpu
 	};
 
 	//---------------------------------------

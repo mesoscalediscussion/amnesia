@@ -32,6 +32,7 @@
 #include "impl/KeyboardSDL.h"
 #include "impl/MouseSDL.h"
 #include "impl/LowLevelGraphicsOpenGL.h"
+#include "impl/LowLevelGraphicsSDLGpu.h"
 #include "impl/LowLevelResourcesSDL.h"
 #include "impl/LowLevelSystemSDL.h"
 #include "impl/LowLevelInputSDL.h"
@@ -56,7 +57,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	cSDLEngineSetup::cSDLEngineSetup(tFlag alHplSetupFlags)
+	cSDLEngineSetup::cSDLEngineSetup(tFlag alHplSetupFlags, eHplAPI api)
 	{
 		SDL_SetHint(SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES, "0");
 		if (alHplSetupFlags & (eHplSetup_Screen | eHplSetup_Video))
@@ -74,8 +75,15 @@ namespace hpl {
 		
 		//////////////////////////
 		// Graphics
-		mpLowLevelGraphics = hplNew( cLowLevelGraphicsOpenGL,() );
-		
+		switch (api) {
+			case eHplAPI_OpenGL:
+				mpLowLevelGraphics = hplNew( cLowLevelGraphicsOpenGL,() );
+				break;
+			case eHplAPI_SDLGpu:
+				mpLowLevelGraphics = hplNew( cLowLevelGraphicsSDLGpu,() );
+				break;
+		}
+
 		//////////////////////////
 		// Input
 		mpLowLevelInput = hplNew( cLowLevelInputSDL,(mpLowLevelGraphics) );

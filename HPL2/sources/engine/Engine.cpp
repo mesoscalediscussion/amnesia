@@ -163,12 +163,7 @@ namespace hpl {
 	
 	cEngine* CreateHPLEngine(eHplAPI aApi, tFlag alHplModuleFlags, cEngineInitVars *apVars)
 	{
-		iLowLevelEngineSetup *pGameSetup = NULL;
-
-		switch(aApi)
-		{
-			case eHplAPI_OpenGL: pGameSetup = hplNew(cSDLEngineSetup, (alHplModuleFlags) ); break;
-		}
+		iLowLevelEngineSetup *pGameSetup = hplNew(cSDLEngineSetup, (alHplModuleFlags, aApi) );
 
 		return hplNew( cEngine,  (pGameSetup,alHplModuleFlags, apVars) ); 
 	}

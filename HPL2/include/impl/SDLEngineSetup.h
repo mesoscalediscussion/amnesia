@@ -20,6 +20,7 @@
 #ifndef HPL_SDL_ENGINESETUP_H
 #define HPL_SDL_ENGINESETUP_H
 
+#include "engine/EngineTypes.h"
 #include "system/SystemTypes.h"
 #include "engine/LowLevelEngineSetup.h"
 
@@ -36,7 +37,7 @@ namespace hpl {
 	class cSDLEngineSetup : public iLowLevelEngineSetup
 	{
 	public:
-		cSDLEngineSetup(tFlag alHplSetupFlags);
+		cSDLEngineSetup(tFlag alHplSetupFlags, eHplAPI api);
 		~cSDLEngineSetup();
 		
 		cInput* CreateInput(cGraphics* apGraphics);
