@@ -1002,18 +1002,14 @@ void cLuxMainMenu::CreateTopMenuGui()
 
 	///////////////
 	//Custom map
-	/*
-	#ifndef LUX_DEMO_VERSION
-		if(	gpBase->mbPTestActivated==false &&
-			gpBase->mpMapHandler->MapIsLoaded()==false) 
-		{
-			pLabel = mpGuiSet->CreateWidgetLabel(vPos,0,kTranslate("MainMenu","Custom Map"));
-			pLabel->AddCallback(eGuiMessage_MouseDown, this, kGuiCallback(PressCustomStory));
-			SetupTopMenuLabel(pLabel);
-			vPos.y += fRowAdd;
-		}
-	#endif
-	*/
+	if(	gpBase->mbPTestActivated==false &&
+		gpBase->mpMapHandler->MapIsLoaded()==false) 
+	{
+		pLabel = mpGuiSet->CreateWidgetLabel(vPos,0,kTranslate("MainMenu","Custom Map"));
+		pLabel->AddCallback(eGuiMessage_MouseDown, this, kGuiCallback(PressCustomStory));
+		SetupTopMenuLabel(pLabel);
+		vPos.y += fRowAdd;
+	}
 
 	///////////////
 	//Options
