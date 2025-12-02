@@ -1,22 +1,21 @@
-cmake_minimum_required(VERSION 3.20)
-project(newton)
+if (NOT TARGET newton)
+    file(GLOB_RECURSE PROJECT_SOURCES
+        "${CMAKE_CURRENT_SOURCE_DIR}/core/*.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/newton/*.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/physics/*.cpp")
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    add_library(newton STATIC
+        ${PROJECT_SOURCES})
 
-file(GLOB_RECURSE PROJECT_SOURCES "core/*.cpp" "newton/*.cpp" "physics/*.cpp")
+    target_include_directories(newton
+        PUBLIC
+        "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/core"
+        "${CMAKE_CURRENT_SOURCE_DIR}/newton"
+        "${CMAKE_CURRENT_SOURCE_DIR}/physics")
 
-add_library(newton STATIC
-    ${PROJECT_SOURCES})
-
-target_include_directories(newton
-    PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/core"
-    "${CMAKE_CURRENT_SOURCE_DIR}/newton"
-    "${CMAKE_CURRENT_SOURCE_DIR}/physics")
-
-target_compile_definitions(newton
-    PUBLIC
-    $<$<CONFIG:Debug>:_NEWTON_STATIC_LIB _DEBUG _LIB>
-    $<$<CONFIG:Release>:_NEWTON_STATIC_LIB NDEBUG _LIB>)
+    target_compile_definitions(newton
+        PUBLIC
+        $<$<CONFIG:Debug>:_NEWTON_STATIC_LIB _DEBUG _LIB>
+        $<$<CONFIG:Release>:_NEWTON_STATIC_LIB NDEBUG _LIB>)
+endif()

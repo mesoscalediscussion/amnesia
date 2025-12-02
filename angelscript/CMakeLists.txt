@@ -1,18 +1,15 @@
-cmake_minimum_required(VERSION 3.20)
-project(angelscript)
+if (NOT TARGET angelscript)
+    file(GLOB_RECURSE PROJECT_SOURCES
+        "${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp")
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    add_library(angelscript STATIC
+        ${PROJECT_SOURCES})
 
-file(GLOB_RECURSE PROJECT_SOURCES "source/*.cpp")
+    target_include_directories(angelscript PUBLIC
+        "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-add_library(angelscript STATIC
-    ${PROJECT_SOURCES})
-
-target_include_directories(angelscript PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/include")
-
-target_compile_definitions(angelscript
-    PUBLIC
-    $<$<CONFIG:Debug>:ANGELSCRIPT_EXPORT AS_DEBUG _DEBUG _LIB>
-    $<$<CONFIG:Release>:ANGELSCRIPT_EXPORT NDEBUG _LIB>)
+    target_compile_definitions(angelscript
+        PUBLIC
+        $<$<CONFIG:Debug>:ANGELSCRIPT_EXPORT AS_DEBUG _DEBUG _LIB>
+        $<$<CONFIG:Release>:ANGELSCRIPT_EXPORT NDEBUG _LIB>)
+endif()
