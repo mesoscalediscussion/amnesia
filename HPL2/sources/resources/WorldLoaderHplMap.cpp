@@ -278,7 +278,7 @@ namespace hpl {
 		
 		////////////////////////////////////
 		// Try loading cache
-		LoadCacheFile(asFile);
+		//LoadCacheFile(asFile);
 
 
 		////////////////////////////////////
@@ -350,7 +350,7 @@ namespace hpl {
 
 		//////////////////////////////
 		// Save cache
-		SaveCacheFile(asFile);
+		//SaveCacheFile(asFile);
 
 		//////////////////////////////
 		// Final clean up
