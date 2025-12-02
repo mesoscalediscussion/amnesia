@@ -381,6 +381,10 @@ cLuxBase::cLuxBase()
 	// HARDMODE
 	mbHardMode = false;
 	mbAllowHardmode = false;
+
+	///////////////////////////////
+	// . .
+	aGraphicsAPI = eHplAPI_OpenGL;
 }
 
 //-----------------------------------------------------------------------
@@ -668,6 +672,14 @@ bool cLuxBase::ParseCommandLine(const tString &asCommandline)
 	{
 		msInitConfigFile = msDefaultInitConfigFile;
 		mbHardMode = true;
+		return true;
+	}
+
+	//////////////////////////////////
+	// SDL_gpu renderer
+	if(asCommandline == "usesdlgpu")
+	{
+		aGraphicsAPI = eHplAPI_SDLGpu;
 		return true;
 	}
 
@@ -1158,7 +1170,7 @@ bool cLuxBase::InitEngine()
     
 	/////////////////////////
 	// Create the engine
-	mpEngine = CreateHPLEngine(eHplAPI_SDLGpu, eHplSetup_All, &vars);
+	mpEngine = CreateHPLEngine(aGraphicsAPI, eHplSetup_All, &vars);
 	
 	/////////////////////////
 	// Set up more properties

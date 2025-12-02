@@ -271,6 +271,10 @@ public:
 	bool mbAllowHardmode;
 
 	/////////////////////////
+	// . .
+	eHplAPI aGraphicsAPI;
+
+	/////////////////////////
 	// Kinda private variables
 	tWString msDefaultInitConfigFile;
 	tWString msInitConfigFile;

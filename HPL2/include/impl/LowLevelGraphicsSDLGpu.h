@@ -18,6 +18,8 @@
 namespace hpl {
 	//-------------------------------------------------
 
+	class cLowLevelGraphicsSDLGpu;
+
 	class cTextureSDLGpu : public iTexture {
 	public:
 		cTextureSDLGpu(const tString& asName, const tWString& asFullPath, eTextureType aType, eTextureUsage aUsage, iLowLevelGraphics* apLowLevelGraphics)
@@ -77,11 +79,18 @@ namespace hpl {
 
 	class cVertexBufferSDLGpu : public iVertexBuffer {
 	public:
-		cVertexBufferSDLGpu(iLowLevelGraphics* apLowLevelGraphics,
+		cVertexBufferSDLGpu(cLowLevelGraphicsSDLGpu* apLowLevelGraphics,
 			eVertexBufferType aType,
 			eVertexBufferDrawType aDrawType,eVertexBufferUsageType aUsageType,
 			int alReserveVtxSize,int alReserveIdxSize)
-				: iVertexBuffer(apLowLevelGraphics, aType, aDrawType, aUsageType, alReserveVtxSize, alReserveIdxSize) {}
+				: iVertexBuffer((iLowLevelGraphics*)apLowLevelGraphics, aType, aDrawType, aUsageType, alReserveVtxSize, alReserveIdxSize)
+		{
+			this->apGfx = apLowLevelGraphics;
+			this->aDrawType = aDrawType;
+			this->alReserveVtxSize = alReserveVtxSize;
+			this->alReserveIdxSize = alReserveIdxSize;
+		}
+
 		~cVertexBufferSDLGpu() override = default;
 		
 		void CreateElementArray(	eVertexBufferElement aType, eVertexBufferElementFormat aFormat,
@@ -108,7 +117,7 @@ namespace hpl {
 
         iVertexBuffer* CreateCopy(	eVertexBufferType aType,eVertexBufferUsageType aUsageType,
 									tVertexElementFlag alVtxToCopy) override {
-			return nullptr;
+			return hplNew( cVertexBufferSDLGpu, (apGfx, aType, aDrawType,aUsageType,alReserveVtxSize,alReserveIdxSize) );
 		}
 		
         cBoundingVolume CreateBoundingVolume() override {
@@ -131,6 +140,11 @@ namespace hpl {
 		
 		void ResizeArray(eVertexBufferElement aElement, int alSize) override { }
 		void ResizeIndices(int alSize) override { }
+	private:
+		cLowLevelGraphicsSDLGpu* apGfx;
+		eVertexBufferDrawType aDrawType;
+		int alReserveVtxSize;
+		int alReserveIdxSize;
 	};
 
 	class cGpuProgramSDLGpu : public iGpuProgram {
