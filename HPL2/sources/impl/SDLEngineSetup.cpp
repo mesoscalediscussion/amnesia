@@ -31,7 +31,7 @@
 
 #include "impl/KeyboardSDL.h"
 #include "impl/MouseSDL.h"
-#include "impl/LowLevelGraphicsSDL.h"
+#include "impl/LowLevelGraphicsOpenGL.h"
 #include "impl/LowLevelResourcesSDL.h"
 #include "impl/LowLevelSystemSDL.h"
 #include "impl/LowLevelInputSDL.h"
@@ -74,7 +74,7 @@ namespace hpl {
 		
 		//////////////////////////
 		// Graphics
-		mpLowLevelGraphics = hplNew( cLowLevelGraphicsSDL,() );
+		mpLowLevelGraphics = hplNew( cLowLevelGraphicsOpenGL,() );
 		
 		//////////////////////////
 		// Input

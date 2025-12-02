@@ -21,7 +21,7 @@
 #define HPL_SDL_TEXTURE_H
 
 #include "graphics/Texture.h"
-#include "impl/LowLevelGraphicsSDL.h"
+#include "impl/LowLevelGraphicsOpenGL.h"
 
 #include <glad/gl.h>
 #if defined(__APPLE__)&&defined(__MACH__)
@@ -38,11 +38,11 @@ namespace hpl {
 
 	class cBitmapData;
 
-	class cSDLTexture : public iTexture
+	class cTextureGL : public iTexture
 	{
 	public:
-		cSDLTexture(const tString& asName, eTextureType aType, eTextureUsage aUsage, iLowLevelGraphics* apLowLevelGraphics);
-		~cSDLTexture();
+		cTextureGL(const tString& asName, eTextureType aType, eTextureUsage aUsage, iLowLevelGraphics* apLowLevelGraphics);
+		~cTextureGL();
 
 		bool CreateFromBitmap(cBitmap* pBmp);
 		bool CreateAnimFromBitmapVec(std::vector<cBitmap*> *avBitmaps);
@@ -103,7 +103,7 @@ namespace hpl {
 		
 		tUIntVec mvTextureHandles;
 		bool mbContainsData;
-		cLowLevelGraphicsSDL* mpGfxSDL;
+		cLowLevelGraphicsOpenGL* mpGfxSDL;
 
 		float mfTimeCount;
 		int mlTextureIndex;

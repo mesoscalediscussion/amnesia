@@ -18,7 +18,7 @@
  */
 
 #include "impl/PBuffer.h"
-#include "impl/LowLevelGraphicsSDL.h"
+#include "impl/LowLevelGraphicsOpenGL.h"
 #include "system/LowLevelSystem.h"
 
 
@@ -166,7 +166,7 @@ namespace hpl {
 				
 		if(mbShareObjects)
 		{
-			cLowLevelGraphicsSDL* pSDLGfx = static_cast<cLowLevelGraphicsSDL*>(mpLowLevelGraphics);
+			cLowLevelGraphicsOpenGL* pSDLGfx = static_cast<cLowLevelGraphicsOpenGL*>(mpLowLevelGraphics);
 			pSDLGfx->SetupGL();
 		}
 		

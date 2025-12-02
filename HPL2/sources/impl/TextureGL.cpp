@@ -17,13 +17,13 @@
  * along with Amnesia: A Machine For Pigs.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "impl/SDLTexture.h"
+#include "impl/TextureGL.h"
 
 #include "system/LowLevelSystem.h"
 #include "math/Math.h"
 #include "graphics/Bitmap.h"
 
-#include "impl/LowLevelGraphicsSDL.h"
+#include "impl/LowLevelGraphicsOpenGL.h"
 
 #include <cmath>
 #include <cstring>
@@ -36,12 +36,12 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	cSDLTexture::cSDLTexture(const tString& asName, eTextureType aType, eTextureUsage aUsage, iLowLevelGraphics* apLowLevelGraphics)
+	cTextureGL::cTextureGL(const tString& asName, eTextureType aType, eTextureUsage aUsage, iLowLevelGraphics* apLowLevelGraphics)
 				: iTexture(asName,_W(""),aType, aUsage, apLowLevelGraphics)
 	{
 		mbContainsData = false;
 				
-		mpGfxSDL = static_cast<cLowLevelGraphicsSDL*>(mpLowLevelGraphics);
+		mpGfxSDL = static_cast<cLowLevelGraphicsOpenGL*>(mpLowLevelGraphics);
 
 		mlTextureIndex = 0;
 		mfTimeCount =0;
@@ -49,7 +49,7 @@ namespace hpl {
 		mfTimeDir = 1;
 	}
 
-	cSDLTexture::~cSDLTexture()
+	cTextureGL::~cTextureGL()
 	{
 		;
 
@@ -68,7 +68,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	bool cSDLTexture::CreateFromBitmap(cBitmap* apBmp)
+	bool cTextureGL::CreateFromBitmap(cBitmap* apBmp)
 	{
 		;
 
@@ -79,7 +79,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	bool cSDLTexture::CreateAnimFromBitmapVec(std::vector<cBitmap*> *avBitmaps)
+	bool cTextureGL::CreateAnimFromBitmapVec(std::vector<cBitmap*> *avBitmaps)
 	{
 		;
 
@@ -100,7 +100,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	bool cSDLTexture::CreateCubeFromBitmapVec(std::vector<cBitmap*> *avBitmaps)
+	bool cTextureGL::CreateCubeFromBitmapVec(std::vector<cBitmap*> *avBitmaps)
 	{
 		;
 
@@ -139,7 +139,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	bool cSDLTexture::CreateFromRawData(const cVector3l &avSize,ePixelFormat aPixelFormat, unsigned char *apData)
+	bool cTextureGL::CreateFromRawData(const cVector3l &avSize,ePixelFormat aPixelFormat, unsigned char *apData)
 	{
 		;
 
@@ -187,7 +187,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	void cSDLTexture::SetRawData(	int alLevel, const cVector3l& avOffset, const cVector3l& avSize, 
+	void cTextureGL::SetRawData(	int alLevel, const cVector3l& avOffset, const cVector3l& avSize,
 									ePixelFormat aPixelFormat, void *apData)
 	{
 		;
@@ -223,7 +223,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	void cSDLTexture::Update(float afTimeStep)
+	void cTextureGL::Update(float afTimeStep)
 	{
 		if(mvTextureHandles.size() > 1)
 		{
@@ -258,12 +258,12 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	bool cSDLTexture::HasAnimation()
+	bool cTextureGL::HasAnimation()
 	{
 		return mvTextureHandles.size() > 1;
 	}
 	
-	void cSDLTexture::NextFrame()
+	void cTextureGL::NextFrame()
 	{
 		mfTimeCount += mfTimeDir;
 
@@ -293,7 +293,7 @@ namespace hpl {
 		}
 	}
 
-	void cSDLTexture::PrevFrame()
+	void cTextureGL::PrevFrame()
 	{
 		mfTimeCount -= mfTimeDir;
 
@@ -323,27 +323,27 @@ namespace hpl {
 		}
 	}
 	
-	float cSDLTexture::GetT()
+	float cTextureGL::GetT()
 	{
 		return cMath::Modulus(mfTimeCount,1.0f);
 	}
 
-	float cSDLTexture::GetTimeCount()
+	float cTextureGL::GetTimeCount()
 	{
 		return mfTimeCount;
 	}
-	void cSDLTexture::SetTimeCount(float afX)
+	void cTextureGL::SetTimeCount(float afX)
 	{
 		mfTimeCount = afX;
 	}
-	int cSDLTexture::GetCurrentLowlevelHandle()
+	int cTextureGL::GetCurrentLowlevelHandle()
 	{
 		return GetTextureHandle();
 	}
 
 	//-----------------------------------------------------------------------
 
-	void cSDLTexture::SetFilter(eTextureFilter aFilter)
+	void cTextureGL::SetFilter(eTextureFilter aFilter)
 	{
 		if(mFilter == aFilter) return;
 
@@ -401,7 +401,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	void cSDLTexture::SetAnisotropyDegree(float afX)
+	void cTextureGL::SetAnisotropyDegree(float afX)
 	{
 		if(mbContainsData==false) return;
 		if(!mpLowLevelGraphics->GetCaps(eGraphicCaps_AnisotropicFiltering)) return;
@@ -429,7 +429,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	void cSDLTexture::SetWrapS(eTextureWrap aMode)
+	void cTextureGL::SetWrapS(eTextureWrap aMode)
 	{
 		if(mType == eTextureType_Rect) return; //Rect only has one mode! (clamp to edge)
 
@@ -454,7 +454,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	void cSDLTexture::SetWrapT(eTextureWrap aMode)
+	void cTextureGL::SetWrapT(eTextureWrap aMode)
 	{
 		if(mType == eTextureType_Rect) return; //Rect only has one mode! (clamp to edge)
 
@@ -479,7 +479,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	void cSDLTexture::SetWrapR(eTextureWrap aMode)
+	void cTextureGL::SetWrapR(eTextureWrap aMode)
 	{
 		if(mType == eTextureType_Rect) return; //Rect only has one mode! (clamp to edge)
 
@@ -504,7 +504,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	void cSDLTexture::SetWrapSTR(eTextureWrap aMode)
+	void cTextureGL::SetWrapSTR(eTextureWrap aMode)
 	{
 		if(mType == eTextureType_Rect) return; //Rect only has one mode! (clamp to edge)
 
@@ -533,7 +533,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	void cSDLTexture::SetCompareMode(eTextureCompareMode aMode)
+	void cTextureGL::SetCompareMode(eTextureCompareMode aMode)
 	{
 		mCompareMode = aMode;
 
@@ -555,7 +555,7 @@ namespace hpl {
 	}
 	
 	
-	void cSDLTexture::SetCompareFunc(eTextureCompareFunc aFunc)
+	void cTextureGL::SetCompareFunc(eTextureCompareFunc aFunc)
 	{
 		mCompareFunc = aFunc;
 
@@ -578,7 +578,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	void cSDLTexture::AutoGenerateMipmaps()
+	void cTextureGL::AutoGenerateMipmaps()
 	{
 		if(mbUseMipMaps==false) return;
 
@@ -601,7 +601,7 @@ namespace hpl {
 	
 	//-----------------------------------------------------------------------
 
-	unsigned int cSDLTexture::GetTextureHandle()
+	unsigned int cTextureGL::GetTextureHandle()
 	{
 		if(mbContainsData==false) return 0;
 
@@ -630,7 +630,7 @@ namespace hpl {
 	
 	//-----------------------------------------------------------------------
 
-	void cSDLTexture::GenerateHandles(int alNumOfHandles)
+	void cTextureGL::GenerateHandles(int alNumOfHandles)
 	{
 		if( (int)mvTextureHandles.size() < alNumOfHandles)
 		{
@@ -642,7 +642,7 @@ namespace hpl {
 	
 	//-----------------------------------------------------------------------
 
-	bool cSDLTexture::CreateFromBitmapToIndex(cBitmap* apBmp, int alIdx)
+	bool cTextureGL::CreateFromBitmapToIndex(cBitmap* apBmp, int alIdx)
 	{
 		////////////////////////////
 		//Create Cubemap texture
@@ -685,7 +685,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	bool cSDLTexture::CreateTexture(	int alTextureHandle,
+	bool cTextureGL::CreateTexture(	int alTextureHandle,
 										cBitmapData* apBitmapImage, int alNumOfMipMaps,
 										const cVector3l avSize, ePixelFormat aPixelFormat, 
 										int alFaceNum,bool abGenerateMipMaps,
@@ -843,7 +843,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	void cSDLTexture::GenerateMipMaps(	GLenum aGLTarget, ePixelFormat aPixelFormat,const cVector3l avSize, 
+	void cTextureGL::GenerateMipMaps(	GLenum aGLTarget, ePixelFormat aPixelFormat,const cVector3l avSize,
 										unsigned char *apData,int alDataSize, int alFaceNum)
 	{
 		GLenum GLFormat = PixelFormatToGLFormat(aPixelFormat);
@@ -903,7 +903,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	bool cSDLTexture::CopyTextureDataToGL(	int alTextureHandle, int alLevel,unsigned char *apData,int alDataSize,
+	bool cTextureGL::CopyTextureDataToGL(	int alTextureHandle, int alLevel,unsigned char *apData,int alDataSize,
 											const cVector3l avSize, ePixelFormat aPixelFormat,int alFaceNum)
 	{
 		GLenum GLTarget = TextureTypeToGLTarget(mType);
@@ -984,7 +984,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	void cSDLTexture::SetupProperties(int alTextureHandle)
+	void cTextureGL::SetupProperties(int alTextureHandle)
 	{
 		if(mbContainsData==false) return;
 		
@@ -1044,7 +1044,7 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
-	unsigned char* cSDLTexture::ResizePixelData(unsigned char *apData, int alBytesPerPixel)
+	unsigned char* cTextureGL::ResizePixelData(unsigned char *apData, int alBytesPerPixel)
 	{
 		if(mlSizeDownScaleLevel<=0 || mvSize.x <= mvMinDownScaleSize.x) return NULL;
 

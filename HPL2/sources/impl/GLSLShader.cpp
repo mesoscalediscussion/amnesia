@@ -18,7 +18,7 @@
  */
 
 #include "impl/GLSLShader.h"
-#include "impl/SDLTexture.h"
+#include "impl/TextureGL.h"
 #include "impl/LowLevelGraphicsSDL.h"
 #include "system/LowLevelSystem.h"
 

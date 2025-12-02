@@ -21,8 +21,8 @@
 
 #include "system/LowLevelSystem.h"
 
-#include "impl/SDLTexture.h"
-#include "impl/LowLevelGraphicsSDL.h"
+#include "impl/TextureGL.h"
+#include "impl/LowLevelGraphicsOpenGL.h"
 
 
 
@@ -396,7 +396,7 @@ namespace hpl {
 		eTextureType texType = apTexture->GetType();
 		GLenum GLTarget = TextureTypeToGLTarget(texType);
 
-		cSDLTexture *pTextureSDL = static_cast<cSDLTexture*>(apTexture); 
+		cTextureGL *pTextureSDL = static_cast<cTextureGL*>(apTexture); 
 
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, mlHandle);
 		

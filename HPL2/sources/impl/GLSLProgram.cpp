@@ -22,7 +22,7 @@
 #include "system/LowLevelSystem.h"
 #include "system/String.h"
 
-#include "impl/SDLTexture.h"
+#include "impl/TextureGL.h"
 #include "impl/GLSLShader.h"
 #include "impl/LowLevelGraphicsSDL.h"
 
