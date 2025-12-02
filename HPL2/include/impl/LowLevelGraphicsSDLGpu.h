@@ -7,7 +7,195 @@
 #include "impl/LowLevelGraphicsSDL.h"
 #include "math/MathTypes.h"
 
+#include "graphics/Texture.h"
+#include "graphics/GPUShader.h"
+#include "graphics/VertexBuffer.h"
+#include "graphics/FontData.h"
+#include "graphics/GPUProgram.h"
+#include "graphics/FrameBuffer.h"
+#include "graphics/OcclusionQuery.h"
+
 namespace hpl {
+	//-------------------------------------------------
+
+	class cTextureSDLGpu : public iTexture {
+	public:
+		cTextureSDLGpu(const tString& asName, const tWString& asFullPath, eTextureType aType, eTextureUsage aUsage, iLowLevelGraphics* apLowLevelGraphics)
+			: iTexture(asName, asFullPath, aType, aUsage, apLowLevelGraphics) {}
+		~cTextureSDLGpu() override {}
+
+		bool CreateFromBitmap(cBitmap* pBmp) override { return true; }
+		bool CreateAnimFromBitmapVec(std::vector<cBitmap*> *avBitmaps) override { return true; }
+		bool CreateCubeFromBitmapVec(std::vector<cBitmap*> *avBitmaps) override { return true; }
+		bool CreateFromRawData(const cVector3l &avSize,ePixelFormat aPixelFormat, unsigned char *apData) override { return true; }
+		
+		void SetRawData(int alLevel, const cVector3l& avOffset, const cVector3l& avSize,
+						ePixelFormat aPixelFormat, void *apData) override { }
+
+		void Update(float afTimeStep) override { }
+		
+		void SetFilter(eTextureFilter aFilter) override { }
+		void SetAnisotropyDegree(float afX) override { }
+		
+		void SetWrapS(eTextureWrap aMode) override { }
+		void SetWrapT(eTextureWrap aMode) override { }
+		void SetWrapR(eTextureWrap aMode) override { }
+		void SetWrapSTR(eTextureWrap aMode) override { }
+		
+		void SetCompareMode(eTextureCompareMode aMode) override { }
+		void SetCompareFunc(eTextureCompareFunc aFunc) override { }
+		
+		void AutoGenerateMipmaps() override { }
+		
+		bool HasAnimation() override { return false; }
+		void NextFrame() override { }
+		void PrevFrame() override { }
+		float GetT() override { return 0; }
+		float GetTimeCount() override { return 0; }
+		void SetTimeCount(float afX) override { }
+		int GetCurrentLowlevelHandle() override { return 0; }
+	};
+
+	class cGpuShaderSDLGpu : public iGpuShader {
+	public:
+		cGpuShaderSDLGpu(const tString& asName, const tWString& asFullPath, eGpuShaderType aType, eGpuProgramFormat aProgramFormat)
+			: iGpuShader(asName, asFullPath, aType, aProgramFormat) { }
+		~cGpuShaderSDLGpu() override = default;
+
+		bool Reload() override { return true; }
+		void Unload() override { }
+		void Destroy() override { }
+
+		bool SamplerNeedsTextureUnitSetup() override { return false; };
+		bool CreateFromFile(const tWString& asFile, const tString& asEntry="main", bool abPrintInfoIfFail=true) override {
+			return true;
+		}
+		bool CreateFromString(const char *apStringData, const tString& asEntry="main", bool abPrintInfoIfFail=true) override {
+			return true;
+		}
+	};
+
+	class cVertexBufferSDLGpu : public iVertexBuffer {
+	public:
+		cVertexBufferSDLGpu(iLowLevelGraphics* apLowLevelGraphics,
+			eVertexBufferType aType,
+			eVertexBufferDrawType aDrawType,eVertexBufferUsageType aUsageType,
+			int alReserveVtxSize,int alReserveIdxSize)
+				: iVertexBuffer(apLowLevelGraphics, aType, aDrawType, aUsageType, alReserveVtxSize, alReserveIdxSize) {}
+		~cVertexBufferSDLGpu() override = default;
+		
+		void CreateElementArray(	eVertexBufferElement aType, eVertexBufferElementFormat aFormat,
+									int alElementNum, int alProgramVarIndex=0) override { }
+		
+		void AddVertexVec3f(eVertexBufferElement aElement,const cVector3f& avVtx) override { }
+		void AddVertexVec4f(eVertexBufferElement aElement,const cVector3f& avVtx, float afW) override { }
+		void AddVertexColor(eVertexBufferElement aElement,const cColor& aColor) override { }
+		void AddIndex(unsigned int alIndex) override { }
+		
+		bool Compile(tVertexCompileFlag aFlags) override { return true; }
+		void UpdateData(tVertexElementFlag aTypes, bool abIndices) override { }
+		
+		void CreateShadowDouble(bool abUpdateData) override { }
+		
+		void Transform(const cMatrixf &mtxTransform) override { }
+
+		void Draw(eVertexBufferDrawType aDrawType = eVertexBufferDrawType_LastEnum) override { }
+		void DrawIndices(	unsigned int *apIndices, int alCount,
+							eVertexBufferDrawType aDrawType = eVertexBufferDrawType_LastEnum) override { }
+
+		void Bind() override { }
+		void UnBind() override { }
+
+        iVertexBuffer* CreateCopy(	eVertexBufferType aType,eVertexBufferUsageType aUsageType,
+									tVertexElementFlag alVtxToCopy) override {
+			return nullptr;
+		}
+		
+        cBoundingVolume CreateBoundingVolume() override {
+			return cBoundingVolume();
+		}
+
+        int GetElementNum(eVertexBufferElement aElement) override { return 0; }
+		eVertexBufferElementFormat GetElementFormat(eVertexBufferElement aElement) override {
+			return eVertexBufferElementFormat_LastEnum;
+		}
+		int GetElementProgramVarIndex(eVertexBufferElement aElement) override { return 0; }
+		float* GetFloatArray(eVertexBufferElement aElement) override { return nullptr; }
+		int* GetIntArray(eVertexBufferElement aElement) override { return nullptr; }
+		unsigned char* GetByteArray(eVertexBufferElement aElement) override { return nullptr; }
+		
+		unsigned int* GetIndices() override { return nullptr; }
+		
+		int GetVertexNum() override { return 0; }
+		int GetIndexNum() override { return 0; }
+		
+		void ResizeArray(eVertexBufferElement aElement, int alSize) override { }
+		void ResizeIndices(int alSize) override { }
+	};
+
+	class cGpuProgramSDLGpu : public iGpuProgram {
+	public:
+		cGpuProgramSDLGpu(const tString& asName,eGpuProgramFormat aProgramFormat)
+			: iGpuProgram(asName, aProgramFormat) {}
+		~cGpuProgramSDLGpu() override = default;
+
+		bool Link() override { return true; }
+
+		void Bind()  override { }
+		void UnBind()  override { }
+
+		bool CanAccessAPIMatrix() override { return true; }
+		
+		bool SetSamplerToUnit(const tString& asSamplerName, int alUnit) override { return true; }
+
+		int GetVariableId(const tString& asName) override { return 0; }
+		bool GetVariableAsId(const tString& asName, int alId) override { return true; }
+		
+		bool SetInt(int alVarId, int alX) override { return true; }
+		bool SetFloat(int alVarId, float afX) override { return true; }
+		bool SetVec2f(int alVarId, float afX,float afY) override { return true; }
+		bool SetVec3f(int alVarId, float afX,float afY,float afZ) override { return true; }
+		bool SetVec4f(int alVarId, float afX,float afY,float afZ, float afW) override { return true; }
+		bool SetMatrixf(int alVarId, const cMatrixf& mMtx) override { return true; }
+		bool SetMatrixf(int alVarId, eGpuShaderMatrix mType, eGpuShaderMatrixOp mOp) override { return true; }
+	};
+
+	class cFrameBufferSDLGpu : public iFrameBuffer {
+	public:
+		cFrameBufferSDLGpu(const tString& asName, iLowLevelGraphics* apLowLevelGraphics)
+			: iFrameBuffer(asName, apLowLevelGraphics) {}
+
+		void SetTexture2D(int alColorIdx, iTexture *apTexture, int alMipmapLevel=0) override {}
+		void SetTexture3D(int alColorIdx, iTexture *apTexture, int alZ, int alMipmapLevel=0) override {}
+		void SetTextureCubeMap(int alColorIdx, iTexture *apTexture, int alFace, int alMipmapLevel=0) override {}
+
+		void SetDepthTexture2D(iTexture *apTexture, int alMipmapLevel=0) override {}
+		void SetDepthTextureCubeMap(iTexture *apTexture, int alFace, int alMipmapLevel=0) override {}
+
+		void SetDepthStencilBuffer(iDepthStencilBuffer* apBuffer) override {}
+
+		bool CompileAndValidate() override { return true; }
+
+		void PostBindUpdate() override { }
+	};
+
+	class cDepthStencilBufferSDLGpu : public iDepthStencilBuffer {
+	public:
+		cDepthStencilBufferSDLGpu(const cVector2l& avSize, int alDepthBits, int alStencilBits)
+			: iDepthStencilBuffer(avSize, alDepthBits, alStencilBits) {}
+	};
+
+	class cOcclusionQuerySDLGpu : public iOcclusionQuery {
+	public:
+		cOcclusionQuerySDLGpu() = default;
+		~cOcclusionQuerySDLGpu() override = default;
+
+		void Begin() override {}
+		void End() override {}
+		bool FetchResults() override { return true; }
+		unsigned int GetSampleCount() override { return 1; }
+	};
+
 	//-------------------------------------------------
 
 	//////////////////////////////////////////
@@ -28,7 +216,7 @@ namespace hpl {
 
 		bool Init(	int alWidth, int alHeight, int alDisplay, int alBpp, int abFullscreen, int alMultisampling,
 					eGpuProgramFormat aGpuProgramFormat,const tString& asWindowCaption,
-					const cVector2l &avWindowPos);
+					const cVector2l &avWindowPos) override;
 
 		int GetCaps(eGraphicCaps aType);
 
@@ -203,6 +391,8 @@ namespace hpl {
 		void ClearBatch();
 	private:
 		// . .
+
+		iFrameBuffer* mCurrentFrameBuffer;
 	};
 };
 

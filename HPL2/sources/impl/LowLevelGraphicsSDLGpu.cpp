@@ -28,6 +28,7 @@
 #include "impl/SDLFontData.h"
 
 #include "graphics/Bitmap.h"
+#include "impl/FrameBufferGL.h"
 
 #ifndef WIN32
 #define CALLBACK __attribute__ ((__stdcall__))
@@ -42,6 +43,7 @@ namespace hpl {
 
 	cLowLevelGraphicsSDLGpu::cLowLevelGraphicsSDLGpu()
 	{
+		mCurrentFrameBuffer = CreateFrameBuffer(". .");
 	}
 
 	//-----------------------------------------------------------------------
@@ -82,73 +84,50 @@ namespace hpl {
 
 	int cLowLevelGraphicsSDLGpu::GetCaps(eGraphicCaps aType)
 	{
-		;
-
+		// kind of just making these numbers up
 		switch(aType)
 		{
-		case eGraphicCaps_TextureTargetRectangle:	return 1;
-
-		case eGraphicCaps_VertexBufferObject:		return 1;
-		case eGraphicCaps_TwoSideStencil:
-			{
+		case eGraphicCaps_TextureTargetRectangle:
 				return 1;
-			}
-
+		case eGraphicCaps_VertexBufferObject:
+				return 1;
+		case eGraphicCaps_TwoSideStencil:
+				return 1;
 		case eGraphicCaps_MaxTextureImageUnits:
-			{
-			}
-
+				return 32;
 		case eGraphicCaps_MaxTextureCoordUnits:
-			{
-			}
+				return 16384;
 		case eGraphicCaps_MaxUserClipPlanes:
-			{
-			}
-
-		case eGraphicCaps_AnisotropicFiltering:		return 1;
-
+				return 6;
+		case eGraphicCaps_AnisotropicFiltering:
+				return 1;
 		case eGraphicCaps_MaxAnisotropicFiltering:
-			{
-			}
-
-		case eGraphicCaps_Multisampling: return 1;
-
-		case eGraphicCaps_TextureCompression:		return 1;
-		case eGraphicCaps_TextureCompression_DXTC:	return 1;
-
-		case eGraphicCaps_AutoGenerateMipMaps:		return 1;
-
-		case eGraphicCaps_RenderToTexture:			return 1;
-
+				return 16;
+		case eGraphicCaps_Multisampling:
+				return 1;
+		case eGraphicCaps_TextureCompression:
+		case eGraphicCaps_TextureCompression_DXTC:
+				return 1;
+		case eGraphicCaps_AutoGenerateMipMaps:
+				return 1;
+		case eGraphicCaps_RenderToTexture:
+				return 1;
 		case eGraphicCaps_MaxDrawBuffers:
-			{
-			}
-		case eGraphicCaps_PackedDepthStencil:	return 1;
-		case eGraphicCaps_TextureFloat:			return 1;
-
-		case eGraphicCaps_PolygonOffset:		return 1;
-
-		case eGraphicCaps_ShaderModel_2:		return 1;
+				return 255;
+		case eGraphicCaps_PackedDepthStencil:
+				return 1;
+		case eGraphicCaps_TextureFloat:
+				return 1;
+		case eGraphicCaps_PolygonOffset:
+				return 1;
+		case eGraphicCaps_ShaderModel_2:
 		case eGraphicCaps_ShaderModel_3:
-			{
-				if(mbForceShaderModel3And4Off)
-					return 0;
-				else
-					return 10;
-			}
 		case eGraphicCaps_ShaderModel_4:
-			{
-				if(mbForceShaderModel3And4Off)
-					return 0;
-				else
-					return 1;
-			}
-
-		case eGraphicCaps_OGL_ATIFragmentShader: return 0;
-
+				return 1;
+		case eGraphicCaps_OGL_ATIFragmentShader:
+				return 0;
 		case eGraphicCaps_MaxColorRenderTargets:
-			{
-			}
+				return 255;
 		}
 		return 0;
 	}
@@ -184,22 +163,28 @@ namespace hpl {
 
 	iFontData* cLowLevelGraphicsSDLGpu::CreateFontData(const tString &asName)
 	{
+		return hplNew( cSDLFontData, (asName, (iLowLevelGraphics*)this) );
 	}
 
 	//-----------------------------------------------------------------------
 
 	iGpuProgram* cLowLevelGraphicsSDLGpu::CreateGpuProgram(const tString& asName)
 	{
+		return hplNew( cGpuProgramSDLGpu, (asName, eGpuProgramFormat_SPIRV) );
 	}
 
 	iGpuShader* cLowLevelGraphicsSDLGpu::CreateGpuShader(const tString& asName, eGpuShaderType aType)
 	{
+		return hplNew( cGpuShaderSDLGpu, (asName, _W(""), aType, eGpuProgramFormat_SPIRV) );
 	}
 
 	//-----------------------------------------------------------------------
 
 	iTexture* cLowLevelGraphicsSDLGpu::CreateTexture(const tString &asName,eTextureType aType,   eTextureUsage aUsage)
 	{
+		cTextureSDLGpu *pTexture = hplNew( cTextureSDLGpu, (asName, _W(""), aType, aUsage, this) );
+
+		return pTexture;
 	}
 
 	//-----------------------------------------------------------------------
@@ -209,24 +194,28 @@ namespace hpl {
 															eVertexBufferUsageType aUsageType,
 															int alReserveVtxSize,int alReserveIdxSize)
 	{
+		return hplNew( cVertexBufferSDLGpu, (this, aType, aDrawType,aUsageType,alReserveVtxSize,alReserveIdxSize) );
 	}
 
 	//-----------------------------------------------------------------------
 
 	iFrameBuffer* cLowLevelGraphicsSDLGpu::CreateFrameBuffer(const tString& asName)
 	{
+		return hplNew(cFrameBufferSDLGpu, (asName, (iLowLevelGraphics*)this));
 	}
 
 	//-----------------------------------------------------------------------
 
 	iDepthStencilBuffer* cLowLevelGraphicsSDLGpu::CreateDepthStencilBuffer(const cVector2l& avSize, int alDepthBits, int alStencilBits)
 	{
+		return hplNew(cDepthStencilBufferSDLGpu,(avSize, alDepthBits, alStencilBits));
 	}
 
 	//-----------------------------------------------------------------------
 
 	iOcclusionQuery* cLowLevelGraphicsSDLGpu::CreateOcclusionQuery()
 	{
+		return hplNew(cOcclusionQuerySDLGpu, ());
 	}
 
 	//-----------------------------------------------------------------------
@@ -263,6 +252,7 @@ namespace hpl {
 
 	cBitmap* cLowLevelGraphicsSDLGpu::CopyFrameBufferToBitmap(	const cVector2l &avScreenPos,const cVector2l &avScreenSize)
 	{
+		return hplNew(cBitmap, ());
 	}
 
 	//-----------------------------------------------------------------------
@@ -275,6 +265,7 @@ namespace hpl {
 
 	iFrameBuffer* cLowLevelGraphicsSDLGpu::GetCurrentFrameBuffer()
 	{
+		return mCurrentFrameBuffer;
 	}
 
 	//-----------------------------------------------------------------------
@@ -403,6 +394,7 @@ namespace hpl {
 
 	cPlanef cLowLevelGraphicsSDLGpu::GetClipPlane(int alIdx)
 	{
+		return cPlanef();
 	}
 
 	void cLowLevelGraphicsSDLGpu::SetClipPlaneActive(int alIdx, bool abX)
