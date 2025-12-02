@@ -84,11 +84,6 @@ namespace hpl {
 
 		virtual bool GetFullscreenModeActive() { return mbFullscreen; }
 
-		virtual void SetVsyncActive(bool abX, bool abAdaptive);
-
-		virtual void SetMultisamplingActive(bool abX);
-
-		virtual void SetGammaCorrection(float afX);
 		virtual float GetGammaCorrection();
 
 		virtual int GetMultisampling(){ return mlMultisampling;}

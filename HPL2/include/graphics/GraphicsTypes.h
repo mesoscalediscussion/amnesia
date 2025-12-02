@@ -458,7 +458,12 @@ namespace hpl {
 
 	enum eGpuProgramFormat
 	{
+		// used by OpenGL renderer
 		eGpuProgramFormat_GLSL,
+		// used by SDL_gpu renderer
+		eGpuProgramFormat_DXIL,
+		eGpuProgramFormat_SPIRV,
+		eGpuProgramFormat_MSL,
 		eGpuProgramFormat_LastEnum
 	};
 

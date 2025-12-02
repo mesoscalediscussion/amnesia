@@ -497,6 +497,37 @@ namespace hpl {
 
 	//-----------------------------------------------------------------------
 
+	void cLowLevelGraphicsOpenGL::SetVsyncActive(bool abX, bool abAdaptive)
+		{
+			;
+			SDL_GL_SetSwapInterval(abX ? (abAdaptive ? -1 : 1) : 0);
+		}
+
+	//-----------------------------------------------------------------------
+
+	void cLowLevelGraphicsOpenGL::SetMultisamplingActive(bool abX)
+		{
+			;
+
+			if(!GLAD_GL_ARB_multisample || mlMultisampling<=0) return;
+
+			if(abX)
+				glEnable(GL_MULTISAMPLE_ARB);
+			else
+				glDisable(GL_MULTISAMPLE_ARB);
+		}
+
+	//-----------------------------------------------------------------------
+
+	void cLowLevelGraphicsOpenGL::SetGammaCorrection(float afX)
+		{
+			;
+
+			mfGammaCorrection = afX;
+		}
+
+	//-----------------------------------------------------------------------
+
 	//////////////////////////////////////////////////////////////////////////
 	// DATA CREATION
 	//////////////////////////////////////////////////////////////////////////

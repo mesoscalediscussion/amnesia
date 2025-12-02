@@ -107,37 +107,6 @@ namespace hpl {
 		return (SDL_GetWindowFlags(mpScreen) & SDL_WINDOW_HIDDEN) == 0;
     }
 
-	//-----------------------------------------------------------------------
-
-	void cLowLevelGraphicsSDL::SetVsyncActive(bool abX, bool abAdaptive)
-	{
-        ;
-        SDL_GL_SetSwapInterval(abX ? (abAdaptive ? -1 : 1) : 0);
-	}
-
-	//-----------------------------------------------------------------------
-
-	void cLowLevelGraphicsSDL::SetMultisamplingActive(bool abX)
-	{	
-		;
-
-		if(!GLAD_GL_ARB_multisample || mlMultisampling<=0) return;
-
-		if(abX)
-			glEnable(GL_MULTISAMPLE_ARB);
-		else
-			glDisable(GL_MULTISAMPLE_ARB);
-	}
-
-	//-----------------------------------------------------------------------
-
-	void cLowLevelGraphicsSDL::SetGammaCorrection(float afX)
-	{
-		;
-
-		mfGammaCorrection = afX;
-	}
-
 	float cLowLevelGraphicsSDL::GetGammaCorrection()
 	{
 		;
