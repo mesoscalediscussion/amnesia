@@ -992,17 +992,6 @@ bool cLuxBase::InitMainConfig()
 		return false;
 	}
 
-	////////////////////////////////////
-	// Load the demo config file
-#ifdef LUX_DEMO_VERSION
-	mpDemoCfg = hplNew( cConfigFile, (msDemoConfigPath) );
-	if(mpDemoCfg->Load()==false)
-	{
-		msErrorMessage = _W("Failed to load demo config file!");
-		return false;
-	}
-#endif
-
 	///////////////////////////////////
 	// Create and init config handler
 	mpConfigHandler = hplNew(cLuxConfigHandler,());
@@ -1246,12 +1235,6 @@ void cLuxBase::ExitEngine()
 bool cLuxBase::InitGame()
 {
 	///////////////////////////////////////
-	// Demo output
-	#ifdef LUX_DEMO_VERSION
-		Log("- DEMO VERSION -\n");
-	#endif
-
-	///////////////////////////////////////
 	// Create game data
 	mvHudVirtualCenterSize = cVector2f(800,600);
 	LuxCalcGuiSetScreenOffset(mvHudVirtualCenterSize, mvHudVirtualSize, mvHudVirtualOffset);
@@ -1280,9 +1263,6 @@ bool cLuxBase::InitGame()
 	mpEngine->GetUpdater()->AddContainer("Journal");
 	mpEngine->GetUpdater()->AddContainer("Credits");
 	mpEngine->GetUpdater()->AddContainer("LoadScreen");
-#ifdef LUX_DEMO_VERSION
-	mpEngine->GetUpdater()->AddContainer("DemoEnd");
-#endif
 
 	///////////////////////////////////////
 	// Create Modules
@@ -1325,15 +1305,7 @@ bool cLuxBase::InitGame()
 	mpJournal = CreateModule( cLuxJournal, "Journal");
 
 	//Credits
-#ifndef LUX_DEMO_VERSION
 	mpCredits = CreateModule( cLuxCredits, "Credits");
-#endif
-
-	//Demo End
-	mpDemoEnd = NULL;
-#ifdef LUX_DEMO_VERSION
-	mpDemoEnd = CreateModule( cLuxDemoEnd, "DemoEnd");
-#endif
 
 	//Load screen
 	mpLoadScreenHandler = CreateModule( cLuxLoadScreenHandler, "LoadScreen");
@@ -1359,11 +1331,9 @@ bool cLuxBase::InitGame()
 	mpEngine->GetResources()->AddEntityLoader(hplNew(cLuxPropLoader_Button, ("Button")));
 	mpEngine->GetResources()->AddEntityLoader(hplNew(cLuxPropLoader_OilBarrel, ("OilBarrel")));
 	
-#ifndef LUX_DEMO_VERSION
 	mpEngine->GetResources()->AddEntityLoader(hplNew(cLuxPropLoader_EmotionStone, ("EmotionStone")));
 	mpEngine->GetResources()->AddEntityLoader(hplNew(cLuxPropLoader_NPC, ("NPC")));
 	mpEngine->GetResources()->AddEntityLoader(hplNew(cLuxPropLoader_MultiSlider, ("MultiSlider")));
-#endif
 	
 	mpEngine->GetResources()->AddEntityLoader(hplNew(cLuxPropLoader_Critter_Bug, ("CritterBug")));
 	mpEngine->GetResources()->AddEntityLoader(hplNew(cLuxPropLoader_Critter_Spider, ("CritterSpider")));
@@ -1372,9 +1342,7 @@ bool cLuxBase::InitGame()
 	mpEngine->GetResources()->AddEntityLoader(hplNew(cLuxEnemyLoader_WaterLurker, ("Enemy_WaterLurker")));
 	mpEngine->GetResources()->AddEntityLoader(hplNew(cLuxEnemyLoader_ManPig, ("Enemy_ManPig")));
 
-#ifndef LUX_DEMO_VERSION
 	mpEngine->GetResources()->AddEntityLoader(hplNew(cLuxCommentaryIconLoader, ("CommentaryIcon")));
-#endif
 
 	mpEngine->GetResources()->AddAreaLoader(hplNew(cLuxAreaNodeLoader_PlayerStart, ("PlayerStart")));
 	mpEngine->GetResources()->AddAreaLoader(hplNew(cLuxAreaNodeLoader_PathNode, ("PathNode")));
@@ -1382,13 +1350,9 @@ bool cLuxBase::InitGame()
 
 	mpEngine->GetResources()->AddAreaLoader(hplNew(cLuxAreaLoader_Script, ("Script")));
 	mpEngine->GetResources()->AddAreaLoader(hplNew(cLuxAreaLoader_Flashback, ("Flashback")));
-#ifndef LUX_DEMO_VERSION
 	mpEngine->GetResources()->AddAreaLoader(hplNew(cLuxAreaLoader_Ladder, ("Ladder")));
-#endif
 	mpEngine->GetResources()->AddAreaLoader(hplNew(cLuxAreaLoader_Liquid, ("Liquid")));
-#ifndef LUX_DEMO_VERSION
 	mpEngine->GetResources()->AddAreaLoader(hplNew(cLuxAreaLoader_Sticky, ("Sticky")));
-#endif
 	mpEngine->GetResources()->AddAreaLoader(hplNew(cLuxAreaLoader_Insanity, ("Insanity")));
 	mpEngine->GetResources()->AddAreaLoader(hplNew(cLuxAreaLoader_Examine, ("Examine")));
 	mpEngine->GetResources()->AddAreaLoader(hplNew(cLuxAreaLoader_Sign, ("Sign")));

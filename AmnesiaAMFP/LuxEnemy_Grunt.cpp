@@ -362,7 +362,6 @@ bool cLuxEnemy_Grunt::StateEventImplement(int alState, eLuxEnemyStateEvent aEven
 
 	////////////////////////////////
 	// Alert
-	#ifndef LUX_DEMO_VERSION
 	kLuxState(eLuxEnemyState_Alert)
 		kLuxOnEnter	
 			ChangeSoundState(eLuxEnemySoundState_Alert);
@@ -724,7 +723,6 @@ bool cLuxEnemy_Grunt::StateEventImplement(int alState, eLuxEnemyStateEvent aEven
 		// Overload global
 		kLuxOnMessage(eLuxEnemyMessage_PlayerDetected)
 		kLuxOnMessage(eLuxEnemyMessage_HelpMe)
-	#endif
 		
 	////////////////////////////////
 	// Break door
