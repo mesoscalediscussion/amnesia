@@ -496,6 +496,7 @@ void cLuxBase::Exit()
 }
 
 //-----------------------------------------------------------------------
+/*
 #ifdef WIN32
 int GenerateDump(EXCEPTION_POINTERS* pExceptionPointers)
 {
@@ -528,6 +529,7 @@ int GenerateDump(EXCEPTION_POINTERS* pExceptionPointers)
     return EXCEPTION_EXECUTE_HANDLER;
 }
 #endif // WIN32
+*/
 
 void cLuxBase::Run()
 {
