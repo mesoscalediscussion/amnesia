@@ -96,7 +96,6 @@ enum eLuxInputState
 	eLuxInputState_Debug,
 	eLuxInputState_PreMenu,
 	eLuxInputState_Credits,
-	eLuxInputState_DemoEnd,
 	eLuxInputState_LoadScreen,
 
 	eLuxInputState_LastEnum

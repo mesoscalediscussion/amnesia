@@ -58,8 +58,6 @@ class cLuxInventory;
 
 class cLuxCredits;
 
-class cLuxDemoEnd;
-
 class cLuxPreMenu;
 
 class cLuxMainMenu;
@@ -244,7 +242,6 @@ public:
 	cLuxProgressLogHandler *mpProgressLogHandler;
 	cLuxLoadScreenHandler *mpLoadScreenHandler;
 	cLuxCredits *mpCredits;
-	cLuxDemoEnd* mpDemoEnd;
 	iLuxAchievementHandler* mpAchievementHandler;
 
 	tString msGameName;

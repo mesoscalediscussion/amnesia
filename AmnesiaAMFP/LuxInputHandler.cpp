@@ -26,7 +26,6 @@
 #include "LuxPreMenu.h"
 #include "LuxMainMenu.h"
 #include "LuxCredits.h"
-#include "LuxDemoEnd.h"
 
 #include "LuxInventory.h"
 #include "LuxJournal.h"
@@ -523,8 +522,6 @@ void cLuxInputHandler::Update(float afTimeStep)
 	case eLuxInputState_Debug: UpdateDebugInput(); break;
 	//Credits
 	case eLuxInputState_Credits: UpdateCreditsInput(); break;
-	//Demo End
-	case eLuxInputState_DemoEnd: UpdateDemoEndInput(); break;
 	//Load Screen
 	case eLuxInputState_LoadScreen: UpdateLoadScreenInput(); break;
 	}
@@ -1511,19 +1508,6 @@ void cLuxInputHandler::UpdateCreditsInput()
 
 //-----------------------------------------------------------------------
 
-void cLuxInputHandler::UpdateDemoEndInput()
-{
-	if(gpBase->mpDemoEnd)
-	{
-		if(mpInput->BecameTriggerd(eLuxAction_Exit))
-		{
-			gpBase->mpDemoEnd->Exit(false);
-		}
-	}
-}
-
-//-----------------------------------------------------------------------
-
 
 void cLuxInputHandler::UpdateLoadScreenInput()
 {
@@ -1552,7 +1536,6 @@ bool cLuxInputHandler::CurrentStateSendsInputToGui()
 	case eLuxInputState_Journal:
 	case eLuxInputState_MainMenu: 
 	case eLuxInputState_PreMenu:
-	case eLuxInputState_DemoEnd:
 		return true;	
 	}
 

@@ -58,9 +58,6 @@
     <ClCompile Include="LuxDebugHandler.cpp">
       <Filter>original</Filter>
     </ClCompile>
-    <ClCompile Include="LuxDemoEnd.cpp">
-      <Filter>original</Filter>
-    </ClCompile>
     <ClCompile Include="LuxEffectHandler.cpp">
       <Filter>original</Filter>
     </ClCompile>
@@ -391,9 +388,6 @@
       <Filter>original</Filter>
     </ClInclude>
     <ClInclude Include="LuxDebugHandler.h">
-      <Filter>original</Filter>
-    </ClInclude>
-    <ClInclude Include="LuxDemoEnd.h">
       <Filter>original</Filter>
     </ClInclude>
     <ClInclude Include="LuxEffectHandler.h">

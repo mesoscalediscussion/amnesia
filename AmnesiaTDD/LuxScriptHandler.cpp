@@ -42,7 +42,6 @@
 #include "LuxLoadScreenHandler.h"
 #include "LuxInsanityHandler.h"
 #include "LuxCredits.h"
-#include "LuxDemoEnd.h"
 
 #include "LuxProp_Object.h"
 #include "LuxProp_SwingDoor.h"
@@ -1004,8 +1003,7 @@ void __stdcall cLuxScriptHandler::AddKeyPart(int alKeyPart)
 
 void __stdcall cLuxScriptHandler::StartDemoEnd()
 {
-	if(gpBase->mpDemoEnd)
-		gpBase->mpEngine->GetUpdater()->SetContainer("DemoEnd");
+	// demo mode has been removed, but this might still be called somewhere..?
 }
 
 //-----------------------------------------------------------------------

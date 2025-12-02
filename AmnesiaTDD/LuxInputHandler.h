@@ -139,7 +139,6 @@ private:
 	void UpdateJournalInput();
 	void UpdateDebugInput();
 	void UpdateCreditsInput();
-	void UpdateDemoEndInput();
 	void UpdateLoadScreenInput();
 
 	bool CurrentStateSendsInputToGui();

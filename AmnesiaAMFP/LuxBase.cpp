@@ -48,8 +48,6 @@
 
 #include "LuxCredits.h"
 
-#include "LuxDemoEnd.h"
-
 #include "LuxPreMenu.h"
 
 #include "LuxMainMenu.h"

@@ -37,7 +37,6 @@
 #include "LuxMainMenu_LoadGame.h"
 #include "LuxMainMenu_CustomStory.h"
 
-#include "LuxDemoEnd.h"
 #include <sstream>
 #include "LuxAchievementHandler.h"
 
@@ -643,10 +642,7 @@ void cLuxMainMenu::OnMenuExit()
 	// Quit Game
 	case eLuxMainMenuExit_QuitGame:
 
-		if(gpBase->mpDemoEnd && gpBase->mpDemoEnd->ShowOnAllExit())
-			gpBase->mpEngine->GetUpdater()->SetContainer("DemoEnd");
-		else
-			gpBase->mpEngine->Exit();
+		gpBase->mpEngine->Exit();
 		
 		break;
 	////////////////

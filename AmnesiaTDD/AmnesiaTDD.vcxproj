@@ -158,7 +158,6 @@
     <ClCompile Include="LuxCompletionCountHandler.cpp" />
     <ClCompile Include="LuxCredits.cpp" />
     <ClCompile Include="LuxDebugHandler.cpp" />
-    <ClCompile Include="LuxDemoEnd.cpp" />
     <ClCompile Include="LuxEffectHandler.cpp" />
     <ClCompile Include="LuxEffectRenderer.cpp" />
     <ClCompile Include="LuxGlobalDataHandler.cpp" />
@@ -266,7 +265,6 @@
     <ClInclude Include="LuxCompletionCountHandler.h" />
     <ClInclude Include="LuxCredits.h" />
     <ClInclude Include="LuxDebugHandler.h" />
-    <ClInclude Include="LuxDemoEnd.h" />
     <ClInclude Include="LuxEffectHandler.h" />
     <ClInclude Include="LuxEffectRenderer.h" />
     <ClInclude Include="LuxGlobalDataHandler.h" />
