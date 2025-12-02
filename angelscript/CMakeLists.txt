@@ -4,11 +4,9 @@ project(angelscript)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-file(GLOB_RECURSE PROJECT_HEADERS "include/*.h")
 file(GLOB_RECURSE PROJECT_SOURCES "source/*.cpp")
 
 add_library(angelscript STATIC
-    ${PROJECT_HEADERS}
     ${PROJECT_SOURCES})
 
 target_include_directories(angelscript PUBLIC

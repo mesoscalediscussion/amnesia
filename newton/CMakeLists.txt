@@ -7,13 +7,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 file(GLOB_RECURSE PROJECT_SOURCES "core/*.cpp" "newton/*.cpp" "physics/*.cpp")
 
 add_library(newton STATIC
-    ${PROJECT_HEADERS}
     ${PROJECT_SOURCES})
 
 target_include_directories(newton
     PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
-    PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/core"
     "${CMAKE_CURRENT_SOURCE_DIR}/newton"
     "${CMAKE_CURRENT_SOURCE_DIR}/physics")

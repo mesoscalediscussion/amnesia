@@ -25,7 +25,7 @@
 #ifdef USE_OALWRAPPER
 # include "OALWrapper/OAL_Funcs.h"
 #else
-# include "OpenAL/OAL_Funcs.h"
+# include "sound/OAL_Funcs.h"
 #endif
 
 namespace hpl {

@@ -98,6 +98,5 @@ redist*/
 *.lib
 _temp
 vcpkg_installed
-cmake-build-debug/
-cmake-build-release/
+cmake-build-*/
 .idea/
