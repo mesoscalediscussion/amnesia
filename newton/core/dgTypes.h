@@ -116,14 +116,29 @@
 
 
 //************************************************************
-#ifndef _WIN32
-	#ifdef _DEBUG
-		#define _ASSERTE(x) assert(x)
-	#else 
-		#define _ASSERTE(x)
+// this is bad long-term because upgrading to Newton 2.36 seems to have introduced a number of bugs.
+// sleeping physics objects seem to misbehave, raycasts seem to misbehave..
+// the game seems to run fine without these asserts, minor bugs aside, so this is fine for debugging,
+// but the physics problems do need to be investigated and resolved before this version of the engine
+// could see a serious release.
+// maybe it would just be best to find the newton 2.00 source and downgrade back to that..?
+// but finding it is a nightmare..
+/*
+#ifdef _DEBUG
+	#define _ASSERTE(x) assert(x)
+	
+	#ifdef _WIN32
+		#define dgCheckFloat(x) (_finite(x) && !_isnan(x))
+	#else
+		#define dgCheckFloat(x) (isfinite(x) && !isnan(x))
 	#endif
+#else 
+	#define _ASSERTE(x)
+	#define dgCheckFloat(x)
 #endif
-
+*/
+#define _ASSERTE(x)
+#define dgCheckFloat(x)
 
 #define __USE_CPU_FOUND__
 
@@ -213,26 +228,6 @@ class dgBigVector;
 #else
 	#define dgApi
 	#define dgNaked
-#endif
-
-/*
-#ifdef _WIN32
-	#ifdef _DEBUG
-		#define dgCheckFloat(x) _finite(x)
-	#else
-		#define dgCheckFloat(x) true
-	#endif
-#else
-	#define dgCheckFloat(x) true
-#endif
-*/
-
-#ifdef _DEBUG
-	#ifdef _WIN32
-		#define dgCheckFloat(x) (_finite(x) && !_isnan(x))
-	#else
-		#define dgCheckFloat(x) (isfinite(x) && !isnan(x))
-	#endif
 #endif
 
 
