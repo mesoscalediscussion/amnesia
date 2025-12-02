@@ -392,6 +392,7 @@ namespace hpl {
 	private:
 		// . .
 
+		SDL_GPUDevice* mpDevice;
 		iFrameBuffer* mCurrentFrameBuffer;
 	};
 };

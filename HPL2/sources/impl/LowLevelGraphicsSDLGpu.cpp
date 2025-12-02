@@ -50,6 +50,9 @@ namespace hpl {
 
 	cLowLevelGraphicsSDLGpu::~cLowLevelGraphicsSDLGpu()
 	{
+		Log("cleaning up SDL_gpu renderer..\n");
+		SDL_ReleaseWindowFromGPUDevice(mpDevice, mpScreen);
+		SDL_DestroyGPUDevice(mpDevice);
 	}
 
 	//-----------------------------------------------------------------------
@@ -74,6 +77,53 @@ namespace hpl {
 
 		mGpuProgramFormat = aGpuProgramFormat;
 		if(mGpuProgramFormat == eGpuProgramFormat_LastEnum) mGpuProgramFormat = eGpuProgramFormat_SPIRV;
+
+		SDL_WindowFlags mlFlags = 0;
+		if (alWidth == 0 && alHeight == 0) {
+			mvScreenSize = cVector2l(800,600);
+			mlFlags |= SDL_WINDOW_FULLSCREEN;
+		} else if (abFullscreen) {
+			mlFlags |= SDL_WINDOW_FULLSCREEN;
+		}
+		Log(" Setting video mode: %d x %d - %d bpp\n",alWidth, alHeight, alBpp);
+		mpScreen = SDL_CreateWindow(asWindowCaption.c_str(), mvScreenSize.x, mvScreenSize.y, mlFlags);
+
+		if (!mpScreen) {
+			FatalError("Unable to create SDL window! %s\n", SDL_GetError());
+		}
+
+		int w, h;
+		SDL_GetWindowSizeInPixels(mpScreen, &w, &h);
+		mvScreenSize = cVector2l(w, h);
+
+		if (mbGrab) {
+			SetWindowGrab(true);
+		}
+
+		// create the gpu device..
+		bool bUseDebugMode = false;
+#ifdef DEBUG
+		bUseDebugMode = true;
+#endif
+		mpDevice = SDL_CreateGPUDevice(
+			SDL_GPU_SHADERFORMAT_DXIL | SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_MSL,
+			bUseDebugMode,
+			NULL);
+
+		if (!mpDevice) {
+			FatalError("unable to create GPU device! %s\n", SDL_GetError());
+		}
+
+		if (!SDL_ClaimWindowForGPUDevice(mpDevice, mpScreen)) {
+			FatalError("unable to claim window for GPU device! %s\n", SDL_GetError());
+		}
+
+		// turn off cursor by default.
+		ShowCursor(false);
+
+		// log some info..
+		//SDL_GetGPUDeviceProperties(mpDevice); // wait right this is 3.4.0 and that is not fully out yet :(
+		Log("created SDL_gpu renderer! (backend %s)\n", SDL_GetGPUDeviceDriver(mpDevice));
 
 		mbInitHasBeenRun = true;
 
